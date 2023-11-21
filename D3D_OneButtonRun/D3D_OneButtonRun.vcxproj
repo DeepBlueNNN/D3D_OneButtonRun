@@ -166,6 +166,8 @@
     <ClInclude Include="Framework\Object\Basic\Quad.h" />
     <ClInclude Include="Framework\Object\Basic\Sphere.h" />
     <ClInclude Include="Framework\Object\GameObject.h" />
+    <ClInclude Include="Framework\Object\Gameplay\GameActor.h" />
+    <ClInclude Include="Framework\Object\Gameplay\GamePlayer.h" />
     <ClInclude Include="Framework\Object\Landscape\Sky.h" />
     <ClInclude Include="Framework\Object\Landscape\Terrain.h" />
     <ClInclude Include="Framework\Object\Particle\Particle.h" />
@@ -239,6 +241,8 @@
     <ClCompile Include="Framework\Object\Basic\Quad.cpp" />
     <ClCompile Include="Framework\Object\Basic\Sphere.cpp" />
     <ClCompile Include="Framework\Object\GameObject.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\GameActor.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\GamePlayer.cpp" />
     <ClCompile Include="Framework\Object\Landscape\Sky.cpp" />
     <ClCompile Include="Framework\Object\Landscape\Terrain.cpp" />
     <ClCompile Include="Framework\Object\Particle\Particle.cpp" />

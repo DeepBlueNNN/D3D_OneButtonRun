@@ -26,7 +26,7 @@ void ModelAnimator::Render()
 	m_frameBuffer->SetVS(3);
 	DC->VSSetShaderResources(0, 1, &m_srv);
 
-	Model::Render();
+	__super::Render();
 }
 
 void ModelAnimator::GUIRender()

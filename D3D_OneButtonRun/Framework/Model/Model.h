@@ -6,8 +6,8 @@ public:
 	~Model();
 
 public:
-	void  Update();
-	void  Render();
+	virtual void  Update();
+	virtual void  Render();
 	void  GUIRender();
 	void  SetShader(wstring file);
 

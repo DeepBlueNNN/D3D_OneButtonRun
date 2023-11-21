@@ -58,6 +58,9 @@ S00_TestScene::S00_TestScene()
 //	m_particle = new Rain();
 //	m_particle = new Snow();
 	m_particle = new Spark(L"Textures/Effect/star.png", true);
+
+	m_player = new GamePlayer();
+	m_player->SetPosition(Vector3(-10, 10, 0));
 }
 
 S00_TestScene::~S00_TestScene()
@@ -232,6 +235,8 @@ void S00_TestScene::Update()
 	}
 
 	m_particle->Update();
+
+	m_player->Update();
 }
 
 void S00_TestScene::Render()
@@ -250,6 +255,8 @@ void S00_TestScene::Render()
 	m_modelInstanced->Render();
 
 	m_particle->Render();
+
+	m_player->Render();
 }
 
 void S00_TestScene::PreRender()

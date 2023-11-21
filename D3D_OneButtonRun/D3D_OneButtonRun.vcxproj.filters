@@ -253,6 +253,8 @@
     <ClInclude Include="Framework\Object\Particle\SpriteParticle.h" />
     <ClInclude Include="Framework\Object\Landscape\Terrain.h" />
     <ClInclude Include="Framework\Shader\GeometryShader.h" />
+    <ClInclude Include="Framework\Object\Gameplay\GameActor.h" />
+    <ClInclude Include="Framework\Object\Gameplay\GamePlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -412,6 +414,8 @@
     <ClCompile Include="Framework\Object\Particle\SpriteParticle.cpp" />
     <ClCompile Include="Framework\Object\Landscape\Terrain.cpp" />
     <ClCompile Include="Framework\Shader\GeometryShader.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\GameActor.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\GamePlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">
