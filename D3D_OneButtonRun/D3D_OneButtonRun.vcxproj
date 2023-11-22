@@ -210,6 +210,9 @@
     <ClInclude Include="Scene\S00_TestScene.h" />
     <ClInclude Include="Scene\S01_CubeMap.h" />
     <ClInclude Include="Scene\S02_Grid.h" />
+    <ClInclude Include="Scene\Scene_GamePlay.h" />
+    <ClInclude Include="Scene\Scene_MainMenu.h" />
+    <ClInclude Include="Scene\Scene_MapEditor.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -282,6 +285,9 @@
     <ClCompile Include="Scene\S00_TestScene.cpp" />
     <ClCompile Include="Scene\S01_CubeMap.cpp" />
     <ClCompile Include="Scene\S02_Grid.cpp" />
+    <ClCompile Include="Scene\Scene_GamePlay.cpp" />
+    <ClCompile Include="Scene\Scene_MainMenu.cpp" />
+    <ClCompile Include="Scene\Scene_MapEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc" />

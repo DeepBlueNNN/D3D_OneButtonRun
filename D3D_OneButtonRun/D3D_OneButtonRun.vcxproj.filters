@@ -255,6 +255,9 @@
     <ClInclude Include="Framework\Shader\GeometryShader.h" />
     <ClInclude Include="Framework\Object\Gameplay\GameActor.h" />
     <ClInclude Include="Framework\Object\Gameplay\GamePlayer.h" />
+    <ClInclude Include="Scene\Scene_MainMenu.h" />
+    <ClInclude Include="Scene\Scene_GamePlay.h" />
+    <ClInclude Include="Scene\Scene_MapEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -416,6 +419,9 @@
     <ClCompile Include="Framework\Shader\GeometryShader.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\GameActor.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\GamePlayer.cpp" />
+    <ClCompile Include="Scene\Scene_MainMenu.cpp" />
+    <ClCompile Include="Scene\Scene_GamePlay.cpp" />
+    <ClCompile Include="Scene\Scene_MapEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">
