@@ -15,6 +15,9 @@ public:
 
 public:
 	// Getter
+	Collider*	GetCollider()	{ return m_collider; }
+	Model*		GetModel()		{ return m_model; }
+
 	Vector3		GetModelPosition()	{ return m_model->Pos(); }
 	Vector3		GetModelRotation()	{ return m_model->Rot(); }
 	Vector3		GetModelScale()		{ return m_model->Scale(); }
@@ -22,6 +25,8 @@ public:
 	Vector3		GetColliderPosition() { return m_collider->Pos(); }
 	Vector3		GetColliderRotation() { return m_collider->Rot(); }
 	Vector3		GetColliderScale()	  { return m_collider->Scale(); }
+
+	Vector3		GetGlobalPosition() { return m_collider->GlobalPos(); }
 
 	GameActorTag  GetGameActorType() { return m_type; }
 
@@ -33,8 +38,8 @@ public:
 	// Setter
 	void	SetPosition(Vector3 pos)
 	{
-		m_model->Pos() = pos;
 		m_collider->Pos() = pos;
+		m_model->Pos() = m_collider->Pos();
 	}
 	void	SetRotation(Vector3 rot)
 	{

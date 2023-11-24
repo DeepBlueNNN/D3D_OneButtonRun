@@ -14,6 +14,8 @@ public:
 	void GUIRender()   override;
 
 private:
-	GamePlayer* m_player;
+	GamePlayer* m_player = nullptr;
 	vector<GameActor*> m_actors;
+
+	BoxCollider* m_ground = nullptr;
 };
