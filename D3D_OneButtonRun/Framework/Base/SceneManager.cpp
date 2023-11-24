@@ -2,6 +2,9 @@
 #include "Scene/S00_TestScene.h"
 #include "Scene/S01_CubeMap.h"
 #include "Scene/S02_Grid.h"
+#include "Scene/Scene_MainMenu.h"
+#include "Scene/Scene_MapEditor.h"
+#include "Scene/Scene_GamePlay.h"
 
 /*
 	#include "Scene/S00_[SCENE CLASS NAME].h"
@@ -18,8 +21,9 @@ SceneManager::SceneManager()
 		활성화 할 Scene vector컨테이너에 pushback 
 	*/
 	m_scenes.push_back(new S01_CubeMap());
-	m_scenes.push_back(new S02_Grid());
-	m_scenes.push_back(new S00_TestScene());
+//	m_scenes.push_back(new S02_Grid());
+//	m_scenes.push_back(new S00_TestScene());
+	m_scenes.push_back(new Scene_GamePlay());
 }
 
 SceneManager::~SceneManager()

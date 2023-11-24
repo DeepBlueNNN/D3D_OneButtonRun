@@ -23,4 +23,6 @@ private:
 
 	ProgressBar*	m_hpBar = nullptr;
 	Particle*		m_particle = nullptr;
+
+	GamePlayer* m_player = nullptr;
 };

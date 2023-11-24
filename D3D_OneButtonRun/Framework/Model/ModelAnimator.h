@@ -38,12 +38,15 @@ public:
 	~ModelAnimator();
 
 public:
-    void Update();
-    void Render();
+    virtual void Update() override;
+    virtual void Render() override;
     void GUIRender();
 
     void ReadClip(string clipName, UINT clipNum = 0);
     void PlayClip(int clip, float scale = 1.0f, float takeTime = 0.2f);
+
+public:
+    UINT GetClipArraySize() { return m_clips.size(); }
 
 protected:
     void CreateTexture();

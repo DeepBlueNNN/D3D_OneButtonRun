@@ -6,8 +6,8 @@ public:
 	~ModelInstancing();
 
 public:
-	void Update();
-	void Render();
+	virtual void Update() override;
+	virtual void Render() override;
 	void GUIRender();
 
 	Transform* Add();

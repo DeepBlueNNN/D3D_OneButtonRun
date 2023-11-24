@@ -203,4 +203,10 @@ using namespace GameMath;
 #include "Framework/Object/Particle/Snow.h"
 #include "Framework/Object/Particle/Spark.h"
 
+// Gameplay
+#include "Framework/Object/Gameplay/GameActor.h"
+#include "Framework/Object/Gameplay/GamePlayer.h"
+
 extern  Vector3 mousePos;
+
+// Test
