@@ -5,7 +5,7 @@ Scene_GamePlay::Scene_GamePlay()
 {
 	m_player = new GamePlayer();
 	m_player->SetPosition(Vector3(0, 50, 0));
-	m_player->CurPos() = m_player->GetColliderPosition();
+//	m_player->CurPos() = m_player->GetColliderPosition();
 
 	m_ground = new BoxCollider(Vector3(100.0f, 10.0f, 100.0f));
 	m_ground->Pos() = Vector3(0.0f, 0.0f, 0.0f);

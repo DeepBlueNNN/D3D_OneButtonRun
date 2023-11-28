@@ -30,6 +30,7 @@ public: // Getter
     // 월드 Transform
     Vector3 GlobalPos()     { return m_globalPosition; }
     Vector3 GlobalScale()   { return m_globalScale; }
+    Vector3 Pivot()         { return m_pivot; }
 
     // 로컬 Transform
     Vector3& Pos()      { return m_localPosition; }

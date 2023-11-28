@@ -30,9 +30,10 @@ GamePlayer::GamePlayer()
 		dynamic_cast<ModelAnimator*>(m_model)->ReadClip("SparrowAnim", i);
 
 	SetModelScale(Vector3(0.04f, 0.04f, 0.04f));
-	m_model->SetPivot(Vector3(0.0f, -1.3f, 0.0f));
+	//m_model->SetPivot(Vector3(0.0f, -1.3f, 0.0f));
+	m_offset = 1.3f;
 
-	curPos = GetColliderPosition();
+//	m_curPos = GetColliderPosition();
 }
 
 GamePlayer::~GamePlayer()
@@ -55,8 +56,9 @@ void GamePlayer::Update()
 //	curPos = GetColliderPosition();
 //	velocity = (curPos - prevPos) / DELTA;
 
-	velocity += GRAVITY * DELTA;
-	SetPosition(GetColliderPosition() + velocity * DELTA);
+	m_velocity += GRAVITY * DELTA;
+	SetPosition(GetColliderPosition() + m_velocity * DELTA);
+	SetRotation(GetColliderRotation() + m_rotValue);
 
 	m_collider->UpdateWorld();
 
@@ -88,15 +90,15 @@ void GamePlayer::Friction(Vector3 closestPoint)
 	m_collider->UpdateWorld();
 
 	Vector3 repulsionDir = (GetColliderPosition() - closestPoint).GetNormalized();
-	float c = abs(Dot(velocity, repulsionDir));
+	float c = abs(Dot(m_velocity, repulsionDir));
 
-	Vector3 prevVelocity = velocity;
+	Vector3 prevVelocity = m_velocity;
 	float repulsionValue = 0.6f;	// 0.5f 초과값으로 세팅
 	float frictionValue  = 0.7f;	// 0 ~ 1 값으로 세팅 -> 0에 가까울 수록 마찰이 강하게 발생
 
 	if (!m_isCollision)
 	{
-		velocity += (repulsionDir * c * 2.0f * repulsionValue);
+		m_velocity += (repulsionDir * c * 2.0f * repulsionValue);
 	}
 	else
 	{
@@ -108,6 +110,12 @@ void GamePlayer::Friction(Vector3 closestPoint)
 	
 	Vector3 right   = Cross(prevVelocity, repulsionDir);
 	Vector3 forward = Cross(repulsionDir, right).GetNormalized();
-	velocity -= (forward * (1.0f - frictionValue) * Dot(prevVelocity, forward));
+	m_velocity -= (forward * (1.0f - frictionValue) * Dot(prevVelocity, forward));
 
+	right.Normalize();
+	m_rotValue = (right * Dot(m_velocity, forward)) / (dynamic_cast<SphereCollider*>(m_collider)->Radius() * XM_2PI);
+	m_rotValue.x = XMConvertToRadians(m_rotValue.x);
+	m_rotValue.y = XMConvertToRadians(m_rotValue.y);
+	m_rotValue.z = XMConvertToRadians(m_rotValue.z);
+	m_rotValue *= -1.0f;
 }

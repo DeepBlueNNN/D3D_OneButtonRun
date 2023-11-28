@@ -207,10 +207,10 @@ void SaveLoadManager::LoadScene(wstring savePath)
 		tinyxml2::XMLElement* transform = modelActive->NextSiblingElement();
 		// Pos
 		tinyxml2::XMLElement* pos = transform->FirstChildElement();
-		actor->SetPosition(Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z")));
+//		actor->SetPosition(Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z")));
 		// Rot
 		tinyxml2::XMLElement* rot = pos->NextSiblingElement();
-		actor->SetRotation(Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z")));
+//		actor->SetRotation(Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z")));
 		// Scale
 		tinyxml2::XMLElement* scale = rot->NextSiblingElement();
 		actor->SetModelScale(Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z")));

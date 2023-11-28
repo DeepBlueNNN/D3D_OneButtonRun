@@ -37,16 +37,6 @@ public:
 
 public:
 	// Setter
-	void	SetPosition(Vector3 pos)
-	{
-		m_collider->Pos() = pos;
-		m_model->Pos() = m_collider->Pos();
-	}
-	void	SetRotation(Vector3 rot)
-	{
-		m_model->Rot() = rot;
-		m_collider->Rot() = rot;
-	}
 	void	SetModelScale(Vector3 scale)	{ m_model->Scale() = scale; }
 	void	SetColliderScale(Vector3 scale) { m_collider->Scale() = scale; }
 	void	SetName(string name) { m_name = name; }
@@ -68,6 +58,7 @@ protected:
 
 	string	m_name = "";
 	GameActorTag m_type = MAX;
-	bool m_isActive = true;
+	bool	m_isActive = true;
+	float	m_offset = 0.0f;
 
 };
