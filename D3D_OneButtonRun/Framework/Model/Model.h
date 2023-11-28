@@ -10,6 +10,7 @@ public:
 	virtual void  Render();
 	void  GUIRender();
 	void  SetShader(wstring file);
+	string GetName() { return m_name; }
 
 private:
 	void  ReadMaterial();

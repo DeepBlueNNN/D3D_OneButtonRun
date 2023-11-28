@@ -19,8 +19,12 @@ GamePlayer::GamePlayer()
 	modelExporter->ExportClip(clipName);
 	delete(modelExporter);*/
 
+	m_name = "Player";
+
 	m_model = new ModelAnimator("Sparrow");
+	dynamic_cast<ModelAnimator*>(m_model)->SetTag("Sparrow");
 	m_collider = new SphereCollider();
+	m_collider->SetTag("SphereCollider");
 
 	for (UINT i = 0; i < 18; i++)
 		dynamic_cast<ModelAnimator*>(m_model)->ReadClip("SparrowAnim", i);
@@ -69,6 +73,11 @@ void GamePlayer::Render()
 
 void GamePlayer::GUIRender()
 {
-	m_collider->GUIRender();
-	dynamic_cast<ModelAnimator*>(m_model)->GUIRender();
+	if (ImGui::TreeNode((m_name + "_Detail").c_str()))
+	{
+		dynamic_cast<ModelAnimator*>(m_model)->GUIRender();
+		m_collider->GUIRender();
+
+		ImGui::TreePop();
+	}
 }

@@ -24,8 +24,6 @@ Camera::Camera()
 Camera::~Camera()
 {
     SAFE_DELETE(m_viewBuffer);
-
-    Save();
 }
 
 void Camera::Update()

@@ -115,6 +115,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalManifestDependencies>
+      </AdditionalManifestDependencies>
+      <AdditionalOptions>"/ignore:4099" %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -136,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="D3D_OneButtonRun.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Framework\Base\SaveLoadManager.h" />
     <ClInclude Include="Framework\Base\Scene.h" />
     <ClInclude Include="Framework\Base\SceneManager.h" />
     <ClInclude Include="Framework\Buffer\ConstBuffer.h" />
@@ -168,6 +172,8 @@
     <ClInclude Include="Framework\Object\GameObject.h" />
     <ClInclude Include="Framework\Object\Gameplay\GameActor.h" />
     <ClInclude Include="Framework\Object\Gameplay\GamePlayer.h" />
+    <ClInclude Include="Framework\Object\Gameplay\Rock.h" />
+    <ClInclude Include="Framework\Object\Gameplay\Tree.h" />
     <ClInclude Include="Framework\Object\Landscape\Sky.h" />
     <ClInclude Include="Framework\Object\Landscape\Terrain.h" />
     <ClInclude Include="Framework\Object\Particle\Particle.h" />
@@ -220,6 +226,7 @@
     <ClCompile Include="framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Framework\Base\SaveLoadManager.cpp" />
     <ClCompile Include="Framework\Base\SceneManager.cpp" />
     <ClCompile Include="Framework\Buffer\ConstBuffer.cpp" />
     <ClCompile Include="Framework\Buffer\IndexBuffer.cpp" />
@@ -246,6 +253,8 @@
     <ClCompile Include="Framework\Object\GameObject.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\GameActor.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\GamePlayer.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\Rock.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\Tree.cpp" />
     <ClCompile Include="Framework\Object\Landscape\Sky.cpp" />
     <ClCompile Include="Framework\Object\Landscape\Terrain.cpp" />
     <ClCompile Include="Framework\Object\Particle\Particle.cpp" />
