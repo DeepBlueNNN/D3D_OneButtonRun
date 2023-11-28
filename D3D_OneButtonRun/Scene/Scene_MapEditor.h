@@ -14,5 +14,16 @@ public:
 	void GUIRender()   override;
 
 private:
+	/// <summary>
+	/// 
+	/// </summary>
+	void SelectionActor();
+
+private:
+	// Render Actor
 	vector<GameActor*> m_actors;
+
+private:
+	// Editor Variable
+	GameActor* m_selectedActor = nullptr;
 };
