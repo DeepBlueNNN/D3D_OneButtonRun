@@ -133,7 +133,7 @@ bool BoxCollider::IsSphereCollision(SphereCollider* collider)
     GetObb(box);
 
     // 구에 가장 근접한 Box의 포인트
-    Vector3 closesetPointToSphere = box.pos;
+    Vector3 closestPointToSphere = box.pos;
 
     for (UINT i = 0; i < 3; i++)
     {
@@ -143,10 +143,11 @@ bool BoxCollider::IsSphereCollision(SphereCollider* collider)
         float multi = (length < 0.0f) ? -1.0f : 1.0f;
         length = min(abs(length), box.halfSize[i]);
 
-        closesetPointToSphere += box.axis[i] * length * multi;
+        closestPointToSphere += box.axis[i] * length * multi;
     }
 
-    float distance = GameMath::Distance(collider->GlobalPos(), closesetPointToSphere);
+    m_closestPoint = closestPointToSphere;
+    float distance = GameMath::Distance(collider->GlobalPos(), closestPointToSphere);
 
 	return (distance <= collider->Radius());
 }

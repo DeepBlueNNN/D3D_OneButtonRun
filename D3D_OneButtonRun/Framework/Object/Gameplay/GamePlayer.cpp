@@ -54,6 +54,7 @@ void GamePlayer::Update()
 //	prevPos = curPos;
 //	curPos = GetColliderPosition();
 //	velocity = (curPos - prevPos) / DELTA;
+
 	velocity += GRAVITY * DELTA;
 	SetPosition(GetColliderPosition() + velocity * DELTA);
 
@@ -80,4 +81,33 @@ void GamePlayer::GUIRender()
 
 		ImGui::TreePop();
 	}
+}
+
+void GamePlayer::Friction(Vector3 closestPoint)
+{
+	m_collider->UpdateWorld();
+
+	Vector3 repulsionDir = (GetColliderPosition() - closestPoint).GetNormalized();
+	float c = abs(Dot(velocity, repulsionDir));
+
+	Vector3 prevVelocity = velocity;
+	float repulsionValue = 0.6f;	// 0.5f 초과값으로 세팅
+	float frictionValue  = 0.7f;	// 0 ~ 1 값으로 세팅 -> 0에 가까울 수록 마찰이 강하게 발생
+
+	if (!m_isCollision)
+	{
+		velocity += (repulsionDir * c * 2.0f * repulsionValue);
+	}
+	else
+	{
+		frictionValue = 1.0f;
+		Vector3 gravity = GRAVITY;
+		Vector3 interpGravity= repulsionDir * (Dot(repulsionDir, gravity) * -1.0f) * DELTA;
+		SetPosition(GetColliderPosition() + interpGravity);
+	}
+	
+	Vector3 right   = Cross(prevVelocity, repulsionDir);
+	Vector3 forward = Cross(repulsionDir, right).GetNormalized();
+	velocity -= (forward * (1.0f - frictionValue) * Dot(prevVelocity, forward));
+
 }

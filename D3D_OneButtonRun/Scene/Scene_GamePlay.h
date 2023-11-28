@@ -18,4 +18,6 @@ private:
 	vector<GameActor*> m_actors;
 
 	BoxCollider* m_ground = nullptr;
+
+	Collider* m_prevCollider = nullptr;
 };
