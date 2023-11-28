@@ -35,6 +35,8 @@ vector<string> StringPath::SplitString(string origin, const string& tok, bool bA
 {
     vector<string> result;
 
+    Replace(origin, "\\", "/");
+
     size_t cutAt = 0;
 
     while((cutAt = origin.find_first_of(tok)) != origin.npos)

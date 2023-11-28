@@ -26,6 +26,7 @@ Model::~Model()
 
 void Model::Update()
 {
+	UpdateWorld();
 }
 
 void Model::Render()

@@ -47,10 +47,6 @@ public: // Setter
 
     bool Active();
 
-public:
-    void Save();
-    void Load();
-
 protected:
     string m_tag;
 

@@ -21,9 +21,10 @@ SceneManager::SceneManager()
 		활성화 할 Scene vector컨테이너에 pushback 
 	*/
 	m_scenes.push_back(new S01_CubeMap());
-//	m_scenes.push_back(new S02_Grid());
+	m_scenes.push_back(new S02_Grid());
 //	m_scenes.push_back(new S00_TestScene());
-	m_scenes.push_back(new Scene_GamePlay());
+//	m_scenes.push_back(new Scene_GamePlay());
+	m_scenes.push_back(new Scene_MapEditor());
 }
 
 SceneManager::~SceneManager()

@@ -114,6 +114,7 @@ typedef XMFLOAT4X4	Float4x4;
 #define SCENEMANAGER	SceneManager::Get()
 #define ENV				Environment::Get()
 #define CAMERA			Environment::Get()->GetMainCamera()
+#define SAVELOAD		SaveLoadManager::Get()
 
 // MainWindow
 #include "Program/MainWindow.h"
@@ -206,6 +207,10 @@ using namespace GameMath;
 // Gameplay
 #include "Framework/Object/Gameplay/GameActor.h"
 #include "Framework/Object/Gameplay/GamePlayer.h"
+#include "Framework/Object/Gameplay/Tree.h"
+#include "Framework/Object/Gameplay/Rock.h"
+#include "Framework/Base/SaveLoadManager.h"
+
 
 extern  Vector3 mousePos;
 

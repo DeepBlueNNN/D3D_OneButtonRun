@@ -8,7 +8,6 @@ GameActor::GameActor(GameActorTag type)
 
 void GameActor::Update()
 {
-	
 }
 
 void GameActor::Render()

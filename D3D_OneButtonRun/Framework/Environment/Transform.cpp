@@ -58,14 +58,6 @@ void Transform::GUIRender()
         temp = m_tag + "_Scale";
         ImGui::DragFloat3(temp.c_str(), (float*)&m_localScale, 0.1f);
     
-        if (ImGui::Button("Save"))
-            Save();
-    
-        ImGui::SameLine();
-    
-        if (ImGui::Button("Load"))
-            Load();
-    
         ImGui::TreePop();
     }    
 }
@@ -87,14 +79,4 @@ bool Transform::Active()
         return false;
 
     return m_parent->Active();
-}
-
-void Transform::Save()
-{
-   
-}
-
-void Transform::Load()
-{
-   
 }

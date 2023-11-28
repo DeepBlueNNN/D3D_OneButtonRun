@@ -13,6 +13,4 @@ public:
 	void PostRender()  override;
 	void GUIRender()   override;
 
-private:
-	vector<GameActor*> m_actors;
 };
