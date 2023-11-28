@@ -3,9 +3,19 @@
 
 Scene_MapEditor::Scene_MapEditor()
 {
-	//m_actors.push_back(new GamePlayer());
-	//m_actors.push_back(new GamePlayer());
-	//m_actors.push_back(new GamePlayer());
+	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+
+	GameActor* tree2 = new Tree("Tree_01", "1");
+	tree2->SetPosition(Vector3(-10, 3, 0));
+	actors.push_back(tree2);
+
+	GameActor* tree = new Tree("Tree_02","1");
+	tree->SetPosition(Vector3(0, 3, 0));
+	actors.push_back(tree);
+
+	GameActor* rock = new Rock("Rock_01", "1");
+	rock->SetPosition(Vector3(-5, 1, 0));
+	actors.push_back(rock);
 }
 
 Scene_MapEditor::~Scene_MapEditor()
@@ -14,19 +24,15 @@ Scene_MapEditor::~Scene_MapEditor()
 
 void Scene_MapEditor::Update()
 {
-	for (const auto actor : m_actors)
+	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	for (const auto actor : actors)
 		actor->Update();
-
-	//m_actors[0]->SetPosition(Vector3());
-	//m_actors[1]->SetPosition(Vector3(-10, 0, 0));
-	//m_actors[2]->SetPosition(Vector3(10, 0, 0));
-
-	SelectionActor();
 }
 
 void Scene_MapEditor::Render()
 {
-	for (const auto actor : m_actors)
+	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	for (const auto actor : actors)
 		actor->Render();
 }
 
@@ -40,38 +46,9 @@ void Scene_MapEditor::PostRender()
 
 void Scene_MapEditor::GUIRender()
 {
-	string label = "Selected Actor";
+	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	for (const auto actor : actors)
+		actor->GUIRender();
 
-	if (ImGui::TreeNode(label.c_str()))
-	{
-		if(m_selectedActor)
-		{
-			m_selectedActor->GUIRender();
-		}
-
-		ImGui::TreePop();
-	}
-
-	dynamic_cast<GamePlayer*>(m_actors[0])->GUIRender();
-}
-
-void Scene_MapEditor::SelectionActor()
-{
-	Ray ray = CAMERA->ScreenPointToRay(mousePos);
-	Contact contact;
-	for (const auto actor : m_actors)
-	{
-		if(m_selectedActor != actor)
-			actor->GetCollider()->SetColor(Float4(0, 1, 0, 1));
-
-		if (actor->GetCollider()->IsRayCollision(ray, &contact) && KEY_PRESS(VK_LBUTTON))
-		{
-			m_selectedActor = actor;
-			actor->GetCollider()->SetColor(Float4(1, 0, 0, 1));
-			break;
-		}
-
-		if (!actor->GetCollider()->IsRayCollision(ray, &contact) && KEY_PRESS(VK_LBUTTON) && !ImGui::GetIO().WantCaptureMouse)
-			m_selectedActor = nullptr;
-	}
+	SAVELOAD->GUIRender();
 }

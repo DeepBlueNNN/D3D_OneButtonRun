@@ -21,6 +21,8 @@ public:
 
     void GetObb(ObbDesc& obbDesc);
 
+    Vector3& GetClosestPoint() { return m_closestPoint; }
+
 private:
     void MakeMesh() override;
 
@@ -29,6 +31,7 @@ private:
 
 private:
     Vector3 m_size = Vector3(1.0f, 1.0f, 1.0f);
+    Vector3 m_closestPoint = Vector3::Zero();
 };
 
 ////////////////////////////////////////////////////

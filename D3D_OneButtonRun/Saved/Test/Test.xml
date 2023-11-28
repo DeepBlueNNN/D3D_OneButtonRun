@@ -1,0 +1,37 @@
+<Test Scene="Test">
+    <GameActors NumActors="3">
+        <GameActor Type="2" InGameName="Rock_01_1" FBXName="Rock_01">
+            <ModelActive isActive="true"/>
+            <ModelTransform>
+                <Position X="-5" Y="1" Z="0"/>
+                <Rotation X="0" Y="0" Z="0"/>
+                <Scale X="0.34999999" Y="0.34999999" Z="0.34999999"/>
+            </ModelTransform>
+            <ColliderTransform>
+                <Scale X="1" Y="1" Z="1"/>
+            </ColliderTransform>
+        </GameActor>
+        <GameActor Type="1" InGameName="Tree_02_1" FBXName="Tree_02">
+            <ModelActive isActive="true"/>
+            <ModelTransform>
+                <Position X="0" Y="3" Z="0"/>
+                <Rotation X="0" Y="0" Z="0"/>
+                <Scale X="0.34999999" Y="0.34999999" Z="0.34999999"/>
+            </ModelTransform>
+            <ColliderTransform>
+                <Scale X="1" Y="1" Z="1"/>
+            </ColliderTransform>
+        </GameActor>
+        <GameActor Type="1" InGameName="Tree_01_1" FBXName="Tree_01">
+            <ModelActive isActive="true"/>
+            <ModelTransform>
+                <Position X="-10" Y="3" Z="0"/>
+                <Rotation X="0" Y="0" Z="0"/>
+                <Scale X="0.34999999" Y="0.34999999" Z="0.34999999"/>
+            </ModelTransform>
+            <ColliderTransform>
+                <Scale X="1" Y="1" Z="1"/>
+            </ColliderTransform>
+        </GameActor>
+    </GameActors>
+</Test>

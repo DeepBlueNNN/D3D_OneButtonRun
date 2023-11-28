@@ -258,6 +258,9 @@
     <ClInclude Include="Scene\Scene_MainMenu.h" />
     <ClInclude Include="Scene\Scene_GamePlay.h" />
     <ClInclude Include="Scene\Scene_MapEditor.h" />
+    <ClInclude Include="Framework\Base\SaveLoadManager.h" />
+    <ClInclude Include="Framework\Object\Gameplay\Tree.h" />
+    <ClInclude Include="Framework\Object\Gameplay\Rock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -422,6 +425,9 @@
     <ClCompile Include="Scene\Scene_MainMenu.cpp" />
     <ClCompile Include="Scene\Scene_GamePlay.cpp" />
     <ClCompile Include="Scene\Scene_MapEditor.cpp" />
+    <ClCompile Include="Framework\Base\SaveLoadManager.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\Tree.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\Rock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">

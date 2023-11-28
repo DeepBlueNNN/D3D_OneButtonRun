@@ -6,6 +6,7 @@ public:
 	{
 		PLAYER = 0,
 		TREE,
+		ROCK,
 		MAX
 	};
 
@@ -48,6 +49,8 @@ public:
 	}
 	void	SetModelScale(Vector3 scale)	{ m_model->Scale() = scale; }
 	void	SetColliderScale(Vector3 scale) { m_collider->Scale() = scale; }
+	void	SetName(string name) { m_name = name; }
+	void	SetGameActorType(GameActorTag type) { m_type = type; }
 
 	// Set GameActor Active
 	void	SetActive(bool isActive) { m_isActive = isActive; }
