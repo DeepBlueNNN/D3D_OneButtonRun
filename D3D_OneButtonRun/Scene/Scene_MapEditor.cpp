@@ -4,20 +4,43 @@
 Scene_MapEditor::Scene_MapEditor()
 {
 	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	vector<InstancingActor*>& instancingActors = SAVELOAD->GetInstancingActors();
 
-	GameActor* tree2 = new InstancingActor(GameActor::GameActorTag::TREE, "Tree_01", Collider::CAPSULE);
-//	tree2->SetPosition(Vector3(-10, 3, 0));
+	GamePlayer* player = SAVELOAD->GetPlayer();
+	player->SetPosition(Vector3(0, 50, 0));
+
 	int index;
-	index = dynamic_cast<InstancingActor*>(tree2)->Add();
-	dynamic_cast<InstancingActor*>(tree2)->GetModels()->GetTransforms()[index]->Pos() = Vector3(20, 0, 0);
-	dynamic_cast<InstancingActor*>(tree2)->GetColliders()[index]->Pos() = Vector3(20, 0, 0);
-	index = dynamic_cast<InstancingActor*>(tree2)->Add();
-	dynamic_cast<InstancingActor*>(tree2)->GetModels()->GetTransforms()[index]->Pos() = Vector3(0, 0, 0);
-	dynamic_cast<InstancingActor*>(tree2)->GetColliders()[index]->Pos() = Vector3(0, 0, 0);
-	index = dynamic_cast<InstancingActor*>(tree2)->Add();
-	dynamic_cast<InstancingActor*>(tree2)->GetModels()->GetTransforms()[index]->Pos() = Vector3(-20, 0, 0);
-	dynamic_cast<InstancingActor*>(tree2)->GetColliders()[index]->Pos() = Vector3(-20, 0, 0);
-	actors.push_back(tree2);
+
+	InstancingActor* ground1 = new InstancingActor(GameActor::GameActorTag::GROUND, "Ground_01", Collider::BOX);
+	index = ground1->Add();
+	ground1->GetModels()->GetTransforms()[index]->Pos() = Vector3(0, -5, 0);
+	ground1->GetColliders()[index]->Pos() = Vector3(0, -5, 0);
+	instancingActors.push_back(ground1);
+
+	InstancingActor* rock1 = new InstancingActor(GameActor::GameActorTag::ROCK, "Rock_01", Collider::SPHERE);
+	index = rock1->Add();
+	rock1->GetModels()->GetTransforms()[index]->Pos() = Vector3(-10, 0, 0);
+	rock1->GetColliders()[index]->Pos() = Vector3(-10, 0, 0);
+	instancingActors.push_back(rock1);
+
+	InstancingActor* tree1 = new InstancingActor(GameActor::GameActorTag::TREE, "Tree_01", Collider::CAPSULE);
+	index = tree1->Add();
+	tree1->GetModels()->GetTransforms()[index]->Pos() = Vector3(10, 0, 0);
+	tree1->GetColliders()[index]->Pos() = Vector3(10, 0, 0);
+	instancingActors.push_back(tree1);
+
+	InstancingActor* tree2 = new InstancingActor(GameActor::GameActorTag::TREE, "Tree_02", Collider::CAPSULE);
+//	tree2->SetPosition(Vector3(-10, 3, 0));
+	index = tree2->Add();
+	tree2->GetModels()->GetTransforms()[index]->Pos() = Vector3(20, 0, 0);
+	tree2->GetColliders()[index]->Pos() = Vector3(20, 0, 0);
+	index = tree2->Add();
+	tree2->GetModels()->GetTransforms()[index]->Pos() = Vector3(0, 0, 0);
+	tree2->GetColliders()[index]->Pos() = Vector3(0, 0, 0);
+	index = tree2->Add();
+	tree2->GetModels()->GetTransforms()[index]->Pos() = Vector3(-20, 0, 0);
+	tree2->GetColliders()[index]->Pos() = Vector3(-20, 0, 0);
+	instancingActors.push_back(tree2);
 
 	//GameActor* tree = new Tree("Tree_02");
 	//tree->SetPosition(Vector3(0, 3, 0));
@@ -34,18 +57,22 @@ Scene_MapEditor::~Scene_MapEditor()
 
 void Scene_MapEditor::Update()
 {
-	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	vector<InstancingActor*> actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Update();
+
+	SAVELOAD->GetPlayer()->Update();
 
 	//SelectActor();
 }
 
 void Scene_MapEditor::Render()
 {
-	vector<GameActor*>& actors = SAVELOAD->GetGameActors();
+	vector<InstancingActor*> actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Render();
+
+	SAVELOAD->GetPlayer()->Render();
 }
 
 void Scene_MapEditor::PreRender()
@@ -149,7 +176,7 @@ void Scene_MapEditor::AddActor()
 		vector<GameActor*>& actors = SAVELOAD->GetGameActors();
 		FileDialog dialog;
 		wstring file;
-		if (dialog.Open(file))
+		if (dialog.Open(file,FileDialog::FBX))
 		{
 			file = StringPath::ToWString(StringPath::GetFileNameWithoutExtension(StringPath::ToString(file)));
 

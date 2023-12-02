@@ -6,19 +6,13 @@ Environment::Environment()
     CreateProjection();
     CreateState();
 
-    m_mainCamera  = new Camera();
-    m_lightBuffer = new LightBuffer();
     m_viewBuffer  = new ViewBuffer();    
 }
 
 Environment::~Environment()
 {
     SAFE_DELETE(m_projectionBuffer);  
-    SAFE_DELETE(m_lightBuffer);
     SAFE_DELETE(m_viewBuffer);
-
-    SAFE_DELETE(m_mainCamera);
-
     SAFE_DELETE(m_samplerState);
     SAFE_DELETE(m_rasterizerState[0]);
     SAFE_DELETE(m_rasterizerState[1]);
@@ -34,31 +28,53 @@ void Environment::Update()
     if (KEY_DOWN(VK_F2))
         Collider::RenderOnOff();
 
-    m_mainCamera->Update();
+    CAMERA->Update();
 }
 
 void Environment::GUIRender()
 {
-    if (ImGui::TreeNode("Environment"))
+    if (ImGui::TreeNode(u8"환경 설정"))
     {
-        m_mainCamera->GUIRender();
-        ImGui::Text("LightOption");
-        for (UINT i = 0; i < m_lightBuffer->Get().lightCount; i++)
+        // Camera
+        CAMERA->GUIRender();
+
+        // Light
+        if (ImGui::TreeNode(u8"라이트 설정"))
         {
-            string name = "Light_" + to_string(i);
-            if (ImGui::TreeNode(name.c_str()))
+            if (ImGui::TreeNode(u8"라이트"))
             {
-                ImGui::ColorEdit3("LightColor", (float*)&m_lightBuffer->Get().lights[i].color, ImGuiColorEditFlags_PickerHueWheel);
-                ImGui::SliderFloat3("LightDir", (float*)&m_lightBuffer->Get().lights[i].direction, -1, 1);
+                ImGui::ColorEdit3("Color", (float*)&SAVELOAD->GetLightBuffer()->Get().lights[0].color, ImGuiColorEditFlags_PickerHueWheel);
+                ImGui::SliderFloat3("Dir", (float*)&SAVELOAD->GetLightBuffer()->Get().lights[0].direction, -1, 1);
 
                 ImGui::TreePop();
             }
+
+            if (ImGui::TreeNode(u8"엠비언트"))
+            {
+                ImGui::ColorEdit3("Light", (float*)&SAVELOAD->GetLightBuffer()->Get().ambientLight, ImGuiColorEditFlags_PickerHueWheel);
+                ImGui::ColorEdit3("Ceil", (float*)&SAVELOAD->GetLightBuffer()->Get().ambientCeil, ImGuiColorEditFlags_PickerHueWheel);
+
+                ImGui::TreePop();
+            }
+
+            bool ret;
+
+            ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
+            ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
+            ret = ImGui::Button(u8"라이트 초기화", ImVec2(100, 20));
+            ImGui::PopStyleColor(3);
+
+            if (ret)
+            {
+                SAVELOAD->GetLightBuffer()->Init();
+            }
+
+            ImGui::TreePop();
         }
-        
-        ImGui::ColorEdit3("AmbientLight", (float*)&m_lightBuffer->Get().ambientLight, ImGuiColorEditFlags_PickerHueWheel);
-        ImGui::ColorEdit3("AmbientCeil", (float*)&m_lightBuffer->Get().ambientCeil, ImGuiColorEditFlags_PickerHueWheel);
+
         ImGui::TreePop();
-    }    
+    }
 }
 
 void Environment::Set()
@@ -74,7 +90,7 @@ void Environment::Set()
     m_blendState[0]->SetState();
     m_depthStencilState[0]->SetState();
 
-    m_lightBuffer->SetPS(0);
+    SAVELOAD->GetLightBuffer()->SetPS(0);
 }
 
 void Environment::PostSet()

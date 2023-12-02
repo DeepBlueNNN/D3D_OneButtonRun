@@ -46,7 +46,7 @@ void Material::GUIRender()
         {
 			FileDialog dlg;
 			wstring selectFile;
-			if (dlg.Open(selectFile))
+			if (dlg.Open(selectFile,FileDialog::TEXTURE))
 			{
 				MessageBox(NULL, selectFile.c_str(), L"텍스처파일 변경", MB_OK);
 				SetDiffuseMap(selectFile);

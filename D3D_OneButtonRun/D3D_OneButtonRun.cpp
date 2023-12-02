@@ -11,7 +11,7 @@ void  LoadFont()
 {
 	ImGuiIO& io = ImGui::GetIO();
 	ImFont* font = nullptr;
-	std::string font_file = "./TTF/malgunbd.ttf";
+	std::string font_file = "./TTF/NanumSquareB.ttf";
 	//std::string font_file = "imgui/fonts/D2Coding.ttf";
 
 	std::ifstream ifile;
@@ -59,11 +59,11 @@ int APIENTRY wWinMain(_In_     HINSTANCE hInstance,      // OS에서 생성된 I
 
 	// Font를 세팅
 
-	Font::Get()->AddColor("White", 1, 1, 1);
-	Font::Get()->AddStyle("Default", L"배달의민족 주아");
-
-	Font::Get()->SetColor("White");
-	Font::Get()->SetStyle("Default");
+	//Font::Get()->AddColor("White", 1, 1, 1);
+	//Font::Get()->AddStyle("Default", L"배달의민족 주아");
+	//
+	//Font::Get()->SetColor("White");
+	//Font::Get()->SetStyle("Default");
 
 	MSG msg;
 

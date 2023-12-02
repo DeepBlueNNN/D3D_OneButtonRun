@@ -20,7 +20,7 @@ public:
     wstring  GetFile() { return m_file; }
 
 protected:
-    void  OutputError(ID3DBlob* outerror);
+    bool     IsExistFile(wstring strFile);
 
 protected:
     ID3DBlob* m_blob = nullptr;

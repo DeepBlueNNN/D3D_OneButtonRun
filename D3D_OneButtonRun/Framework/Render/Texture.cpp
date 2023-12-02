@@ -1,6 +1,7 @@
 #include "framework.h"
 #include "Texture.h"
 #include "Framework/Utilities/StringPath.h"
+#include <io.h>
 
 unordered_map<wstring, Texture*> Texture::m_textures;
 
@@ -25,6 +26,9 @@ Texture* Texture::Add(wstring file)
 {
 	if (m_textures.count(file) > 0)
 		return m_textures[file];
+
+	if (!IsExistFile(file))
+		assert(false);
 
 	ScratchImage image;
 	HRESULT result;
@@ -53,6 +57,9 @@ Texture* Texture::Add(wstring file, wstring key)
 {
 	if (m_textures.count(key) > 0)
 		return m_textures[key];
+
+	if (!IsExistFile(file))
+		assert(false);
 
 	ScratchImage image;
 	HRESULT result;
@@ -111,4 +118,20 @@ void Texture::ReadPixels(vector<Float4>& pixels)
 		pixels[i].z = colors[i * 4 + 2] * scale;
 		pixels[i].w = colors[i * 4 + 3] * scale;
 	}
+}
+
+bool Texture::IsExistFile(wstring strFile)
+{
+	string str;
+	string message;
+	str.assign(strFile.begin(), strFile.end());
+
+	if (_access(str.c_str(), 00) != 0)
+	{
+		message = "Texture::IsExistFile\n";
+		message += "텍스쳐파일 없음\n" + str;
+		MessageBoxA(NULL, message.c_str(), "ERROR", MB_OK);
+		return false;
+	}
+	return true;
 }

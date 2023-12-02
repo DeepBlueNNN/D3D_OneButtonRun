@@ -67,6 +67,15 @@ public:
 
 	}
 	Data& Get() { return m_data; }
+	void Init()
+	{
+		m_data.lights[0].color = { 1.0f,1.0f,1.0f,1.0f };
+		m_data.lights[0].direction = { 1.0f,-1.0f,1.0f};
+		m_data.lights[0].shininess = { 24.0f};
+		m_data.lightCount = 1;
+		m_data.ambientLight = { 0.1f, 0.1f, 0.1f };
+		m_data.ambientCeil = { 0.1f, 0.1f, 0.1f };
+	}
 
 private:
 	Data  m_data;

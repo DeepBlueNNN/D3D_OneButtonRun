@@ -12,5 +12,5 @@ public:
     virtual void Set() override;
 
 private:
-    ID3D11GeometryShader* m_shader;
+    ID3D11GeometryShader* m_shader = nullptr;
 };

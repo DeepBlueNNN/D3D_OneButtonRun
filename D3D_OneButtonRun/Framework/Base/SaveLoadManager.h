@@ -11,21 +11,60 @@ public:
 	~SaveLoadManager();
 
 public:
+	/// <summary>
+	/// Save관련 ImGUI 구성 설정
+	/// </summary>
 	void Save();
+	/// <summary>
+	/// Scene정보 저장: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수
+	/// </summary>
+	/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 	void SaveScene(wstring savePath);
-	void SaveActor(GameActor* gameActor, tinyxml2::XMLElement* type);
+	/// <summary>
+	/// Scene내 Player외 엑터들 Type별 for문을 통해 정보 저장
+	/// </summary>
+	/// <param name="gameActor">인스턴싱 단위 게임엑터</param>
+	/// <param name="actorType">게임엑터 타입</param>
+	/// <param name="count">인스턴싱된 동일 FBX 엑터 갯수</param>
+	/// <param name="type">상위 XML노드</param>
+	void SaveActor(InstancingActor* gameActor, GameActor::GameActorTag actorType, int count, tinyxml2::XMLElement* type);
 
 public:
+	/// <summary>
+	/// Load관련 ImGUI 구성 설정
+	/// </summary>
 	void Load();
+	/// <summary>
+	/// Scene정보 로드: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수, 각 게임엑터 정보
+	/// </summary>
+	/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 	void LoadScene(wstring savePath);
-	void LoadInstancedGameActor();
 
 public:
+	/// <summary>
+	/// Scene 환경 초기화 및 모든 게임엑터 삭제
+	/// </summary>
 	void Clear();
 
 public:
 	void GUIRender();
+	GamePlayer*& GetPlayer() { return m_player; }
+	/// <summary>
+	/// 각 Scene에서 사용할 GameActor들 레퍼런스 Get 
+	/// </summary>
+	/// <returns>초기화 또는 로드된 GameActor들</returns>
 	vector<GameActor*>& GetGameActors() { return m_gameActors; }
+	vector<InstancingActor*>& GetInstancingActors() { return m_intancingActors; }
+	/// <summary>
+	/// 메인카메라 받아오기
+	/// </summary>
+	/// <returns>m_mainCamera</returns>
+	Camera* GetMainCamera() { return m_mainCamera; }
+	/// <summary>
+	/// Environment에서 사용될 LightBuffer 받아오기
+	/// </summary>
+	/// <returns>*&m_lightBuffer</returns>
+	LightBuffer*& GetLightBuffer() { return m_lightBuffer; }
 	/// <summary>
 	/// GameActor Class 추가 후 이 함수 내용에 추가한 Class 추가하기
 	/// </summary>
@@ -39,8 +78,19 @@ public:
 
 private:
 	vector<GameActor*> m_gameActors;
+
+	// GameActors
+	GamePlayer* m_player;
+	vector<InstancingActor*> m_intancingActors;
+	
+	// SavePath
 	wstring m_projectPath = L"";
 	string m_savePath = "";
+
 	vector<string> m_classNames;
 	vector<string> m_fbxNames;
+
+	// Environment
+	Camera* m_mainCamera = nullptr;
+	LightBuffer* m_lightBuffer = nullptr;
 };

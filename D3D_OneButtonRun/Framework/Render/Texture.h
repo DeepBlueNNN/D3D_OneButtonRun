@@ -22,7 +22,8 @@ public:
 	static Texture* Add(wstring key, ID3D11ShaderResourceView* srv);
 	static void Delete();
 	void   ReadPixels(vector<Float4>& pixels);  // terrain(heigh map)
-	
+	static bool	IsExistFile(wstring strFile);
+
 private:
 	wstring	m_file = L"";
 	ScratchImage	m_image;
