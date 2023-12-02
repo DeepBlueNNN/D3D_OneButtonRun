@@ -185,18 +185,7 @@ void SaveLoadManager::LoadScene(wstring savePath)
 
 		// Type별 클래스 정의
 		int type = stoi(model->Attribute("Type"));
-		switch (type)
-		{
-		case 0:
-			actor = new GamePlayer();
-			break;
-		case 1:
-			actor = new Tree(fbxName, id);
-			break;
-		case 2:
-			actor = new Rock(fbxName, id);
-			break;
-		}
+		actor = CreateInstancingActor(static_cast<GameActor::GameActorTag>(type), fbxName);
 
 		actor->Update();
 
@@ -272,4 +261,26 @@ void SaveLoadManager::GUIRender()
 	Load();
 	ImGui::SameLine();
 	Clear();
+}
+
+GameActor* SaveLoadManager::CreateInstancingActor(GameActor::GameActorTag type, string fbxName)
+{
+	GameActor* actor = nullptr;
+
+	//switch (type)
+	//{
+	//case GameActor::PLAYER:
+	//	actor = new GamePlayer();
+	//	break;
+
+	//case GameActor::TREE:
+	//	actor = new Tree(fbxName);
+	//	break;
+
+	//case GameActor::ROCK:
+	//	actor = new Rock(fbxName);
+	//	break;
+	//}
+
+	return actor;
 }

@@ -206,9 +206,8 @@ using namespace GameMath;
 
 // Gameplay
 #include "Framework/Object/Gameplay/GameActor.h"
+#include "Framework/Object/Gameplay/InstancingActor.h"
 #include "Framework/Object/Gameplay/GamePlayer.h"
-#include "Framework/Object/Gameplay/Tree.h"
-#include "Framework/Object/Gameplay/Rock.h"
 #include "Framework/Base/SaveLoadManager.h"
 
 

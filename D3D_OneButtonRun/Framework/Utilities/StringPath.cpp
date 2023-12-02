@@ -111,4 +111,40 @@ void StringPath::CreateFolders(string file)
     }
 }
 
+void StringPath::GetFiles(vector<string>& files, const string& path, const string& filter, bool bFindSubFolder)
+{
+    vector<wstring> wFiles;
+    wstring wPath = ToWString(path);
+    wstring wFilter = ToWString(filter);
 
+    GetFiles(wFiles, wPath, wFilter, bFindSubFolder);
+    for (const auto& str : wFiles)
+        files.push_back(ToString(str));
+}
+
+void StringPath::GetFiles(vector<wstring>& files, const wstring& path, const wstring& filter, bool bFindSubFolder)
+{
+    wstring file = path + filter;
+
+    WIN32_FIND_DATA findData;
+    HANDLE handle = FindFirstFile(file.c_str(), &findData);
+    if (handle != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            if (findData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)
+            {
+                if (bFindSubFolder == true && findData.cFileName[0] != '.')
+                {
+                    wstring folder = path + wstring(findData.cFileName) + L"/";
+                    GetFiles(files, folder, filter, bFindSubFolder);
+                }
+            }
+            else
+            {
+                wstring fileName = path + wstring(findData.cFileName);
+                files.push_back(fileName);
+            }
+        } while (FindNextFile(handle, &findData));
+    }
+}
