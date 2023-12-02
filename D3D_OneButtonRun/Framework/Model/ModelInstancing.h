@@ -11,6 +11,7 @@ public:
 	void GUIRender();
 
 	Transform* Add();
+	vector<Transform*>& GetTransforms() { return m_transforms; }
 
 private:
 	vector<Transform*>	m_transforms;

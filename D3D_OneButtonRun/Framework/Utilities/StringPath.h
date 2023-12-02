@@ -13,4 +13,6 @@ namespace StringPath
     string   GetFileNameWithoutExtension(string file);
     void     CreateFolders(string file);
     bool     ExistDirectory(string file);
+    void     GetFiles(vector<string>& files, const string& path, const string& filter, bool bFindSubFolder);
+    void     GetFiles(vector<wstring>& files, const wstring& path, const wstring& filter, bool bFindSubFolder);
 }

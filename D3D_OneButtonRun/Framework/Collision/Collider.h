@@ -15,12 +15,13 @@ struct Contact
 
 class Collider  : public GameObject
 {
-protected:
+public:
 	enum Type
 	{
 		BOX, SPHERE, CAPSULE
 	};
 
+protected:
 	const float PUSH_SPEED = 100.0f;
 
 public:

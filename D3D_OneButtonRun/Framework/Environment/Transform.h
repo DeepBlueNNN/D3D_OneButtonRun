@@ -18,6 +18,7 @@ public:
 public: // Getter
     Transform* GetParent();
     Matrix GetWorld()       { return m_world; }
+    string GetTag()         { return m_tag; }
 
     // Vector
     Vector3 Right()         { return m_right.GetNormalized(); }
