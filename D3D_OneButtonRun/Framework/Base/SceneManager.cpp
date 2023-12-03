@@ -64,11 +64,11 @@ void SceneManager::Render()
 
 void SceneManager::PostRender()
 {
-	Font::Get()->GetDC()->BeginDraw();
-	int  temp = (int)(ImGui::GetIO().Framerate);
+	//Font::Get()->GetDC()->BeginDraw();
+	//int  temp = (int)(ImGui::GetIO().Framerate);
 
-	string fps = "FPS : " + to_string(temp);
-	Font::Get()->RenderText(fps, { 100.0f, (float)(MAIN->GetHeight() - 10) });
+	//string fps = "FPS : " + to_string(temp);
+	//Font::Get()->RenderText(fps, { 100.0f, (float)(MAIN->GetHeight() - 10) });
 
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
@@ -76,11 +76,15 @@ void SceneManager::PostRender()
 			m_scenes[i]->PostRender();
 	}
 
-	Font::Get()->GetDC()->EndDraw();
+	//Font::Get()->GetDC()->EndDraw();
 }
 
 void SceneManager::GuiRender()
 {
+	string fps = "FPS : " + to_string((int)ImGui::GetIO().Framerate);
+	ImGui::Text(fps.c_str());
+	ImGui::Separator();
+
 	ENV->GUIRender();
 
 	for (UINT i = 0; i < m_scenes.size(); i++)

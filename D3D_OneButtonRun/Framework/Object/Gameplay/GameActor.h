@@ -7,6 +7,7 @@ public:
 		PLAYER = 0,
 		TREE,
 		ROCK,
+		GROUND,
 		MAX
 	};
 

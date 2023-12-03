@@ -16,6 +16,7 @@ public:
 public:
 	ModelInstancing* GetModels() { return dynamic_cast<ModelInstancing*>(m_model); }
 	vector<Collider*> GetColliders() { return m_colliders; }
+	Collider::Type GetColliderType() { return m_colliderType; }
 
 	int Add();
 	void Erase(int index);

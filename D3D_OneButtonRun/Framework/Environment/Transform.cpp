@@ -36,7 +36,7 @@ void Transform::GUIRender()
 {
     if (ImGui::TreeNode((m_tag + "_Transform").c_str()))
     {
-        ImGui::Text(m_tag.c_str());
+        // ImGui::Text(m_tag.c_str());
     
         ImGui::Checkbox("Active", &m_isActive);
     

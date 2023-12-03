@@ -7,7 +7,16 @@ Camera::Camera()
     m_viewBuffer = new ViewBuffer();
     m_viewBuffer->SetVS(1);
 
-    // Init Camera Transfrom
+    InitCamera();
+}
+
+Camera::~Camera()
+{
+    SAFE_DELETE(m_viewBuffer);
+}
+
+void Camera::InitCamera()
+{
     Pos().x = 0.0;
     Pos().y = 4.7f;
     Pos().z = -20.3f;
@@ -21,11 +30,6 @@ Camera::Camera()
     Scale().z = 1.0f;
 }
 
-Camera::~Camera()
-{
-    SAFE_DELETE(m_viewBuffer);
-}
-
 void Camera::Update()
 {
     m_projection = ENV->GetProjection();
@@ -37,12 +41,25 @@ void Camera::Update()
 
 void Camera::GUIRender()
 {
-    if (ImGui::TreeNode("CameraOption"))
+    if (ImGui::TreeNode(u8"카메라 설정"))
     {
-        ImGui::DragFloat("MoveSpeed", &m_moveSpeed);
-        ImGui::DragFloat("RotSpeed", &m_rotSpeed);
+        ImGui::DragFloat("MoveSpeed", &m_moveSpeed, 0.3f, 0.0f, 50.0f, "%.0f");
+        ImGui::DragFloat("RotSpeed", &m_rotSpeed, 0.1f, 0.0f, 10.0f, "%.0f");
 
         Transform::GUIRender();
+
+        bool ret;
+
+        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
+        ret = ImGui::Button(u8"카메라 초기화", ImVec2(100, 20));
+        ImGui::PopStyleColor(3);
+
+        if (ret)
+        {
+            InitCamera();
+        }
 
         ImGui::TreePop();
     }

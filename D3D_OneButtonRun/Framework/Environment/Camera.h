@@ -27,6 +27,10 @@ public:
     ~Camera();
 
 public:
+    /// <summary>
+    /// 카메라 트렌스폼 초기화
+    /// </summary>
+    void InitCamera();
     void Update();
     void GUIRender();
 
@@ -46,8 +50,8 @@ private:
     Matrix      m_view;
     Matrix      m_projection;
 
-    float m_moveSpeed = 50.0f;
-    float m_rotSpeed = 10.0f;
+    float m_moveSpeed = 10.0f;
+    float m_rotSpeed = 5.0f;
 
     Transform*  m_target = nullptr;    
 };

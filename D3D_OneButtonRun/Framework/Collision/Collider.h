@@ -39,9 +39,9 @@ public:
 	virtual bool IsCapsuleCollision(CapsuleCollider* collider) = 0;
 
 public:
-	void   SetColor(Float4 color) { m_material->GetData().diffuse = color; }
-	void   SetColor(float r, float g, float b) { m_material->GetData().diffuse = { r,g,b,1 }; }
-	bool   PushCollision(Collider* collider);
+	void SetColor(Float4 color) { m_material->GetData().diffuse = color; }
+	void SetColor(float r, float g, float b) { m_material->GetData().diffuse = { r,g,b,1 }; }
+	bool PushCollision(Collider* collider);
 
 	static void RenderOnOff() { m_isRender = !m_isRender; } // Toggle
 

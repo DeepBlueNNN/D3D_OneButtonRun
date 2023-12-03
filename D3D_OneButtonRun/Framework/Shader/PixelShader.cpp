@@ -2,7 +2,11 @@
 
 PixelShader::PixelShader(wstring file)
 {
+    if (!IsExistFile(file))
+        assert(false);
+
     m_file = file;
+
     DWORD flags = D3DCOMPILE_ENABLE_STRICTNESS | D3DCOMPILE_DEBUG;
     ID3DBlob* outError = nullptr;
     HRESULT hr;

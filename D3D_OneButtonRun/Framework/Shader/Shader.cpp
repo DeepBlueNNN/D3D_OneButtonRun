@@ -1,4 +1,5 @@
 #include "Framework.h"
+#include <io.h>
 
 unordered_map<wstring, Shader*> Shader::m_shaders;
 
@@ -75,8 +76,18 @@ void Shader::Delete()
         delete shader.second;
 }
 
-void Shader::OutputError(ID3DBlob* outerror)
+bool Shader::IsExistFile(wstring strFile)
 {
-    string str = (char*)outerror->GetBufferPointer();
-    MessageBoxA(NULL, str.c_str(), "쉐이더파일 에러", MB_OK);
+    string str;
+    string message;
+    str.assign(strFile.begin(), strFile.end());
+
+    if (_access(str.c_str(), 00) != 0)
+    {
+        message = "Shader::IsExistFile\n";
+        message += "쉐이더파일 없음!\n" + str;
+        MessageBoxA(NULL, message.c_str(), "ERROR", MB_OK);
+        return false;
+    }
+    return true;
 }

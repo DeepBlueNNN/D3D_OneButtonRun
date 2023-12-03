@@ -19,7 +19,6 @@ public:
     void GUIRender();
 
 public: // Getter
-    Camera* GetMainCamera() { return m_mainCamera; }
     Matrix  GetProjection() { return m_perspective; }
 
 public: // Setter
@@ -39,7 +38,6 @@ private:
 
 private:
     MatrixBuffer*       m_projectionBuffer     = nullptr;       
-    LightBuffer*        m_lightBuffer          = nullptr;
     ViewBuffer*         m_viewBuffer           = nullptr;
     
     SamplerState*       m_samplerState         = nullptr;
@@ -51,6 +49,5 @@ private:
 
     Matrix  m_perspective;
     Matrix  m_orthographic;
-    Camera* m_mainCamera = nullptr;
     bool    m_isWireMode = false;
 };

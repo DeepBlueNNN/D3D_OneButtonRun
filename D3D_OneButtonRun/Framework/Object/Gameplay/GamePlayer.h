@@ -34,6 +34,11 @@ public:
 		m_model->Pos() = m_collider->Pos() + (m_collider->Down() * m_offset);
 		m_model->Rot() = rot;
 	}
+	void InitTransform()
+	{
+		SetPosition(Vector3(0, 0, 0));
+		SetRotation(Vector3(0, 0, 0));
+	}
 
 public:
 	void Friction(Vector3 closestPoint);

@@ -1,0 +1,105 @@
+<Test Scene="Test">
+    <Camera>
+        <Position X="23.321548" Y="24.311237" Z="-38.378918"/>
+        <Rotation X="0.4465915" Y="-0.29426223" Z="0"/>
+    </Camera>
+    <LightInfo>
+        <LightColor R="1" G="1" B="1" A="1"/>
+        <LightDirection X="1" Y="-1" Z="1"/>
+        <AmbientLight R="0.1" G="0.1" B="0.1"/>
+        <AmbientCeil R="0.1" G="0.1" B="0.1"/>
+    </LightInfo>
+    <Player>
+        <Position X="0" Y="-974.17133" Z="0"/>
+        <Rotation X="0" Y="0" Z="0"/>
+        <Scale X="0.039999999" Y="0.039999999" Z="0.039999999"/>
+    </Player>
+    <GameActors NumberOfInstances="4">
+        <ActorInfo Count="1" Type="3" FBX="Ground_01" ColliderType="0">
+            <InstanceActor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="0" Y="-5" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="0" Y="-5" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_0>
+        </ActorInfo>
+        <ActorInfo Count="1" Type="2" FBX="Rock_01" ColliderType="1">
+            <InstanceActor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="-10" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="-10" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_0>
+        </ActorInfo>
+        <ActorInfo Count="1" Type="1" FBX="Tree_01" ColliderType="2">
+            <InstanceActor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="10" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="10" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_0>
+        </ActorInfo>
+        <ActorInfo Count="3" Type="1" FBX="Tree_02" ColliderType="2">
+            <InstanceActor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="20" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="20" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_0>
+            <InstanceActor_1>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="0" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_1>
+            <InstanceActor_2>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="-20" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <ColliderTransform>
+                    <Position X="-20" Y="0" Z="0"/>
+                    <Rotation X="0" Y="0" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ColliderTransform>
+            </InstanceActor_2>
+        </ActorInfo>
+    </GameActors>
+</Test>
