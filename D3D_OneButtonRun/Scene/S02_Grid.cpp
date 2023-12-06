@@ -3,7 +3,7 @@
 
 S02_Grid::S02_Grid()
 {
-	SetActive(true);
+	m_sceneName = "Grid";
 
 	m_material = new Material(L"Basic/Grid.hlsl");
 

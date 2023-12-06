@@ -3,7 +3,7 @@
 
 S01_CubeMap::S01_CubeMap()
 {
-	m_sky = new Sky();
+	m_sky = new Sky(L"Textures/CubeMap/skybox_winter.png");
 }
 
 S01_CubeMap::~S01_CubeMap()

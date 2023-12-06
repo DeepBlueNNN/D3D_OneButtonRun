@@ -21,10 +21,18 @@ SceneManager::SceneManager()
 		활성화 할 Scene vector컨테이너에 pushback 
 	*/
 	m_scenes.push_back(new S01_CubeMap());
-//	m_scenes.push_back(new S02_Grid());
+	m_scenes.push_back(new S02_Grid());
 //	m_scenes.push_back(new S00_TestScene());
-	m_scenes.push_back(new Scene_GamePlay());
-//	m_scenes.push_back(new Scene_MapEditor());
+
+	Scene* scene = new Scene_GamePlay();
+	scene->SetActive(false);
+	m_scenes.push_back(scene);
+
+	scene = new Scene_MapEditor();
+	scene->SetActive(false);
+	m_scenes.push_back(scene);
+
+	m_scenes.push_back(new Scene_MainMenu());
 }
 
 SceneManager::~SceneManager()
@@ -94,10 +102,12 @@ void SceneManager::GuiRender()
 	}
 }
 
-void SceneManager::ChangeScene(string name)
+void SceneManager::ChangeScene(string name, bool withGrid)
 {
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
+		if (withGrid && m_scenes[i]->GetName() == "Grid")
+			continue;
 		m_scenes[i]->SetActive(false);
 
 		if (name == m_scenes[i]->GetName())

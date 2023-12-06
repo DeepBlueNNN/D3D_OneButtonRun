@@ -3,6 +3,8 @@
 
 Scene_GamePlay::Scene_GamePlay()
 {
+	m_sceneName = "GamePlay";
+
 	m_player = new GamePlayer();
 	m_player->SetPosition(Vector3(0, 50, 0));
 	m_playerOriginPos = m_player->GetColliderPosition();

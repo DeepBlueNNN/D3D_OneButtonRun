@@ -1,9 +1,9 @@
 #include "framework.h"
 #include "Sky.h"
 
-Sky::Sky()
+Sky::Sky(wstring textureFile)
 {
-	wstring file = L"Textures/CubeMap/SunsetCube1024.dds";
+	wstring file = textureFile;
 	m_sphere = new Sphere();
 	m_sphere->GetMaterial()->SetShader(L"LandScape/Sky.hlsl");
 

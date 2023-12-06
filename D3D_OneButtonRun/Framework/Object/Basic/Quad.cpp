@@ -22,6 +22,17 @@ Quad::Quad(wstring file)
     m_mesh->CreateMesh();
 }
 
+Quad::Quad(wstring file, Vector2 size)
+{
+    Texture* texture = Texture::Add(file);
+    m_material->SetDiffuseMap(file);
+
+    m_size = size;
+    m_mesh = new Mesh<VertexType>();
+    MakeMesh();
+    m_mesh->CreateMesh();
+}
+
 Quad::~Quad()
 {
     SAFE_DELETE(m_mesh);

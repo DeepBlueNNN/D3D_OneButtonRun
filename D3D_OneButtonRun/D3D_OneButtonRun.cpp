@@ -40,7 +40,7 @@ int APIENTRY wWinMain(_In_     HINSTANCE hInstance,      // OS에서 생성된 I
 	_In_     int       nCmdShow)       // Window를 어떻게 보이게 할 것인가?
 {
 	// Window Create, Direct3D 초기화
-	MAIN->CreateGameWindow(hInstance, 1280, 760); // 0,0 full mode
+	MAIN->CreateGameWindow(hInstance, 1920, 1080); // 0,0 full mode
 
 	// IMGUI 초기화
 	IMGUI_CHECKVERSION();
@@ -57,11 +57,11 @@ int APIENTRY wWinMain(_In_     HINSTANCE hInstance,      // OS에서 생성된 I
 	// DX관련된 사항이 있기때문에 완전히 DX Init된후 Scene을  Create
 	MAIN->InitScene();
 
-	// Font를 세팅
+	//Font를 세팅
 
 	//Font::Get()->AddColor("White", 1, 1, 1);
 	//Font::Get()->AddStyle("Default", L"배달의민족 주아");
-	//
+	
 	//Font::Get()->SetColor("White");
 	//Font::Get()->SetStyle("Default");
 

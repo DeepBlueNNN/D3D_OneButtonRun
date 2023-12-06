@@ -3,6 +3,8 @@
 
 Scene_MapEditor::Scene_MapEditor()
 {
+	m_sceneName = "MapEditor";
+
 	vector<string> fileList;
 	StringPath::GetFiles(fileList, "Assets/FBX/", "*.fbx", false);
 	for (auto& list : fileList)

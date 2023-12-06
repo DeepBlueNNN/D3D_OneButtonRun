@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "StructuredBuffer.h"
 
-StucturedBuffer::StucturedBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT outputStride, UINT outputCount)
+StructuredBuffer::StructuredBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT outputStride, UINT outputCount)
 {
 	m_inputData     = inputData;
 	m_inputStride   = inputStride;
@@ -16,7 +16,7 @@ StucturedBuffer::StucturedBuffer(void* inputData, UINT inputStride, UINT inputCo
 	CreateResult();
 }
 
-StucturedBuffer::~StucturedBuffer()
+StructuredBuffer::~StructuredBuffer()
 {
 	SAFE_RELEASE(m_input);
 	SAFE_RELEASE(m_srv);
@@ -25,7 +25,7 @@ StucturedBuffer::~StucturedBuffer()
 	SAFE_RELEASE(m_result);
 }
 
-void StucturedBuffer::Copy(void* data, UINT size)
+void StructuredBuffer::Copy(void* data, UINT size)
 {
 	DC->CopyResource(m_result, m_output);
 
@@ -37,14 +37,14 @@ void StucturedBuffer::Copy(void* data, UINT size)
 	DC->Unmap(m_result, 0);
 }
 
-void StucturedBuffer::UpdateInput(void* data)
+void StructuredBuffer::UpdateInput(void* data)
 {
 	DC->UpdateSubresource(m_input, 0, nullptr, data, m_inputStride, m_inputCount);
 	m_srv->Release();
 	CreateSRV();
 }
 
-void StucturedBuffer::CreateInput()
+void StructuredBuffer::CreateInput()
 {
 	D3D11_BUFFER_DESC bufferDesc = {};
 
@@ -62,7 +62,7 @@ void StucturedBuffer::CreateInput()
 	assert(SUCCEEDED(hr));
 }
 
-void StucturedBuffer::CreateSRV()
+void StructuredBuffer::CreateSRV()
 {
 	D3D11_SHADER_RESOURCE_VIEW_DESC desc;
 	ZeroMemory(&desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
@@ -75,7 +75,7 @@ void StucturedBuffer::CreateSRV()
 	assert(SUCCEEDED(hr));
 }
 
-void StucturedBuffer::CreateOutput()
+void StructuredBuffer::CreateOutput()
 {
 	D3D11_BUFFER_DESC bufferDesc = {};
 	
@@ -89,7 +89,7 @@ void StucturedBuffer::CreateOutput()
 	assert(SUCCEEDED(hr));
 }
 
-void StucturedBuffer::CreateUAV()
+void StructuredBuffer::CreateUAV()
 {
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
 
@@ -101,7 +101,7 @@ void StucturedBuffer::CreateUAV()
 	assert(SUCCEEDED(hr));
 }
 
-void StucturedBuffer::CreateResult()
+void StructuredBuffer::CreateResult()
 {
 	D3D11_BUFFER_DESC bufferDesc = {};
 	m_output->GetDesc(&bufferDesc);
