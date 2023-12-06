@@ -5,9 +5,7 @@ public:
 	enum GameActorTag
 	{
 		PLAYER = 0,
-		TREE,
-		ROCK,
-		GROUND,
+		ENTITY,
 		MAX
 	};
 

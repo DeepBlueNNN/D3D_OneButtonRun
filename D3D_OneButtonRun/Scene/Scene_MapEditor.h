@@ -2,6 +2,14 @@
 
 class Scene_MapEditor : public Scene
 {
+private:
+	struct StoreActor
+	{
+		InstancingActor* actor = nullptr;
+		Transform* transform = nullptr;
+		int index = 0;
+	};
+
 public:
 	Scene_MapEditor();
 	~Scene_MapEditor();
@@ -27,11 +35,12 @@ private:
 	/// Scene_MapEditor runtimeø° ActorªË¡¶
 	/// </summary>
 	/// <param name="actor">GameActor*</param>
-	void DeleteActor(GameActor* actor);
+	void DeleteActor();
 
 private:
 	// Editor Variable
 	//GameActor* m_selectedActor = nullptr;
-	Transform* m_selectedActor = nullptr;
-	SphereCollider* m_playerStart;
+	StoreActor m_selectedActor;
+	UINT m_colliderType = 0;
+	unordered_map<string, UINT> fbxList;
 };
