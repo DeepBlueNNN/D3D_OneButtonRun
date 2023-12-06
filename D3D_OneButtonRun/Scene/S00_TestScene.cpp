@@ -286,4 +286,6 @@ void S00_TestScene::GUIRender()
 	m_hpBar->GUIRender();
 
 	m_particle->GUIRender();
+
+	m_modelInstanced->GUIRender();
 }

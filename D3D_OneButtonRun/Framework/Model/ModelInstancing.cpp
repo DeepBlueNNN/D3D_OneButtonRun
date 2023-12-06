@@ -44,6 +44,8 @@ void ModelInstancing::Render()
 
 void ModelInstancing::GUIRender()
 {
+	for (Transform* transform : m_transforms)
+		transform->GUIRender();
 }
 
 Transform* ModelInstancing::Add()

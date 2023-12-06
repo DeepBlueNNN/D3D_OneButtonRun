@@ -52,17 +52,23 @@ void GamePlayer::Update()
 			Random(0, dynamic_cast<ModelAnimator*>(m_model)->GetClipArraySize()));
 	}
 
-//	prevPos = curPos;
-//	curPos = GetColliderPosition();
-//	velocity = (curPos - prevPos) / DELTA;
-
-	m_velocity += GRAVITY * DELTA;
-	SetPosition(GetColliderPosition() + m_velocity * DELTA);
-	SetRotation(GetColliderRotation() + m_rotValue);
+	if (m_isGravityActive)
+	{
+		m_velocity += GRAVITY * DELTA;
+		SetPosition(GetColliderPosition() + m_velocity * DELTA);
+		SetRotation(GetColliderRotation() + m_rotValue);
+	}
+	else
+		SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 	m_collider->UpdateWorld();
 
 	dynamic_cast<ModelAnimator*>(m_model)->Update();
+
+	if (m_collidedObjects.size() > 0)
+		m_isCollision = true;
+	else
+		m_isCollision = false;
 
 }
 
@@ -93,7 +99,7 @@ void GamePlayer::Friction(Vector3 closestPoint)
 	float c = abs(Dot(m_velocity, repulsionDir));
 
 	Vector3 prevVelocity = m_velocity;
-	float repulsionValue = 0.6f;	// 0.5f 초과값으로 세팅
+	float repulsionValue = 0.75f;	// 0.5f 초과값으로 세팅
 	float frictionValue  = 0.7f;	// 0 ~ 1 값으로 세팅 -> 0에 가까울 수록 마찰이 강하게 발생
 
 	if (!m_isCollision)
@@ -114,8 +120,26 @@ void GamePlayer::Friction(Vector3 closestPoint)
 
 	right.Normalize();
 	m_rotValue = (right * Dot(m_velocity, forward)) / (dynamic_cast<SphereCollider*>(m_collider)->Radius() * XM_2PI);
+	system("cls");
+	printf("%f %f %f \n", m_rotValue.x, m_rotValue.y, m_rotValue.z);
 	m_rotValue.x = XMConvertToRadians(m_rotValue.x);
 	m_rotValue.y = XMConvertToRadians(m_rotValue.y);
 	m_rotValue.z = XMConvertToRadians(m_rotValue.z);
 	m_rotValue *= -1.0f;
+}
+
+void GamePlayer::RegisterObject(Collider* object)
+{
+	m_collidedObjects.insert(object);
+}
+
+void GamePlayer::RemoveObject(Collider* object)
+{
+	if (m_collidedObjects.size() == 0)
+		return;		// 집합 내부에 값이 없음
+
+	if (m_collidedObjects.find(object) == m_collidedObjects.end())
+		return;		// 집합 내부에 해당하는 Object가 존재하지 않음
+
+	m_collidedObjects.erase(object);	// 해당하는 object를 삭제
 }

@@ -17,7 +17,10 @@ private:
 	GamePlayer* m_player = nullptr;
 	vector<GameActor*> m_actors;
 
-	BoxCollider* m_ground = nullptr;
+	vector<BoxCollider*> m_grounds;
+	vector<Cube*> m_groundCubes;
 
-	Collider* m_prevCollider = nullptr;
+private:
+	Vector3 m_playerOriginPos = Vector3(0.0f, 0.0f, 0.0f);
+
 };

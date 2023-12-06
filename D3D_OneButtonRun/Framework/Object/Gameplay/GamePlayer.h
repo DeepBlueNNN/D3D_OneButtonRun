@@ -14,6 +14,9 @@ public:
 
 public:
 	ModelAnimator* GetModelAnim() { return dynamic_cast<ModelAnimator*>(m_model); }
+	set<Collider*> GetCollidedObjects() { return m_collidedObjects; }
+	
+	bool GetIsGravityActive() { return m_isGravityActive; }
 
 public:
 	Vector3& Velocity() { return m_velocity; }
@@ -22,6 +25,7 @@ public:
 
 public:
 	void SetIsCollision(bool isCollision) { m_isCollision = isCollision; }
+	void SetIsGravityActive(bool isGravityActive) { m_isGravityActive = isGravityActive; }
 
 	void	SetPosition(Vector3 pos)
 	{
@@ -43,8 +47,13 @@ public:
 public:
 	void Friction(Vector3 closestPoint);
 
+public:
+	void RegisterObject(Collider* object);
+	void RemoveObject(Collider* object);
+
 private:
 	bool m_isCollision = false;
+	bool m_isGravityActive = false;
 
 private:
 	Vector3 m_prevPos = Vector3(0.0f, 0.0f, 0.0f);
@@ -54,5 +63,8 @@ private:
 
 private:
 	const Vector3 GRAVITY = Vector3(0.0f, -9.8f, 0.0f);
+
+private:
+	set<Collider*> m_collidedObjects;
 
 };
