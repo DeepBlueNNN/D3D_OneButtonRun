@@ -79,9 +79,6 @@
     <ClInclude Include="Framework\Buffer\ConstBuffer.h">
       <Filter>Framework\Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="Framework\Buffer\StructuredBuffer.h">
-      <Filter>Framework\Buffer</Filter>
-    </ClInclude>
     <ClInclude Include="Framework\Buffer\IndexBuffer.h">
       <Filter>Framework\Buffer</Filter>
     </ClInclude>
@@ -260,15 +257,14 @@
     <ClInclude Include="Scene\Scene_MapEditor.h" />
     <ClInclude Include="Framework\Base\SaveLoadManager.h" />
     <ClInclude Include="Framework\Object\Gameplay\InstancingActor.h" />
+    <ClInclude Include="Framework\Object\UI\Button.h" />
+    <ClInclude Include="Framework\Buffer\StructuredBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
       <Filter>Framework\Base</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Buffer\ConstBuffer.cpp">
-      <Filter>Framework\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Buffer\StructuredBuffer.cpp">
       <Filter>Framework\Buffer</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Buffer\IndexBuffer.cpp">
@@ -426,6 +422,8 @@
     <ClCompile Include="Scene\Scene_MapEditor.cpp" />
     <ClCompile Include="Framework\Base\SaveLoadManager.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\InstancingActor.cpp" />
+    <ClCompile Include="Framework\Object\UI\Button.cpp" />
+    <ClCompile Include="Framework\Buffer\StructuredBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">

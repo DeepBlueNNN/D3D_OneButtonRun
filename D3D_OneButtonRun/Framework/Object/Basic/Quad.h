@@ -1,12 +1,13 @@
 #pragma once
 class Quad : public GameObject
 {
-private:
+protected:
 	typedef VertexUV VertexType;
 
 public:
 	Quad(Vector2 size);
 	Quad(wstring file);
+	Quad(wstring file, Vector2 size);
 	~Quad();
 
 public:
@@ -16,8 +17,9 @@ public:
 private:
 	void MakeMesh();
 
-private:
+protected:
 	Vector2 m_size = Vector2(0.0f, 0.0f);
 	Mesh<VertexType>* m_mesh = nullptr;
+
 
 };

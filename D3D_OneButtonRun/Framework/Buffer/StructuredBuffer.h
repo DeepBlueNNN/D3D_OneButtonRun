@@ -1,9 +1,9 @@
 #pragma once
-class  StucturedBuffer
+class  StructuredBuffer
 {
 public:
-	StucturedBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT ouputStride, UINT ouputCount);
-	~StucturedBuffer();
+	StructuredBuffer(void* inputData, UINT inputStride, UINT inputCount, UINT ouputStride, UINT ouputCount);
+	~StructuredBuffer();
 
 public:
 	void Copy(void* data, UINT size);

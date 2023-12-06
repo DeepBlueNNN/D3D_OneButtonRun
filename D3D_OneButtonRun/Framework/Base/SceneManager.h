@@ -24,7 +24,7 @@ public:	//Getter
 	Scene* GetCurrentScene()		{ return m_currentScene; }
 
 public:
-	void ChangeScene(string name);
+	void ChangeScene(string name, bool withGrid = false);
 	void AddScene(Scene* scene)	{ m_scenes.push_back(scene); }
 	bool IsThredEnd()				{ return m_isThreadEnd; }
 

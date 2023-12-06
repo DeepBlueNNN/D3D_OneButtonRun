@@ -14,4 +14,5 @@ public:
 	void GUIRender()   override;
 
 private:
+	vector<Button*> m_buttons;
 };

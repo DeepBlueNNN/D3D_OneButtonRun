@@ -180,6 +180,7 @@
     <ClInclude Include="Framework\Object\Particle\Snow.h" />
     <ClInclude Include="Framework\Object\Particle\Spark.h" />
     <ClInclude Include="Framework\Object\Particle\SpriteParticle.h" />
+    <ClInclude Include="Framework\Object\UI\Button.h" />
     <ClInclude Include="Framework\Object\UI\ProgressBar.h" />
     <ClInclude Include="Framework\Render\Material.h" />
     <ClInclude Include="Framework\Render\Mesh.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="Framework\Object\Particle\Snow.cpp" />
     <ClCompile Include="Framework\Object\Particle\Spark.cpp" />
     <ClCompile Include="Framework\Object\Particle\SpriteParticle.cpp" />
+    <ClCompile Include="Framework\Object\UI\Button.cpp" />
     <ClCompile Include="Framework\Object\UI\ProgressBar.cpp" />
     <ClCompile Include="Framework\Render\Material.cpp" />
     <ClCompile Include="Framework\Render\Texture.cpp" />

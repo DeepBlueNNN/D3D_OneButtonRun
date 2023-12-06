@@ -40,10 +40,10 @@ void Transform::GUIRender()
     
         ImGui::Checkbox("Active", &m_isActive);
     
-        string temp = m_tag + "_Pos";
+        string temp = "Pos";
         ImGui::DragFloat3(temp.c_str(), (float*)&m_localPosition, 0.1f);
     
-        temp = m_tag + "_Rot";
+        temp = "Rot";
         Float3 rot;
         rot.x = XMConvertToDegrees(m_localRotation.x);
         rot.y = XMConvertToDegrees(m_localRotation.y);
@@ -55,7 +55,7 @@ void Transform::GUIRender()
         m_localRotation.y = XMConvertToRadians(rot.y);
         m_localRotation.z = XMConvertToRadians(rot.z);
     
-        temp = m_tag + "_Scale";
+        temp = "Scale";
         ImGui::DragFloat3(temp.c_str(), (float*)&m_localScale, 0.1f);
     
         ImGui::TreePop();

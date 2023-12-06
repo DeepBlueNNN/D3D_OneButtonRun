@@ -3,7 +3,7 @@
 class Sky : public Transform
 {
 public:
-	Sky();
+	Sky(wstring textureFile);
 	~Sky();
 
 public:
