@@ -58,7 +58,7 @@ int APIENTRY wWinMain(_In_     HINSTANCE hInstance,      // OS에서 생성된 I
 	MAIN->InitScene();
 
 	//Font를 세팅
-
+	
 	//Font::Get()->AddColor("White", 1, 1, 1);
 	//Font::Get()->AddStyle("Default", L"배달의민족 주아");
 	

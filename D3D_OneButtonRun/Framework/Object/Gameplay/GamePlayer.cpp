@@ -32,8 +32,6 @@ GamePlayer::GamePlayer()
 	SetModelScale(Vector3(0.04f, 0.04f, 0.04f));
 	//m_model->SetPivot(Vector3(0.0f, -1.3f, 0.0f));
 	m_offset = 1.3f;
-
-//	m_curPos = GetColliderPosition();
 }
 
 GamePlayer::~GamePlayer()
@@ -56,7 +54,7 @@ void GamePlayer::Update()
 	{
 		m_velocity += GRAVITY * DELTA;
 		SetPosition(GetColliderPosition() + m_velocity * DELTA);
-		SetRotation(GetColliderRotation() + m_rotValue);
+		SetRotation(GetColliderRotation() + m_rotValue * 0.1f);
 	}
 	else
 		SetRotation(Vector3(0.0f, 0.0f, 0.0f));
@@ -99,8 +97,8 @@ void GamePlayer::Friction(Vector3 closestPoint)
 	float c = abs(Dot(m_velocity, repulsionDir));
 
 	Vector3 prevVelocity = m_velocity;
-	float repulsionValue = 0.75f;	// 0.5f 초과값으로 세팅
-	float frictionValue  = 0.7f;	// 0 ~ 1 값으로 세팅 -> 0에 가까울 수록 마찰이 강하게 발생
+	float repulsionValue = 0.9f;	// 0.5f 초과값으로 세팅
+	float frictionValue  = 0.9f;	// 0 ~ 1 값으로 세팅 -> 0에 가까울 수록 마찰이 강하게 발생
 
 	if (!m_isCollision)
 	{
