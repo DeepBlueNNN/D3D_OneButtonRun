@@ -38,7 +38,10 @@ public:
 	virtual bool IsSphereCollision(SphereCollider* collider) = 0;
 	virtual bool IsCapsuleCollision(CapsuleCollider* collider) = 0;
 
-public:
+public: // Getter
+	Type GetType() { return m_type; }
+
+public:	// Setter
 	void SetColor(Float4 color) { m_material->GetData().diffuse = color; }
 	void SetColor(float r, float g, float b) { m_material->GetData().diffuse = { r,g,b,1 }; }
 	bool PushCollision(Collider* collider);
