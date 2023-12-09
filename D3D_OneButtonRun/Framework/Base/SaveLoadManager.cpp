@@ -162,7 +162,7 @@ void SaveLoadManager::SaveScene(wstring savePath)
 				list_type->SetAttribute("Count", gameActor->GetColliders().size());
 				list_type->SetAttribute("Type", to_string(i).c_str());
 				list_type->SetAttribute("FBX", gameActor->GetName().c_str());
-				list_type->SetAttribute("ColliderType", gameActor->GetColliderType());
+				//list_type->SetAttribute("ColliderType", gameActor->GetColliderType());
 
 				int count = gameActor->GetColliders().size();
 				SaveActor(gameActor, type, count, list_type);
@@ -215,29 +215,29 @@ void SaveLoadManager::SaveActor(InstancingActor* gameActor, GameActor::GameActor
 
 		list->InsertEndChild(model);
 
-		// ÄÝ¸®´õ Æ®·»½ºÆû Á¤º¸
-		tinyxml2::XMLElement* transform2 = model->InsertNewChildElement("ColliderTransform");
-		// Pos
-		pos = transform2->InsertNewChildElement("Position");
-		transform2->InsertFirstChild(pos);
-		pos->SetAttribute("X", gameActor->GetColliders()[i]->Pos().x);
-		pos->SetAttribute("Y", gameActor->GetColliders()[i]->Pos().y);
-		pos->SetAttribute("Z", gameActor->GetColliders()[i]->Pos().z);
-		transform2->InsertEndChild(pos);
-		// Rot
-		rot = transform2->InsertNewChildElement("Rotation");
-		transform2->InsertFirstChild(rot);
-		rot->SetAttribute("X", gameActor->GetColliders()[i]->Rot().x);
-		rot->SetAttribute("Y", gameActor->GetColliders()[i]->Rot().y);
-		rot->SetAttribute("Z", gameActor->GetColliders()[i]->Rot().z);
-		transform2->InsertEndChild(rot);
-		// Scale
-		scale = transform2->InsertNewChildElement("Scale");
-		transform2->InsertFirstChild(scale);
-		scale->SetAttribute("X", gameActor->GetColliders()[i]->Scale().x);
-		scale->SetAttribute("Y", gameActor->GetColliders()[i]->Scale().y);
-		scale->SetAttribute("Z", gameActor->GetColliders()[i]->Scale().z);
-		transform2->InsertEndChild(scale);
+		//// ÄÝ¸®´õ Æ®·»½ºÆû Á¤º¸
+		//tinyxml2::XMLElement* transform2 = model->InsertNewChildElement("ColliderTransform");
+		//// Pos
+		//pos = transform2->InsertNewChildElement("Position");
+		//transform2->InsertFirstChild(pos);
+		//pos->SetAttribute("X", gameActor->GetColliders()[i]->Pos().x);
+		//pos->SetAttribute("Y", gameActor->GetColliders()[i]->Pos().y);
+		//pos->SetAttribute("Z", gameActor->GetColliders()[i]->Pos().z);
+		//transform2->InsertEndChild(pos);
+		//// Rot
+		//rot = transform2->InsertNewChildElement("Rotation");
+		//transform2->InsertFirstChild(rot);
+		//rot->SetAttribute("X", gameActor->GetColliders()[i]->Rot().x);
+		//rot->SetAttribute("Y", gameActor->GetColliders()[i]->Rot().y);
+		//rot->SetAttribute("Z", gameActor->GetColliders()[i]->Rot().z);
+		//transform2->InsertEndChild(rot);
+		//// Scale
+		//scale = transform2->InsertNewChildElement("Scale");
+		//transform2->InsertFirstChild(scale);
+		//scale->SetAttribute("X", gameActor->GetColliders()[i]->Scale().x);
+		//scale->SetAttribute("Y", gameActor->GetColliders()[i]->Scale().y);
+		//scale->SetAttribute("Z", gameActor->GetColliders()[i]->Scale().z);
+		//transform2->InsertEndChild(scale);
 	}
 }
 
@@ -327,7 +327,7 @@ void SaveLoadManager::LoadScene(wstring savePath)
 		GameActor::GameActorTag actorType = static_cast<GameActor::GameActorTag>(stoi(actorInfo->Attribute("Type")));
 		string fbxName = actorInfo->Attribute("FBX");
 		Collider::Type colliderType = static_cast<Collider::Type>(stoi(actorInfo->Attribute("ColliderType")));
-		InstancingActor* instActor = new InstancingActor(actorType, fbxName, colliderType);
+		InstancingActor* instActor = new InstancingActor(actorType, fbxName);
 		tinyxml2::XMLElement* index = actorInfo->FirstChildElement();
 
 		for (int j = 0; j < size; ++j)
@@ -350,15 +350,15 @@ void SaveLoadManager::LoadScene(wstring savePath)
 			instActor->GetModels()->GetTransforms()[id]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
 			// ÄÝ¸®´õ Æ®·»½ºÆû Á¤º¸
 			tinyxml2::XMLElement* transform2 = transform->NextSiblingElement();
-			// Pos
-			pos = transform2->FirstChildElement();
-			instActor->GetColliders()[id]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
-			// Pos
-			rot = pos->NextSiblingElement();
-			instActor->GetColliders()[id]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
-			// Scale
-			scale = rot->NextSiblingElement();
-			instActor->GetColliders()[id]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
+			//// Pos
+			//pos = transform2->FirstChildElement();
+			//instActor->GetColliders()[id]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
+			//// Pos
+			//rot = pos->NextSiblingElement();
+			//instActor->GetColliders()[id]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
+			//// Scale
+			//scale = rot->NextSiblingElement();
+			//instActor->GetColliders()[id]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
 
 			tinyxml2::XMLElement* temp = index->NextSiblingElement();
 			index = temp;

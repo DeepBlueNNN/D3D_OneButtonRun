@@ -3,7 +3,7 @@
 class InstancingActor : public GameActor
 {
 public:
-	InstancingActor(GameActorTag actorType, string fbxName, Collider::Type colliderType);
+	InstancingActor(GameActorTag actorType, string fbxName);
 	~InstancingActor();
 
 public:
@@ -14,14 +14,15 @@ public:
 	virtual void GUIRender();
 
 public:
+	// Getter
 	ModelInstancing* GetModels() { return dynamic_cast<ModelInstancing*>(m_model); }
-	vector<Collider*> GetColliders() { return m_colliders; }
-	Collider::Type GetColliderType() { return m_colliderType; }
+	vector<vector<Collider*>>& GetColliders() { return m_colliders; }
 
+	// Add&Erase Actor, Collider
 	int Add();
+	int AddCollider(int index, Collider::Type type);
 	void Erase(int index);
 
 private:
-	vector<Collider*> m_colliders;
-	Collider::Type m_colliderType;
+	vector<vector<Collider*>> m_colliders;
 };
