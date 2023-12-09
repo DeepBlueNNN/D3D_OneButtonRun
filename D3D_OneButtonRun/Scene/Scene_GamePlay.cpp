@@ -4,11 +4,11 @@
 Scene_GamePlay::Scene_GamePlay()
 {
 	// Font 세팅
-	/*Font::Get()->AddColor("White", 1, 1, 1);
+	Font::Get()->AddColor("White", 1, 1, 1);
 	Font::Get()->AddStyle("Default", L"배달의민족 주아", 80.0f);
 
 	Font::Get()->SetColor("White");
-	Font::Get()->SetStyle("Default");*/
+	Font::Get()->SetStyle("Default");
 
 	// Camera 임시 세팅
 	CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
@@ -119,15 +119,15 @@ void Scene_GamePlay::PreRender()
 
 void Scene_GamePlay::PostRender()
 {
-	PrintRefreshCount();
-	PrintPlayTime();
+	//PrintRefreshCount();
+	//PrintPlayTime();
 
-	/*Font::Get()->GetDC()->BeginDraw();
+	Font::Get()->GetDC()->BeginDraw();
 	{
 		PrintRefreshCount();
 		PrintPlayTime();
 	}
-	Font::Get()->GetDC()->EndDraw();*/
+	Font::Get()->GetDC()->EndDraw();
 }
 
 void Scene_GamePlay::GUIRender()
@@ -140,7 +140,7 @@ void Scene_GamePlay::GUIRender()
 
 void Scene_GamePlay::PrintRefreshCount()
 {
-	bool temp = true;
+	/*bool temp = true;
 	ImGui::SetNextWindowPos(ImVec2((float)MAIN->GetWidth() / 2, (float)MAIN->GetHeight() - 100), 0, ImVec2(0.5f, 0.5f));
 	if (ImGui::Begin("RefreshCount", &temp, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
 	{
@@ -148,14 +148,14 @@ void Scene_GamePlay::PrintRefreshCount()
 		ImGui::SetWindowFontScale(3.5f);
 		ImGui::SetWindowSize("RefreshCount", ImVec2(0, 0));
 	}
-	ImGui::End();
+	ImGui::End();*/
 
-	//Font::Get()->RenderText(to_string(m_refreshCount), { (float)MAIN->GetWidth() / 2, 100 }, Float2(200, 100));
+	Font::Get()->RenderText(to_string(m_refreshCount), { (float)MAIN->GetWidth() / 2, 100 }, Float2(200, 100));
 }
 
 void Scene_GamePlay::PrintPlayTime()
 {
-	bool temp = true;
+	/*bool temp = true;
 	ImGui::SetNextWindowPos(ImVec2((float)MAIN->GetWidth() / 2, 100), 0, ImVec2(0.5f, 0.5f));
 	if (ImGui::Begin("PlayTime", &temp, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
 	{
@@ -163,9 +163,9 @@ void Scene_GamePlay::PrintPlayTime()
 		ImGui::SetWindowFontScale(3.5f);
 		ImGui::SetWindowSize("PlayTime", ImVec2(0, 0));
 	}
-	ImGui::End();
+	ImGui::End();*/
 	
-	//Font::Get()->RenderText(ConvertToString(m_playTime), {((float)MAIN->GetWidth() / 2) + 90, (float)MAIN->GetHeight() - 100});
+	Font::Get()->RenderText(ConvertToString(m_playTime), {((float)MAIN->GetWidth() / 2) + 90, (float)MAIN->GetHeight() - 100});
 }
 
 string Scene_GamePlay::ConvertToString(float value)

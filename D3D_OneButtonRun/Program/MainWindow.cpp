@@ -330,12 +330,21 @@ void MainWindow::ResizeScreen(float width, float height)
 	if (width < 1 || height < 1)
 		return;
 
+	Font::Get()->Delete();
 	DeleteBackBuffer();
 	{
+		DC->OMSetRenderTargets(0, 0, 0);
 		HRESULT hr = m_swapChain->ResizeBuffers(0, (UINT)width, (UINT)height, DXGI_FORMAT_UNKNOWN, 0);
 		assert(SUCCEEDED(hr));
 	}
 	CreateBackBuffer(width, height);
+	
+	// Font 세팅
+	Font::Get()->AddColor("White", 1, 1, 1);
+	Font::Get()->AddStyle("Default", L"배달의민족 주아", 80.0f);
+
+	Font::Get()->SetColor("White");
+	Font::Get()->SetStyle("Default");
 
 	ENV->UpdateProjection();
 }

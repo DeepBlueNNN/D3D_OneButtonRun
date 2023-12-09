@@ -26,8 +26,12 @@ private:
     ID2D1Factory1* factory;
     IDWriteFactory* writeFactory;
 
+    IDXGIDevice* dxgiDevice;
+
     ID2D1Device* device;
     ID2D1DeviceContext* context;
+
+    IDXGISurface* dxgiSurface;
 
     ID2D1Bitmap1* targetBitmap;
 

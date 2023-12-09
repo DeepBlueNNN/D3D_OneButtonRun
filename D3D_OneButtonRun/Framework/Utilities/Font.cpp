@@ -8,15 +8,14 @@ Font::Font()
 
 	D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &factory);
 
-	IDXGIDevice* dxgiDevice;
 	DEVICE->QueryInterface(&dxgiDevice);
 
 	factory->CreateDevice(dxgiDevice, &device);
 
-	device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
+	HRESULT hr = device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
 		&context);
+	assert(SUCCEEDED(hr));
 
-	IDXGISurface* dxgiSurface;
 	MAIN->GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface), (void**)&dxgiSurface);
 
 	D2D1_BITMAP_PROPERTIES1 bp;
@@ -42,7 +41,9 @@ Font::~Font()
 
 	factory->Release();
 	writeFactory->Release();
+	dxgiSurface->Release();
 	targetBitmap->Release();
+	dxgiDevice->Release();
 	context->Release();
 	device->Release();
 }
