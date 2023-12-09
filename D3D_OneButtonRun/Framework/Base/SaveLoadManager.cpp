@@ -1,11 +1,16 @@
 #include "SaveLoadManager.h"
 #include "framework.h"
 
+// 1) 플레이기록 별도 저장
+// 2) SAVELOAD->SetLoadScene (테스트필요)
+// 3) SAVELOAD->LoadScene (테스트필요)
+
 SaveLoadManager::SaveLoadManager()
 {
 	m_player = new GamePlayer();
 	m_mainCamera = new Camera();
 	m_lightBuffer = new LightBuffer();
+	m_sky = new Sky(L"Textures/CubeMap/Spring.dds");
 
 	WCHAR lpCurrentDirectory[1024];
 	GetCurrentDirectory(1024, lpCurrentDirectory);
@@ -58,6 +63,11 @@ void SaveLoadManager::SaveScene(wstring savePath)
 	scene->SetAttribute("Scene", fileName.c_str());
 	document->InsertFirstChild(scene);
 	
+	// 큐브맵 정보
+	tinyxml2::XMLElement* cubeMap = scene->InsertNewChildElement("CubeMap");
+	cubeMap->SetAttribute("File", StringPath::ToString(m_sky->GetCurrentTextureFile()).c_str());
+	scene->InsertEndChild(cubeMap);
+
 	// Camera 정보 
 	tinyxml2::XMLElement* camera = scene->InsertNewChildElement("Camera");
 	scene->InsertFirstChild(camera);
@@ -269,8 +279,11 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	tinyxml2::XMLElement* scene = document->FirstChildElement();
 	string sceneName = scene->Attribute("Scene");
 
+	// CubeMap 정보
+	tinyxml2::XMLElement* cubeMap = scene->FirstChildElement();
+	m_sky->SetTexture(StringPath::ToWString(cubeMap->Attribute("File")));
 	// Camera 정보 
-	tinyxml2::XMLElement* camera = scene->FirstChildElement();
+	tinyxml2::XMLElement* camera = cubeMap->NextSiblingElement();
 	// Pos
 	tinyxml2::XMLElement* pos = camera->FirstChildElement();
 	m_mainCamera->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));

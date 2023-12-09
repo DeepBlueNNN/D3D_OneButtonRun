@@ -15,6 +15,7 @@ public: // Getter
 	}
 	wstring GetFile() {return m_file;}
 	ID3D11ShaderResourceView* GetSRV() { return m_srv; }
+	Texture* GetTexture(wstring key) { return m_textures[key]; }
 
 public:
 	static Texture* Add(wstring file);

@@ -29,11 +29,11 @@ bool FileDialog::Open(wstring& selectFile, FileMode mode)
 		break;
 	case FX:
 		addDirectory = L"\\Textures\\Effect";
-		addFilter = L"Fx颇老\0.fx;";
+		addFilter = L"Fx颇老\0*.fx;";
 		break;
 	case SCENE:
 		addDirectory = L"\\Saved";
-		addFilter = L"Scene颇老\0.xml;";
+		addFilter = L"Scene颇老\0*.xml;";
 	}
 
 	memset(&OFN, 0, sizeof(OPENFILENAME));

@@ -1,13 +1,19 @@
 #include "framework.h"
 #include "Sky.h"
 
-Sky::Sky(wstring textureFile)
+Sky::Sky(wstring key)
 {
-	wstring file = textureFile;
 	m_sphere = new Sphere();
 	m_sphere->GetMaterial()->SetShader(L"LandScape/Sky.hlsl");
 
-	m_cubeMap = Texture::Add(file);
+	StringPath::GetFiles(m_skyTextureFiles, L"Textures/CubeMap/", L"*.dds", false);
+	for (int i = 0; i < m_skyTextureFiles.size(); ++i)
+	{
+		m_cubeTexture->Add(m_skyTextureFiles[i]);
+		m_comboList.push_back(StringPath::GetFileNameWithoutExtension(StringPath::ToString(m_skyTextureFiles[i])));
+	}
+
+	m_cubeTexture = m_cubeTexture->GetTexture(key);
 
 	m_rasterizerState[0] = new RasterizerState();
 	m_rasterizerState[1] = new RasterizerState();
@@ -29,11 +35,45 @@ Sky::~Sky()
 
 void Sky::Render()
 {
-	m_cubeMap->PSSet(10);
+	m_cubeTexture->PSSet(10);
 	m_rasterizerState[1]->SetState();
 	m_depthStencilState[1]->SetState();
 
 	m_sphere->Render();
 	m_rasterizerState[0]->SetState();
 	m_depthStencilState[0]->SetState();
+}
+
+void Sky::GUIRender()
+{
+	if (ImGui::TreeNode(u8"Å¥ºê¸Ê"))
+	{
+		string current_item;
+
+		if (ImGui::BeginCombo("##combo", current_item.c_str()))
+		{
+			for (int n = 0; n < m_skyTextureFiles.size(); n++)
+			{
+				bool is_selected = (current_item == m_comboList[n]);
+				if (ImGui::Selectable(m_comboList[n].c_str(), is_selected))
+				{
+					current_item = m_comboList[n];
+					is_selected = true;
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+					m_cubeTexture = m_cubeTexture->GetTexture(m_skyTextureFiles[n]);
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::TreePop();
+	}
+}
+
+void Sky::SetTexture(wstring textureFile)
+{
+	m_cubeTexture = m_cubeTexture->GetTexture(textureFile);
 }

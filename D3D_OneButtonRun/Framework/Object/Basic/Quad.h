@@ -20,6 +20,4 @@ private:
 protected:
 	Vector2 m_size = Vector2(0.0f, 0.0f);
 	Mesh<VertexType>* m_mesh = nullptr;
-
-
 };

@@ -6,7 +6,7 @@ Environment::Environment()
     CreateProjection();
     CreateState();
 
-    m_viewBuffer  = new ViewBuffer();    
+    m_viewBuffer  = new ViewBuffer();
 }
 
 Environment::~Environment()
@@ -91,6 +91,8 @@ void Environment::Set()
     m_depthStencilState[0]->SetState();
 
     SAVELOAD->GetLightBuffer()->SetPS(0);
+
+    CAMERA->SetView();
 }
 
 void Environment::PostSet()

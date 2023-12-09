@@ -5,18 +5,23 @@ Scene_MainMenu::Scene_MainMenu()
 {
 	m_sceneName = "MainMenu";
 
+	CAMERA->InitCamera();
+
 	Button* button_Start = new Button(L"Textures/UI/Button_GameStart_N.png");
-	button_Start->SetHoverImage(L"Textures/UI/Button_GameStart_Y.png");
-	button_Start->SetAction(Button::CHANGESCENE, "GamePlay");
+	button_Start->SetTag("Start");
+	button_Start->SetHoverEffct(L"Textures/UI/Button_GameStart_Y.png", 1.0f);
+	button_Start->SetAction(Button::CHANGESCENE, "SelectStage");
 	m_buttons.push_back(button_Start);
 
 	Button* button_MapEditor = new Button(L"Textures/UI/Button_MapEditor_N.png");
-	button_MapEditor->SetHoverImage(L"Textures/UI/Button_MapEditor_Y.png");
+	button_MapEditor->SetTag("MapEditor");
+	button_MapEditor->SetHoverEffct(L"Textures/UI/Button_MapEditor_Y.png", 1.0f);
 	button_MapEditor->SetAction(Button::CHANGESCENE, "MapEditor");
 	m_buttons.push_back(button_MapEditor);
 
 	Button* button_Quit = new Button(L"Textures/UI/Button_Quit_N.png");
-	button_Quit->SetHoverImage(L"Textures/UI/Button_Quit_Y.png");
+	button_Quit->SetTag("Quit");
+	button_Quit->SetHoverEffct(L"Textures/UI/Button_Quit_Y.png", 1.0f);
 	button_Quit->SetAction(Button::QUIT);
 	m_buttons.push_back(button_Quit);
 }
@@ -36,7 +41,8 @@ void Scene_MainMenu::Update()
 		if (m_buttons[i]->CheckMouseCollision(mousePos))
 		{
 			m_buttons[i]->OnHover(true);
-			if (KEY_PRESS(VK_LBUTTON))
+
+			if (KEY_DOWN(VK_LBUTTON))
 			{
 				m_buttons[i]->OnClicked();
 			}
@@ -44,13 +50,12 @@ void Scene_MainMenu::Update()
 		}
 
 		m_buttons[i]->OnHover(false);
-
-		m_buttons[i]->Update();
 	}
 }
 
 void Scene_MainMenu::Render()
 {
+	SAVELOAD->GetSky()->Render();
 }
 
 void Scene_MainMenu::PreRender()
@@ -67,7 +72,6 @@ void Scene_MainMenu::PostRender()
 	}
 
 	ENV->Set();
-
 }
 
 void Scene_MainMenu::GUIRender()
