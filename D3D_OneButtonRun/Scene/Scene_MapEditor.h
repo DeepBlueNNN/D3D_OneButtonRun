@@ -32,6 +32,13 @@ private:
 	/// <param name="type">GameActor::GameActorTag</param>
 	void AddActor();
 	/// <summary>
+	/// 선택된 Actor에 Collider 추가
+	/// </summary>
+	/// <param name="actor"></param>
+	/// <param name="index"></param>
+	/// <param name="type"></param>
+	void AddCollider(InstancingActor* actor, int index);
+	/// <summary>
 	/// Scene_MapEditor runtime에 Actor삭제
 	/// </summary>
 	/// <param name="actor">GameActor*</param>

@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "InstancingActor.h"
 
-InstancingActor::InstancingActor(GameActorTag actorType, string fbxName, Collider::Type colliderType)
+InstancingActor::InstancingActor(GameActorTag actorType, string fbxName)
 	: GameActor(actorType)
 {
 	string file = "Assets/FBX/" + fbxName + ".fbx";
@@ -13,7 +13,6 @@ InstancingActor::InstancingActor(GameActorTag actorType, string fbxName, Collide
 
 	m_name = fbxName;
 	m_model = new ModelInstancing(fbxName);
-	m_colliderType = colliderType;
 }
 
 InstancingActor::~InstancingActor()
@@ -26,28 +25,42 @@ InstancingActor::~InstancingActor()
 void InstancingActor::Update()
 {
 	GetModels()->Update();
-	for (const auto collider : m_colliders)
-		collider->UpdateWorld();
+	for (const auto& row : m_colliders)
+	{
+		for (const auto& collider : row)
+		{
+			collider->UpdateWorld();
+		}
+	}
 }
 
 void InstancingActor::Render()
 {
 	GetModels()->Render();
-	for (const auto collider : m_colliders)
-		collider->Render();
+	for (const auto& row : m_colliders)
+	{
+		for (const auto& collider : row)
+		{
+			collider->Render();
+		}
+	}
 }
 
 void InstancingActor::GUIRender()
 {
 	if (ImGui::TreeNode(m_name.c_str()))
 	{
-		for (int i = 0; i < m_colliders.size(); i++)
+		for (int i = 0; i < GetModels()->GetTransforms().size(); i++)
 		{
 			string label = m_name + "_" + to_string(i + 1);
 			if (ImGui::TreeNode(label.c_str()))
 			{
 				GetModels()->GetTransforms()[i]->GUIRender();
-				m_colliders[i]->GUIRender();
+				for (const auto& collider : GetColliders()[i])
+				{
+					collider->GUIRender();
+					collider->UpdateWorld();
+				}
 
 				ImGui::TreePop();
 			}
@@ -60,29 +73,39 @@ void InstancingActor::GUIRender()
 int InstancingActor::Add()
 {
 	// ModelInstancing->Add()
-	int id = GetModels()->GetTransforms().size();
 	Transform* transform = GetModels()->Add();
 	transform->Pos() = Vector3(0, 0, 0);
 	transform->Rot() = Vector3(0, 0, 0);
 	transform->SetTag(m_name);
 
-	// Add Collider
-	switch (m_colliderType)
+	// Add vector<Collider*>
+	GetColliders().push_back(vector<Collider*>());
+
+	return GetModels()->GetTransforms().size();
+}
+
+int InstancingActor::AddCollider(int index, Collider::Type type)
+{
+	switch (type)
 	{
 	case Collider::BOX:
-		m_colliders.push_back(new BoxCollider());
+		GetColliders()[index].push_back(new BoxCollider());
 		break;
 
 	case Collider::SPHERE:
-		m_colliders.push_back(new SphereCollider());
+		GetColliders()[index].push_back(new SphereCollider());
 		break;
 
 	case Collider::CAPSULE:
-		m_colliders.push_back(new CapsuleCollider());
+		GetColliders()[index].push_back(new CapsuleCollider());
 		break;
 	}
 
-	return id;
+	int id = GetColliders()[index].size();
+	GetColliders()[index][id - 1]->Pos() = GetModels()->GetTransforms()[index]->Pos();
+	GetColliders()[index][id - 1]->SetTag(to_string(id - 1));
+
+	return GetColliders()[index].size();
 }
 
 void InstancingActor::Erase(int index)
@@ -90,5 +113,9 @@ void InstancingActor::Erase(int index)
 	if (index >= m_colliders.size()) return;
 
 	GetModels()->GetTransforms().erase(GetModels()->GetTransforms().begin() + index);
-	m_colliders.erase(m_colliders.begin() + index);
+	auto& colliders = GetColliders()[index];
+	for (auto& collider : colliders)
+		SAFE_DELETE(collider);
+
+	colliders.erase(colliders.begin(), colliders.end());
 }
