@@ -42,6 +42,9 @@ Scene_MapEditor::~Scene_MapEditor()
 
 void Scene_MapEditor::Update()
 {
+	ENV->Set();
+	ENV->Update();
+
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Update();
@@ -51,6 +54,8 @@ void Scene_MapEditor::Update()
 
 void Scene_MapEditor::Render()
 {
+	SAVELOAD->GetSky()->Render();
+
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Render();
@@ -66,6 +71,8 @@ void Scene_MapEditor::PostRender()
 
 void Scene_MapEditor::GUIRender()
 {
+	ENV->GUIRender();
+	SAVELOAD->GetSky()->GUIRender();
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 
 	//// SelectedActor's GUIRender

@@ -4,21 +4,31 @@
 Button::Button(wstring textureFile, Vector2 size)
 	:Quad(textureFile, size), m_buttonImage(textureFile)
 {
-	m_material->SetShader(L"Basic/Texture.hlsl");
+	m_tag = "Button";
+
+	m_material->SetShader(L"UI/Button.hlsl");
+	m_valueBuffer = new FloatValueBuffer();
 }
 
 Button::~Button()
 {
-}
-
-void Button::Update()
-{
+	SAFE_DELETE(m_valueBuffer);
+	SAFE_DELETE(m_hoverTexture);
+	SAFE_DELETE(m_outlineTexture);
 }
 
 void Button::Render()
 {
+	m_valueBuffer->SetPS(10);
+	m_hoverTexture->PSSet(20);
+
 	Quad::UpdateWorld();
 	Quad::Render();
+
+	if (m_outlineTexture == nullptr)
+		return;
+
+	m_outlineTexture->PSSet(21);
 }
 
 void Button::GUIRender()
@@ -39,6 +49,9 @@ bool Button::CheckMouseCollision(Vector3 mousePos)
 
 void Button::OnClicked()
 {
+	if (!m_pressable)
+		return;
+
 	switch (m_actionType)
 	{
 	case CHANGESCENE:
@@ -57,9 +70,9 @@ void Button::OnClicked()
 void Button::OnHover(bool isHover)
 {
 	if (isHover)
-		m_material->SetDiffuseMap(m_hoverImage);
+		m_valueBuffer->Get()[0] = m_hoverAlpha;
 	else
-		m_material->SetDiffuseMap(m_buttonImage);
+		m_valueBuffer->Get()[0] = 0.0f;
 }
 
 void Button::SetAction(ButtonAction actionType)
@@ -75,9 +88,15 @@ void Button::SetAction(ButtonAction actionType, string nextSceneName)
 		SetNextScene(nextSceneName);
 }
 
-void Button::SetSubImage(wstring subTextureFile)
+void Button::SetHoverEffct(wstring hoverTextureFile, float alpha)
 {
-	m_subImage = Texture::Add(subTextureFile);
-	m_subImage->PSSet(10);
+	m_hoverTexture = Texture::Add(hoverTextureFile);
+	m_hoverAlpha = alpha;
+}
+
+void Button::SetOutline(float margin, wstring colorTextureFile)
+{
+	m_valueBuffer->Get()[1] = margin;
+	m_outlineTexture = Texture::Add(colorTextureFile);
 }
 

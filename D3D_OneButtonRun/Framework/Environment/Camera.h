@@ -30,7 +30,7 @@ public:
     /// <summary>
     /// 카메라 트렌스폼 초기화
     /// </summary>
-    void InitCamera();
+    void InitCamera(Vector3 position = Vector3(0.0f, 4.7f, -20.0f), Vector3 rotation = Vector3(0.0f, 0.0f, 0.0f), Vector3 scale = Vector3(1.0f, 1.0f, 1.0f));
     void Update();
     void GUIRender();
 

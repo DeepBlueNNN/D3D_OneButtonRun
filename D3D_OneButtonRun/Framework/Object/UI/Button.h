@@ -14,7 +14,6 @@ public:
 	~Button();
 
 public:
-	void Update();
 	void Render() override;
 	void GUIRender() override;
 
@@ -31,6 +30,10 @@ public:
 	/// </summary>
 	void OnHover(bool isHover);
 
+public: // Getter
+	bool GetPressability() { return m_pressable; }
+
+
 public: //Setter
 	/// <summary>
 	/// 버튼 기능 설정 - QUIT
@@ -44,25 +47,43 @@ public: //Setter
 	/// <param name="nextSceneName">바뀔 Scene이름</param>
 	void SetAction(ButtonAction actionType, string nextSceneName);
 	/// <summary>
-	/// Hover시 변경될 이미지 추가
+	/// Hover시 버튼효과
 	/// </summary>
-	/// <param name="hoverTextureFile">이미지 파일경로</param>
-	void SetHoverImage(wstring hoverTextureFile) { m_hoverImage = hoverTextureFile; }
+	/// <param name="hoverTextureFile">오버랩할 이미지 파일경로</param>
+	/// <param name="alpha">투명도 알파 값</param>
+	void SetHoverEffct(wstring hoverTextureFile, float alpha);
 	/// <summary>
 	/// 클릭 시 이동 Scene 이름 설정
 	/// </summary>
 	/// <param name="sceneName"></param>
 	void SetNextScene(string sceneName) { m_nextSceneName = sceneName; }
 	/// <summary>
-	/// 버튼 이미지 추가
+	/// 버튼 테두리 그리기
 	/// </summary>
-	/// <param name="subTextureFile">이미지 파일경로</param>
-	void SetSubImage(wstring subTextureFile);
+	/// <param name="margin">로컬스페이스 기준 테두리 굵기</param>
+	/// <param name="colorTextureFile">테두리 텍스쳐이미지 파일</param>
+	void SetOutline(float margin, wstring colorTextureFile = L"Textures/Color/White.png");
+	/// <summary>
+	/// 버튼 클릭기능 활성화
+	/// </summary>
+	/// <param name="isPressable">true / false 입력</param>
+	void SetPressable(bool isPressable) { m_pressable = isPressable; }
 
 private:
+	// ActionType
 	ButtonAction m_actionType = MAX;
-	Texture* m_subImage = nullptr;
+	bool m_pressable = true;
+
 	wstring m_buttonImage = L"";
-	wstring m_hoverImage = L"";
+	Texture* m_hoverTexture = nullptr;
+	FloatValueBuffer* m_valueBuffer = nullptr;
+	// wstring m_hoverImage = L"";
 	string m_nextSceneName = "";
+
+	// Hover
+	float m_hoverAlpha = 0.0f;
+
+	// Outline
+	Texture* m_outlineTexture = nullptr;
+
 };

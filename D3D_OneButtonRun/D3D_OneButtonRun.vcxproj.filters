@@ -259,6 +259,7 @@
     <ClInclude Include="Framework\Object\Gameplay\InstancingActor.h" />
     <ClInclude Include="Framework\Object\UI\Button.h" />
     <ClInclude Include="Framework\Buffer\StructuredBuffer.h" />
+    <ClInclude Include="Scene\Scene_SelectStage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -424,6 +425,7 @@
     <ClCompile Include="Framework\Object\Gameplay\InstancingActor.cpp" />
     <ClCompile Include="Framework\Object\UI\Button.cpp" />
     <ClCompile Include="Framework\Buffer\StructuredBuffer.cpp" />
+    <ClCompile Include="Scene\Scene_SelectStage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">
@@ -479,6 +481,7 @@
     <FxCompile Include="Shaders\Geometry\Spark.hlsl" />
     <FxCompile Include="Shaders\Geometry\SpriteParticle.hlsl" />
     <FxCompile Include="Shaders\LandScape\Terrain.hlsl" />
+    <FxCompile Include="Shaders\UI\Button.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelHeader.hlsli">

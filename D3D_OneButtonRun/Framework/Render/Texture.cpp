@@ -40,7 +40,7 @@ Texture* Texture::Add(wstring file)
 	else if (extension.compare(L"dds") == 0)  // cubemap
 		result = LoadFromDDSFile(file.c_str(), DDS_FLAGS_NONE, nullptr, image);
 	else
-	    result = LoadFromWICFile(file.c_str(), WIC_FLAGS_NONE, nullptr, image); // png,jpg,bmp,gif
+	    result = LoadFromWICFile(file.c_str(), WIC_FLAGS_IGNORE_SRGB, nullptr, image); // png,jpg,bmp,gif
 	assert(SUCCEEDED(result));
 
 	ID3D11ShaderResourceView* srv;

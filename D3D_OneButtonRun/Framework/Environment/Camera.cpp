@@ -15,19 +15,11 @@ Camera::~Camera()
     SAFE_DELETE(m_viewBuffer);
 }
 
-void Camera::InitCamera()
+void Camera::InitCamera(Vector3 position, Vector3 rotation, Vector3 scale)
 {
-    Pos().x = 0.0;
-    Pos().y = 4.7f;
-    Pos().z = -20.3f;
-
-    Rot().x = 0.0f;
-    Rot().y = 0.0f;
-    Rot().z = 0.0f;
-
-    Scale().x = 1.0f;
-    Scale().y = 1.0f;
-    Scale().z = 1.0f;
+    Pos() = position;
+    Rot() = rotation;
+    Scale() = scale;
 }
 
 void Camera::Update()

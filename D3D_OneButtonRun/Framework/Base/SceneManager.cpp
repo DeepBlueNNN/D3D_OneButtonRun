@@ -3,6 +3,7 @@
 #include "Scene/S01_CubeMap.h"
 #include "Scene/S02_Grid.h"
 #include "Scene/Scene_MainMenu.h"
+#include "Scene/Scene_SelectStage.h"
 #include "Scene/Scene_MapEditor.h"
 #include "Scene/Scene_GamePlay.h"
 
@@ -20,8 +21,8 @@ SceneManager::SceneManager()
 		m_scenes.pushback(new [SCENE CLASS NAME]());
 		활성화 할 Scene vector컨테이너에 pushback 
 	*/
-	m_scenes.push_back(new S01_CubeMap());
-	m_scenes.push_back(new S02_Grid());
+//	m_scenes.push_back(new S01_CubeMap());
+//	m_scenes.push_back(new S02_Grid());
 //	m_scenes.push_back(new S00_TestScene());
 
 	Scene* scene = new Scene_GamePlay();
@@ -29,6 +30,14 @@ SceneManager::SceneManager()
 	m_scenes.push_back(scene);
 
 	scene = new Scene_MapEditor();
+	scene->SetActive(false);
+	m_scenes.push_back(scene);
+
+	scene = new Scene_SelectStage();
+	scene->SetActive(false);
+	m_scenes.push_back(scene);
+
+	scene = new S02_Grid();
 	scene->SetActive(false);
 	m_scenes.push_back(scene);
 
@@ -48,8 +57,8 @@ void SceneManager::Update()
 	m_currentScene = nullptr;
 
 	ENV->Set();
-	CAMERA->Update();
-	ENV->Update();
+	//CAMERA->Update();
+	//ENV->Update();
 
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
@@ -93,7 +102,7 @@ void SceneManager::GuiRender()
 	ImGui::Text(fps.c_str());
 	ImGui::Separator();
 
-	ENV->GUIRender();
+	//ENV->GUIRender();
 
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
@@ -106,14 +115,20 @@ void SceneManager::ChangeScene(string name, bool withGrid)
 {
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
+		// 맵에디터에서만 그리드Scene 활성화
 		if (withGrid && m_scenes[i]->GetName() == "Grid")
-			continue;
-		m_scenes[i]->SetActive(false);
+			m_scenes[i]->SetActive(true);
+		else
+			m_scenes[i]->SetActive(false);
 
 		if (name == m_scenes[i]->GetName())
 		{
 			m_scenes[i]->SetActive(true);
 			m_scenes[i]->ChangeScene();
+
+			// 활성화된 Scene에 맵로드
+			//if(SAVELOAD->GetLoadPath() != L"")
+			//	SAVELOAD->LoadScene(SAVELOAD->GetLoadPath());
 		}
 	}
 
