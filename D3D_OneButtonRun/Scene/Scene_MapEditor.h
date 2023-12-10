@@ -43,11 +43,18 @@ private:
 	/// </summary>
 	/// <param name="actor">GameActor*</param>
 	void DeleteActor();
+	/// <summary>
+	/// Collider* ªË¡¶
+	/// </summary>
+	/// <param name="colliders"></param>
+	/// <param name="index"></param>
+	void DeleteCollider(vector<Collider*>& colliders, int index);
 
 private:
 	// Editor Variable
 	//GameActor* m_selectedActor = nullptr;
 	StoreActor m_selectedActor;
 	UINT m_colliderType = 0;
-	unordered_map<string, UINT> fbxList;
+	unordered_map<string, UINT> m_fbxList;
+	Vector3 m_actorPos;
 };

@@ -19,19 +19,19 @@ Scene_MapEditor::Scene_MapEditor()
 			string name = list.substr(0, result);
 
 			// 동일한(숫자만 다른) fbx가 이미 등록되어 있는 경우
-			auto find = fbxList.find(name);
-			if (find != fbxList.end())
+			auto find = m_fbxList.find(name);
+			if (find != m_fbxList.end())
 			{
 				find->second++;
 			}
 			else
 			{
-				fbxList.insert(make_pair(name, 1));
+				m_fbxList.insert(make_pair(name, 1));
 			}
 		}
 		else // 파일 이름에 '_'가 없다면
 		{
-			fbxList.insert(make_pair(list, 1));
+			m_fbxList.insert(make_pair(list, 1));
 		}
 	}
 }
@@ -75,14 +75,27 @@ void Scene_MapEditor::GUIRender()
 	SAVELOAD->GetSky()->GUIRender();
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 
-	//// SelectedActor's GUIRender
+	// SelectedActor's GUIRender
 	string label = "Selected Actor";
 	if (ImGui::TreeNode(label.c_str()))
 	{
 		if (m_selectedActor.transform)
 		{
-			m_selectedActor.actor->GUIRender();
-			AddCollider(m_selectedActor.actor, m_selectedActor.actor->GetModels()->GetTransforms().size() - 1);
+			if (ImGui::DragFloat3("Actor Position", (float*)&m_actorPos, 0.1f))
+			{
+				m_selectedActor.transform->Pos() += m_actorPos;
+				for (const auto& collider : m_selectedActor.actor->GetColliders()[m_selectedActor.index])
+					collider->Pos() += m_actorPos;
+				m_actorPos = Vector3();
+			}
+
+			m_selectedActor.transform->GUIRender();
+			for (UINT i = 0; i < m_selectedActor.actor->GetColliders()[m_selectedActor.index].size(); i++)
+			{
+				m_selectedActor.actor->GetColliders()[m_selectedActor.index][i]->GUIRender();
+				DeleteCollider(m_selectedActor.actor->GetColliders()[m_selectedActor.index], i);
+			}
+			AddCollider(m_selectedActor.actor, m_selectedActor.index);
 			DeleteActor();
 		}
 
@@ -92,10 +105,32 @@ void Scene_MapEditor::GUIRender()
 	label = "Actors";
 	if (ImGui::TreeNode(label.c_str()))
 	{
-		for (int i = 0; i < actors.size(); i++)
+		for (const auto& actor : actors)
 		{
-			actors[i]->GUIRender();
-			AddCollider(actors[i], i);
+			string fbxName = actor->GetName();
+			if (ImGui::TreeNode(fbxName.c_str()))
+			{
+				for (UINT i = 0; i < actor->GetModels()->GetTransforms().size(); i++)
+				{
+					string actorName = actor->GetModels()->GetTransforms()[i]->GetTag() + "_" + to_string(i + 1);
+					if (ImGui::TreeNode(actorName.c_str()))
+					{
+						actor->GetModels()->GetTransforms()[i]->GUIRender();
+						for (UINT j = 0; j < actor->GetColliders()[i].size(); j++)
+						{
+							actor->GetColliders()[i][j]->GUIRender();
+							DeleteCollider(actor->GetColliders()[i], j);
+						}
+
+						AddCollider(actor, i);
+						DeleteActor();
+
+						ImGui::TreePop();
+					}
+				}
+
+				ImGui::TreePop();
+			}
 		}
 
 		ImGui::TreePop();
@@ -113,7 +148,7 @@ void Scene_MapEditor::SelectActor()
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	for (const auto& actor : actors)
 	{
-		for (int i = 0; i < actor->GetModels()->GetTransforms().size(); i++)
+		for (UINT i = 0; i < actor->GetModels()->GetTransforms().size(); i++)
 		{
 			if (m_selectedActor.transform != actor->GetModels()->GetTransforms()[i])
 			{
@@ -123,7 +158,7 @@ void Scene_MapEditor::SelectActor()
 
 			for (const auto& collider : actor->GetColliders()[i])
 			{
-				if (collider->IsRayCollision(ray, &contact) && KEY_PRESS(VK_LBUTTON))
+				if (collider->IsRayCollision(ray, &contact) && KEY_DOWN(VK_LBUTTON))
 				{
 					m_selectedActor.actor = actor;
 					m_selectedActor.transform = actor->GetModels()->GetTransforms()[i];
@@ -136,7 +171,7 @@ void Scene_MapEditor::SelectActor()
 
 			for(const auto& collider : actor->GetColliders()[i])
 			{
-				if (!collider->IsRayCollision(ray, &contact) && KEY_PRESS(VK_LBUTTON) && !ImGui::GetIO().WantCaptureMouse)
+				if (!collider->IsRayCollision(ray, &contact) && KEY_DOWN(VK_LBUTTON) && !ImGui::GetIO().WantCaptureMouse)
 					m_selectedActor = StoreActor();
 			}
 		}
@@ -154,11 +189,11 @@ void Scene_MapEditor::AddActor()
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.8f, 0.8f));
 
-		for (const auto& list : fbxList)
+		for (const auto& list : m_fbxList)
 		{
 			if (ImGui::TreeNode(list.first.c_str()))
 			{
-				for (int i = 1; i < list.second + 1; i++)
+				for (UINT i = 1; i < list.second + 1; i++)
 				{
 					string name = list.first + "_" + to_string(i);
 					bool ret = ImGui::Button(name.c_str(), ImVec2(200, 25));
@@ -186,7 +221,7 @@ void Scene_MapEditor::AddActor()
 						}
 
 						m_selectedActor.actor = actors[actors.size() - 1];
-						m_selectedActor.index = actors.size() - 1;
+						m_selectedActor.index = actors[actors.size() - 1]->GetModels()->GetTransforms().size() - 1;
 						m_selectedActor.transform = m_selectedActor.actor->GetModels()->
 							GetTransforms()[m_selectedActor.actor->GetModels()->GetTransforms().size() - 1];
 					}
@@ -213,7 +248,7 @@ void Scene_MapEditor::AddCollider(InstancingActor* actor, int index)
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.6f, 0.6f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.8f, 0.8f));
-		bool ret = ImGui::Button(u8"추가", ImVec2(100, 20));
+		bool ret = ImGui::Button(u8"Collider 추가", ImVec2(100, 20));
 		ImGui::PopStyleColor(3);
 
 		if (ret)
@@ -230,7 +265,7 @@ void Scene_MapEditor::DeleteActor()
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
-	bool ret = ImGui::Button(u8"삭제", ImVec2(100, 20));
+	bool ret = ImGui::Button(u8"Actor 삭제", ImVec2(100, 20));
 	ImGui::PopStyleColor(3);
 
 	if (ret)
@@ -239,7 +274,7 @@ void Scene_MapEditor::DeleteActor()
 		if (!m_selectedActor.actor->GetColliders().size())
 		{
 			vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-			for (int i = 0; i < actors.size(); i++)
+			for (UINT i = 0; i < actors.size(); i++)
 			{
 				if (actors[i] == m_selectedActor.actor)
 				{
@@ -250,4 +285,21 @@ void Scene_MapEditor::DeleteActor()
 		}
 		m_selectedActor = StoreActor();
 	}
+}
+
+void Scene_MapEditor::DeleteCollider(vector<Collider*>& colliders, int index)
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
+	bool ret = ImGui::Button(u8"Collider 삭제", ImVec2(100, 20));
+
+	if (ret)
+	{
+		SAFE_DELETE(colliders[index]);
+
+		colliders.erase(colliders.begin() + index);
+	}
+
+	ImGui::PopStyleColor(3);
 }
