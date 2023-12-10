@@ -19,9 +19,9 @@ public:
 	vector<vector<Collider*>>& GetColliders() { return m_colliders; }
 
 	// Add&Erase Actor, Collider
-	int Add();
-	int AddCollider(int index, Collider::Type type);
-	void Erase(int index);
+	UINT Add();
+	UINT AddCollider(UINT index, Collider::Type type);
+	void Erase(UINT index);
 
 private:
 	vector<vector<Collider*>> m_colliders;

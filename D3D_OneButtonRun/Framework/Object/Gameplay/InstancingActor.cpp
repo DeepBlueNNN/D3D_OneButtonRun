@@ -50,7 +50,7 @@ void InstancingActor::GUIRender()
 {
 	if (ImGui::TreeNode(m_name.c_str()))
 	{
-		for (int i = 0; i < GetModels()->GetTransforms().size(); i++)
+		for (UINT i = 0; i < GetModels()->GetTransforms().size(); i++)
 		{
 			string label = m_name + "_" + to_string(i + 1);
 			if (ImGui::TreeNode(label.c_str()))
@@ -70,7 +70,7 @@ void InstancingActor::GUIRender()
 	}
 }
 
-int InstancingActor::Add()
+UINT InstancingActor::Add()
 {
 	// ModelInstancing->Add()
 	Transform* transform = GetModels()->Add();
@@ -84,7 +84,7 @@ int InstancingActor::Add()
 	return GetModels()->GetTransforms().size();
 }
 
-int InstancingActor::AddCollider(int index, Collider::Type type)
+UINT InstancingActor::AddCollider(UINT index, Collider::Type type)
 {
 	switch (type)
 	{
@@ -101,14 +101,14 @@ int InstancingActor::AddCollider(int index, Collider::Type type)
 		break;
 	}
 
-	int id = GetColliders()[index].size();
+	UINT id = GetColliders()[index].size();
 	GetColliders()[index][id - 1]->Pos() = GetModels()->GetTransforms()[index]->Pos();
 	GetColliders()[index][id - 1]->SetTag(to_string(id - 1));
 
 	return GetColliders()[index].size();
 }
 
-void InstancingActor::Erase(int index)
+void InstancingActor::Erase(UINT index)
 {
 	if (index >= m_colliders.size()) return;
 
