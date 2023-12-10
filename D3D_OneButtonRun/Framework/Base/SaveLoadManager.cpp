@@ -26,6 +26,9 @@ SaveLoadManager::~SaveLoadManager()
 	SAFE_DELETE(m_mainCamera);
 }
 
+/// <summary>
+/// Save관련 ImGUI 구성 설정
+/// </summary>
 void SaveLoadManager::Save()
 {
 	// ImGui 버튼 Set
@@ -46,6 +49,10 @@ void SaveLoadManager::Save()
 	}
 }
 
+/// <summary>
+/// Scene정보 저장: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수
+/// </summary>
+/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 void SaveLoadManager::SaveScene(wstring savePath)
 {
 	string saveFile = StringPath::ToString(savePath);
@@ -152,36 +159,32 @@ void SaveLoadManager::SaveScene(wstring savePath)
 
 	for (InstancingActor* gameActor : m_intancingActors)
 	{
-		GameActor::GameActorTag type = gameActor->GetGameActorType();
+		tinyxml2::XMLElement* list_type = list->InsertNewChildElement("ActorInfo");
+		list_type->SetAttribute("Count", gameActor->GetColliders().size());
+		list_type->SetAttribute("FBX", gameActor->GetName().c_str());
 
-		for (int i = 1; i < GameActor::MAX; ++i)
-		{
-			if (type == i)
-			{
-				tinyxml2::XMLElement* list_type = list->InsertNewChildElement("ActorInfo");
-				list_type->SetAttribute("Count", gameActor->GetColliders().size());
-				list_type->SetAttribute("Type", to_string(i).c_str());
-				list_type->SetAttribute("FBX", gameActor->GetName().c_str());
-				//list_type->SetAttribute("ColliderType", gameActor->GetColliderType());
-
-				int count = gameActor->GetColliders().size();
-				SaveActor(gameActor, type, count, list_type);
-			}
-		}
+		int count = gameActor->GetColliders().size();
+		SaveActor(gameActor, count, list_type);
 	}
 
 	document->SaveFile(xml.c_str());
 	SAFE_DELETE(document);
 }
 
-void SaveLoadManager::SaveActor(InstancingActor* gameActor, GameActor::GameActorTag actorType, int count, tinyxml2::XMLElement* list)
+/// <summary>
+/// Scene내 Player외 엑터들 Type별 for문을 통해 정보 저장
+/// </summary>
+/// <param name="gameActor">인스턴싱 단위 게임엑터</param>
+/// <param name="count">인스턴싱된 동일 FBX 엑터 갯수</param>
+/// <param name="type">상위 XML노드</param>
+void SaveLoadManager::SaveActor(InstancingActor* gameActor, int count, tinyxml2::XMLElement* list)
 {
 	for (int i = 0; i < count; ++i)
 	{
-		string index = to_string(i);
-		index = "InstanceActor_" + index;
+		string actIndex = to_string(i);
+		actIndex = "Actor" + actIndex;
 		// 루트
-		tinyxml2::XMLElement* model = list->InsertNewChildElement(index.c_str());
+		tinyxml2::XMLElement* model = list->InsertNewChildElement(actIndex.c_str());
 		list->InsertFirstChild(model);
 
 		// 활성화 여부
@@ -213,34 +216,45 @@ void SaveLoadManager::SaveActor(InstancingActor* gameActor, GameActor::GameActor
 		scale->SetAttribute("Z", gameActor->GetModels()->GetTransforms()[i]->Scale().z);
 		transform->InsertEndChild(scale);
 
-		list->InsertEndChild(model);
+		// 콜리더 트렌스폼 정보
+		tinyxml2::XMLElement* colliders = model->InsertNewChildElement("Colliders");
+		colliders->SetAttribute("NumberOfColliders", gameActor->GetColliders()[i].size());
 
-		//// 콜리더 트렌스폼 정보
-		//tinyxml2::XMLElement* transform2 = model->InsertNewChildElement("ColliderTransform");
-		//// Pos
-		//pos = transform2->InsertNewChildElement("Position");
-		//transform2->InsertFirstChild(pos);
-		//pos->SetAttribute("X", gameActor->GetColliders()[i]->Pos().x);
-		//pos->SetAttribute("Y", gameActor->GetColliders()[i]->Pos().y);
-		//pos->SetAttribute("Z", gameActor->GetColliders()[i]->Pos().z);
-		//transform2->InsertEndChild(pos);
-		//// Rot
-		//rot = transform2->InsertNewChildElement("Rotation");
-		//transform2->InsertFirstChild(rot);
-		//rot->SetAttribute("X", gameActor->GetColliders()[i]->Rot().x);
-		//rot->SetAttribute("Y", gameActor->GetColliders()[i]->Rot().y);
-		//rot->SetAttribute("Z", gameActor->GetColliders()[i]->Rot().z);
-		//transform2->InsertEndChild(rot);
-		//// Scale
-		//scale = transform2->InsertNewChildElement("Scale");
-		//transform2->InsertFirstChild(scale);
-		//scale->SetAttribute("X", gameActor->GetColliders()[i]->Scale().x);
-		//scale->SetAttribute("Y", gameActor->GetColliders()[i]->Scale().y);
-		//scale->SetAttribute("Z", gameActor->GetColliders()[i]->Scale().z);
-		//transform2->InsertEndChild(scale);
+		for (int j = 0; j < gameActor->GetColliders()[i].size(); ++j)
+		{
+			string colIndex = to_string(j);
+			colIndex = "Collider_" + colIndex;
+
+			tinyxml2::XMLElement* collider = colliders->InsertNewChildElement(colIndex.c_str());
+			collider->SetAttribute("Type", gameActor->GetColliders()[i][j]->GetType());
+			// Pos
+			pos = collider->InsertNewChildElement("Position");
+			collider->InsertFirstChild(pos);
+			pos->SetAttribute("X", gameActor->GetColliders()[i][j]->Pos().x);
+			pos->SetAttribute("Y", gameActor->GetColliders()[i][j]->Pos().y);
+			pos->SetAttribute("Z", gameActor->GetColliders()[i][j]->Pos().z);
+			collider->InsertEndChild(pos);
+			// Rot
+			rot = collider->InsertNewChildElement("Rotation");
+			collider->InsertFirstChild(rot);
+			rot->SetAttribute("X", gameActor->GetColliders()[i][j]->Rot().x);
+			rot->SetAttribute("Y", gameActor->GetColliders()[i][j]->Rot().y);
+			rot->SetAttribute("Z", gameActor->GetColliders()[i][j]->Rot().z);
+			collider->InsertEndChild(rot);
+			// Scale
+			scale = collider->InsertNewChildElement("Scale");
+			collider->InsertFirstChild(scale);
+			scale->SetAttribute("X", gameActor->GetColliders()[i][j]->Scale().x);
+			scale->SetAttribute("Y", gameActor->GetColliders()[i][j]->Scale().y);
+			scale->SetAttribute("Z", gameActor->GetColliders()[i][j]->Scale().z);
+			collider->InsertEndChild(scale);
+		}
 	}
 }
 
+/// <summary>
+/// Load관련 ImGUI 구성 설정
+/// </summary>
 void SaveLoadManager::Load()
 {
 	// ImGui 버튼 Set
@@ -263,6 +277,10 @@ void SaveLoadManager::Load()
 	}
 }
 
+/// <summary>
+/// Scene정보 로드: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수, 각 게임엑터 정보
+/// </summary>
+/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 void SaveLoadManager::LoadScene(wstring savePath)
 {
 	// 멤버 게임액터 초기화
@@ -324,10 +342,8 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	for (int i = 0; i < size; ++i)
 	{
 		int size = actorInfo->IntAttribute("Count");
-		GameActor::GameActorTag actorType = static_cast<GameActor::GameActorTag>(stoi(actorInfo->Attribute("Type")));
 		string fbxName = actorInfo->Attribute("FBX");
-		Collider::Type colliderType = static_cast<Collider::Type>(stoi(actorInfo->Attribute("ColliderType")));
-		InstancingActor* instActor = new InstancingActor(actorType, fbxName);
+		InstancingActor* instActor = new InstancingActor(GameActor::ENTITY, fbxName);
 		tinyxml2::XMLElement* index = actorInfo->FirstChildElement();
 
 		for (int j = 0; j < size; ++j)
@@ -336,29 +352,41 @@ void SaveLoadManager::LoadScene(wstring savePath)
 			id = instActor->Add();
 			// 활성화 여부
 			tinyxml2::XMLElement* modelActive = index->FirstChildElement();
-			instActor->GetModels()->GetTransforms()[id]->SetActive(modelActive->Attribute("isActive"));
+			instActor->GetModels()->GetTransforms()[j]->SetActive(modelActive->Attribute("isActive"));
 			// 모델 트렌스폼 정보
 			tinyxml2::XMLElement* transform = modelActive->NextSiblingElement();
 			// Pos
 			pos = transform->FirstChildElement();
-			instActor->GetModels()->GetTransforms()[id]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
+			instActor->GetModels()->GetTransforms()[j]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
 			// Pos
 			rot = pos->NextSiblingElement();
-			instActor->GetModels()->GetTransforms()[id]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
+			instActor->GetModels()->GetTransforms()[j]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
 			// Scale
 			scale = rot->NextSiblingElement();
-			instActor->GetModels()->GetTransforms()[id]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
+			instActor->GetModels()->GetTransforms()[j]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
 			// 콜리더 트렌스폼 정보
-			tinyxml2::XMLElement* transform2 = transform->NextSiblingElement();
-			//// Pos
-			//pos = transform2->FirstChildElement();
-			//instActor->GetColliders()[id]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
-			//// Pos
-			//rot = pos->NextSiblingElement();
-			//instActor->GetColliders()[id]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
-			//// Scale
-			//scale = rot->NextSiblingElement();
-			//instActor->GetColliders()[id]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
+			tinyxml2::XMLElement* colliders = transform->NextSiblingElement();
+			int count = 0;
+			count = colliders->IntAttribute("NumberOfColliders");
+			tinyxml2::XMLElement* collider = colliders->FirstChildElement();
+			Collider::Type colliderType;
+			for (int k = 0; k < count; ++k)
+			{
+				colliderType = static_cast<Collider::Type>(stoi(collider->Attribute("Type")));
+				instActor->AddCollider(j, colliderType);
+				// Pos
+				pos = collider->FirstChildElement();
+				instActor->GetColliders()[j][k]->Pos() = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
+				// Pos
+				rot = pos->NextSiblingElement();
+				instActor->GetColliders()[j][k]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
+				// Scale
+				scale = rot->NextSiblingElement();
+				instActor->GetColliders()[j][k]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
+
+				tinyxml2::XMLElement* tTemp = collider->NextSiblingElement();
+				collider = tTemp;
+			}
 
 			tinyxml2::XMLElement* temp = index->NextSiblingElement();
 			index = temp;
@@ -372,6 +400,9 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	SAFE_DELETE(document);
 }
 
+/// <summary>
+/// Scene 환경 초기화 및 모든 게임엑터 삭제
+/// </summary>
 void SaveLoadManager::Clear()
 {
 	// ImGui 버튼 Set
@@ -406,6 +437,13 @@ void SaveLoadManager::GUIRender()
 	Clear();
 }
 
+/// <summary>
+/// GameActor Class 추가 후 이 함수 내용에 추가한 Class 추가하기
+/// </summary>
+/// <param name="type">enum GameActor::GameActorTag</param>
+/// <param name="fbxName">파일 이름만(확장자 없이)</param>
+/// <param name="id">Editor상의 중복된 Class 번호</param>
+/// <returns>함수에서 생성된 GameActor를 반환</returns>
 GameActor* SaveLoadManager::CreateInstancingActor(GameActor::GameActorTag type, string fbxName)
 {
 	GameActor* actor = nullptr;

@@ -11,33 +11,12 @@ public:
 	~SaveLoadManager();
 
 public:
-	/// <summary>
-	/// Save관련 ImGUI 구성 설정
-	/// </summary>
 	void Save();
-	/// <summary>
-	/// Scene정보 저장: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수
-	/// </summary>
-	/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 	void SaveScene(wstring savePath);
-	/// <summary>
-	/// Scene내 Player외 엑터들 Type별 for문을 통해 정보 저장
-	/// </summary>
-	/// <param name="gameActor">인스턴싱 단위 게임엑터</param>
-	/// <param name="actorType">게임엑터 타입</param>
-	/// <param name="count">인스턴싱된 동일 FBX 엑터 갯수</param>
-	/// <param name="type">상위 XML노드</param>
-	void SaveActor(InstancingActor* gameActor, GameActor::GameActorTag actorType, int count, tinyxml2::XMLElement* type);
+	void SaveActor(InstancingActor* gameActor, int count, tinyxml2::XMLElement* type);
 
 public:
-	/// <summary>
-	/// Load관련 ImGUI 구성 설정
-	/// </summary>
 	void Load();
-	/// <summary>
-	/// Scene정보 로드: 파일경로 설정, Scene이름, Camera, Light, Scene내 게임엑터 갯수, 각 게임엑터 정보
-	/// </summary>
-	/// <param name="savePath">Dialog를 통해 선택된 경로</param>
 	void LoadScene(wstring savePath);
 	/// <summary>
 	/// 로드할 파일 경로 Set
@@ -46,9 +25,6 @@ public:
 	void SetLoadFile(wstring savePath) { m_loadPath = savePath; }
 
 public:
-	/// <summary>
-	/// Scene 환경 초기화 및 모든 게임엑터 삭제
-	/// </summary>
 	void Clear();
 
 public:
@@ -74,15 +50,8 @@ public:
 	/// <summary>
 	/// Environment에서 사용될 LightBuffer 받아오기
 	/// </summary>
-	/// <returns>*&m_lightBuffer</returns>
+	/// <returns>m_lightBuffer</returns>
 	LightBuffer*& GetLightBuffer() { return m_lightBuffer; }
-	/// <summary>
-	/// GameActor Class 추가 후 이 함수 내용에 추가한 Class 추가하기
-	/// </summary>
-	/// <param name="type">enum GameActor::GameActorTag</param>
-	/// <param name="fbxName">파일 이름만(확장자 없이)</param>
-	/// <param name="id">Editor상의 중복된 Class 번호</param>
-	/// <returns>함수에서 생성된 GameActor를 반환</returns>
 	GameActor* CreateInstancingActor(GameActor::GameActorTag type, string fbxName);
 	vector<string>& GetClassNames() { return m_classNames; }
 	vector<string>& GetFBXNames() { return m_fbxNames; }
