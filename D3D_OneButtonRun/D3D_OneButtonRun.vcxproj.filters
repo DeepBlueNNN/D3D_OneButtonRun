@@ -260,6 +260,7 @@
     <ClInclude Include="Framework\Object\UI\Button.h" />
     <ClInclude Include="Framework\Buffer\StructuredBuffer.h" />
     <ClInclude Include="Scene\Scene_SelectStage.h" />
+    <ClInclude Include="Framework\Object\UI\SubMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -426,6 +427,7 @@
     <ClCompile Include="Framework\Object\UI\Button.cpp" />
     <ClCompile Include="Framework\Buffer\StructuredBuffer.cpp" />
     <ClCompile Include="Scene\Scene_SelectStage.cpp" />
+    <ClCompile Include="Framework\Object\UI\SubMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">

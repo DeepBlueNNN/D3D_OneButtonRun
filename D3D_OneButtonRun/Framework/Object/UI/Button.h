@@ -6,7 +6,7 @@ public:
 	{
 		CHANGESCENE = 0,
 		QUIT,
-		MAX
+		MAX,
 	};
 
 public:

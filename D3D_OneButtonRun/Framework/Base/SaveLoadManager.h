@@ -38,15 +38,15 @@ public:
 	/// <returns>초기화 또는 로드된 InstancedGameActor들</returns>
 	vector<InstancingActor*>& GetInstancingActors() { return m_intancingActors; }
 	/// <summary>
-	/// 배경 SkyDome 가져오기
+	/// 배경 Sky 가져오기
 	/// </summary>
-	/// <returns>*& m_skyDome</returns>
+	/// <returns>m_sky</returns>
 	Sky*& GetSky() { return m_sky; }
 	/// <summary>
 	/// 메인카메라 받아오기
 	/// </summary>
 	/// <returns>m_mainCamera</returns>
-	Camera* GetMainCamera() { return m_mainCamera; }
+	Camera*& GetMainCamera() { return m_mainCamera; }
 	/// <summary>
 	/// Environment에서 사용될 LightBuffer 받아오기
 	/// </summary>

@@ -41,5 +41,6 @@ private:
 	Vector3 m_playerOriginPos = Vector3(0.0f, 0.0f, 0.0f);
 	UINT m_refreshCount = 0;
 	float m_playTime = 0.0f;
+	SubMenu* m_subMenu = nullptr;
 
 };

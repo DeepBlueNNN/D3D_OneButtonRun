@@ -28,13 +28,14 @@ Scene_MainMenu::Scene_MainMenu()
 
 Scene_MainMenu::~Scene_MainMenu()
 {
+	for (Button* button : m_buttons)
+		SAFE_DELETE(button);
 	m_buttons.erase(m_buttons.begin(), m_buttons.end());
-	m_buttons.clear();
 }
 
 void Scene_MainMenu::Update()
 {
-	for (int i =0; i<m_buttons.size(); ++i)
+	for (int i = 0; i < m_buttons.size(); ++i)
 	{
 		m_buttons[i]->Pos() = (Vector3(MAIN->GetWidth() / 2.0f, (MAIN->GetHeight() / 2.0f) - (i * 100.0f + 100.0f), 1.0f));
 

@@ -36,6 +36,9 @@ private:
 	vector<class Scene*>	m_scenes;		// 여러개의 Scene을 담아 넣는 vector 컨테이너
 	Scene*					m_currentScene = nullptr;
 	bool					m_isThreadEnd = false;
+	class SubMenu*			m_subMenu = nullptr;
+	UINT					m_escCount = 0;
+	bool					m_isSubMenuOn = false;
 };
 
 //////////////////////////////////////////////////////////////

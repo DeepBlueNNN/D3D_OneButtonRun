@@ -46,6 +46,9 @@ Scene_GamePlay::Scene_GamePlay()
 	// UI 변수 세팅
 	m_refreshCount = 0;
 	m_playTime = 0.0f;
+
+	// SubMenu
+	m_subMenu = new SubMenu();
 }
 
 Scene_GamePlay::~Scene_GamePlay()
@@ -61,6 +64,8 @@ Scene_GamePlay::~Scene_GamePlay()
 	m_grounds.erase(m_grounds.begin(), m_grounds.end());
 
 	SAFE_DELETE(m_player);
+
+	SAFE_DELETE(m_subMenu);
 }
 
 void Scene_GamePlay::Update()
@@ -100,6 +105,8 @@ void Scene_GamePlay::Update()
 		m_player->SetPosition(m_playerOriginPos);
 		m_refreshCount++;
 	}
+
+	m_subMenu->Update();
 }
 
 void Scene_GamePlay::Render()
@@ -128,6 +135,8 @@ void Scene_GamePlay::PostRender()
 		PrintPlayTime();
 	}
 	Font::Get()->GetDC()->EndDraw();
+
+	m_subMenu->Render();
 }
 
 void Scene_GamePlay::GUIRender()
