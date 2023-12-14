@@ -19,8 +19,9 @@ SaveLoadManager::SaveLoadManager()
 
 SaveLoadManager::~SaveLoadManager()
 {
+	for (InstancingActor* actor : m_intancingActors)
+		SAFE_DELETE(actor);
 	m_intancingActors.erase(m_intancingActors.begin(), m_intancingActors.end());
-	m_intancingActors.clear();
 
 	SAFE_DELETE(m_lightBuffer);
 	SAFE_DELETE(m_mainCamera);
@@ -172,20 +173,20 @@ void SaveLoadManager::SaveScene(wstring savePath)
 }
 
 /// <summary>
-/// Scene내 Player외 엑터들 Type별 for문을 통해 정보 저장
+/// Scene내 Player외 엑터들 인스턴스단위로 정보 저장
 /// </summary>
 /// <param name="gameActor">인스턴싱 단위 게임엑터</param>
 /// <param name="count">인스턴싱된 동일 FBX 엑터 갯수</param>
-/// <param name="type">상위 XML노드</param>
+/// <param name="list">상위 XML노드</param>
 void SaveLoadManager::SaveActor(InstancingActor* gameActor, int count, tinyxml2::XMLElement* list)
 {
 	for (int i = 0; i < count; ++i)
 	{
 		string actIndex = to_string(i);
-		actIndex = "Actor" + actIndex;
+		actIndex = "Actor_" + actIndex;
+
 		// 루트
 		tinyxml2::XMLElement* model = list->InsertNewChildElement(actIndex.c_str());
-		list->InsertFirstChild(model);
 
 		// 활성화 여부
 		tinyxml2::XMLElement* modelActive = model->InsertNewChildElement("ModelActive");

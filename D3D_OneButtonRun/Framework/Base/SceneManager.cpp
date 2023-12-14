@@ -42,12 +42,14 @@ SceneManager::SceneManager()
 	m_scenes.push_back(scene);
 
 	m_scenes.push_back(new Scene_MainMenu());
+
+	m_subMenu = new SubMenu();
 }
 
 SceneManager::~SceneManager()
 {
 	for (UINT i = 0; i < m_scenes.size(); i++)
-		delete m_scenes[i];
+		SAFE_DELETE(m_scenes[i]);
 
 	m_scenes.erase(m_scenes.begin(), m_scenes.end());
 }
@@ -57,8 +59,8 @@ void SceneManager::Update()
 	m_currentScene = nullptr;
 
 	ENV->Set();
-	//CAMERA->Update();
-	//ENV->Update();
+	CAMERA->Update();
+	ENV->Update();
 
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
@@ -92,7 +94,6 @@ void SceneManager::PostRender()
 		if (m_scenes[i]->IsActive())
 			m_scenes[i]->PostRender();
 	}
-
 	//Font::Get()->GetDC()->EndDraw();
 }
 

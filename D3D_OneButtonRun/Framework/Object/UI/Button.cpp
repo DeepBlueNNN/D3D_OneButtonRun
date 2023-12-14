@@ -65,6 +65,9 @@ void Button::OnClicked()
 		DestroyWindow(MAIN->GetWindowHandler());
 		break;
 	}
+
+	// SceneChange직후 키보드상태 초기화
+	KEYBOARD->Update();
 }
 
 void Button::OnHover(bool isHover)

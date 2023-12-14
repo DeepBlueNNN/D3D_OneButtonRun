@@ -198,6 +198,7 @@ using namespace GameMath;
 #include "Framework/Object/Basic/Quad.h"
 #include "Framework/Object/UI/ProgressBar.h"
 #include "Framework/Object/UI/Button.h"
+#include "Framework/Object/UI/SubMenu.h"
 
 // Particles
 #include "Framework/Object/Particle/Particle.h"
