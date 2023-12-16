@@ -35,11 +35,6 @@ Scene_SelectStage::Scene_SelectStage()
 
 	for (int i = 0; i < m_buttons.size(); ++i)
 	{
-		if (i == m_buttons.size() - 1)
-			m_buttons[i]->Pos() = (Vector3((MAIN->GetWidth() * 0.5f), (MAIN->GetHeight() / 5.0f), 1.0f));
-		else
-			m_buttons[i]->Pos() = (Vector3((MAIN->GetWidth() / 5.0f) + (i * 350.0f), (MAIN->GetHeight() / 2.0f) + 50.0f, 1.0f));
-
 		// 이전 스테이지를 클리어해야 다음 스테이지 선택 가능
 		if (i <= SAVELOAD->GetRecord().size())
 		{
@@ -50,8 +45,9 @@ Scene_SelectStage::Scene_SelectStage()
 
 Scene_SelectStage::~Scene_SelectStage()
 {
+	for (Button* button : m_buttons)
+		SAFE_DELETE(button);
 	m_buttons.erase(m_buttons.begin(), m_buttons.end());
-	m_buttons.clear();
 }
 
 void Scene_SelectStage::Update()
@@ -69,10 +65,10 @@ void Scene_SelectStage::Update()
 			m_buttons[i]->OnHover(true);
 			if (KEY_DOWN(VK_LBUTTON))
 			{
-				m_buttons[i]->OnClicked();
-
 				if (i < m_buttons.size() - 1)
 					SAVELOAD->SetLoadFile(StringPath::ToWString(m_stageNames[i]));
+
+				m_buttons[i]->OnClicked();
 			}
 			continue;
 		}

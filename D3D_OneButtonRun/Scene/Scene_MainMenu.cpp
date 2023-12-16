@@ -7,6 +7,10 @@ Scene_MainMenu::Scene_MainMenu()
 
 	CAMERA->InitCamera();
 
+	UITexture* texture = new UITexture(L"Textures/UI/Title_B.png", Vector2(1200.0f, 150.0f));
+	texture->SetAlpha(1.0f);
+	m_textures.push_back(texture);
+
 	Button* button_Start = new Button(L"Textures/UI/Button_GameStart_N.png");
 	button_Start->SetTag("Start");
 	button_Start->SetHoverEffct(L"Textures/UI/Button_GameStart_Y.png", 1.0f);
@@ -31,13 +35,22 @@ Scene_MainMenu::~Scene_MainMenu()
 	for (Button* button : m_buttons)
 		SAFE_DELETE(button);
 	m_buttons.erase(m_buttons.begin(), m_buttons.end());
+
+	for (UITexture* texture : m_textures)
+		SAFE_DELETE(texture);
+	m_textures.erase(m_textures.begin(), m_textures.end());
 }
 
 void Scene_MainMenu::Update()
 {
+	for (int i = 0; i < m_textures.size(); ++i)
+	{
+		m_textures[i]->Pos() = Vector3(MAIN->GetWidth() / 2.0f, (MAIN->GetHeight() / 2.0f) + 100.0f, 1.0f);
+	}
+
 	for (int i = 0; i < m_buttons.size(); ++i)
 	{
-		m_buttons[i]->Pos() = (Vector3(MAIN->GetWidth() / 2.0f, (MAIN->GetHeight() / 2.0f) - (i * 100.0f + 100.0f), 1.0f));
+		m_buttons[i]->Pos() = Vector3(MAIN->GetWidth() / 2.0f, (MAIN->GetHeight() / 2.0f) - (i * 100.0f + 100.0f), 1.0f);
 
 		if (m_buttons[i]->CheckMouseCollision(mousePos))
 		{
@@ -56,7 +69,6 @@ void Scene_MainMenu::Update()
 
 void Scene_MainMenu::Render()
 {
-	SAVELOAD->GetSky()->Render();
 }
 
 void Scene_MainMenu::PreRender()
@@ -67,10 +79,11 @@ void Scene_MainMenu::PostRender()
 {
 	ENV->PostSet();
 
+	for (UITexture* texture : m_textures)
+		texture->Render();
+
 	for (Button* button : m_buttons)
-	{
 		button->Render();
-	}
 
 	ENV->Set();
 }

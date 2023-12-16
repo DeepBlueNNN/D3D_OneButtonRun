@@ -74,6 +74,8 @@ void SceneManager::Update()
 
 void SceneManager::Render()
 {
+	SAVELOAD->GetSky()->Render();
+
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
 		if (m_scenes[i]->IsActive())
@@ -126,12 +128,12 @@ void SceneManager::ChangeScene(string name, bool withGrid)
 		{
 			m_scenes[i]->SetActive(true);
 			m_scenes[i]->ChangeScene();
-
-			// 활성화된 Scene에 맵로드
-			//if(SAVELOAD->GetLoadPath() != L"")
-			//	SAVELOAD->LoadScene(SAVELOAD->GetLoadPath());
 		}
 	}
+
+	// 활성화된 Scene에 맵로드
+	if (SAVELOAD->GetLoadPath() != L"")
+		SAVELOAD->LoadScene(SAVELOAD->GetLoadPath());
 
 	m_strSceneName = name;
 }

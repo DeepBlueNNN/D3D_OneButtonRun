@@ -261,6 +261,9 @@
     <ClInclude Include="Framework\Buffer\StructuredBuffer.h" />
     <ClInclude Include="Scene\Scene_SelectStage.h" />
     <ClInclude Include="Framework\Object\UI\SubMenu.h" />
+    <ClInclude Include="Framework\Object\UI\UITexture.h" />
+    <ClInclude Include="Framework\Object\UI\HowToPlay.h" />
+    <ClInclude Include="Framework\Object\UI\UIPanel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -428,6 +431,8 @@
     <ClCompile Include="Framework\Buffer\StructuredBuffer.cpp" />
     <ClCompile Include="Scene\Scene_SelectStage.cpp" />
     <ClCompile Include="Framework\Object\UI\SubMenu.cpp" />
+    <ClCompile Include="Framework\Object\UI\UITexture.cpp" />
+    <ClCompile Include="Framework\Object\UI\HowToPlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">
@@ -484,6 +489,7 @@
     <FxCompile Include="Shaders\Geometry\SpriteParticle.hlsl" />
     <FxCompile Include="Shaders\LandScape\Terrain.hlsl" />
     <FxCompile Include="Shaders\UI\Button.hlsl" />
+    <FxCompile Include="Shaders\UI\UITexture.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\PixelHeader.hlsli">

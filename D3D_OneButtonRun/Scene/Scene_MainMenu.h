@@ -14,5 +14,6 @@ public:
 	void GUIRender()   override;
 
 private:
+	vector<UITexture*> m_textures;
 	vector<Button*> m_buttons;
 };
