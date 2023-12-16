@@ -162,6 +162,7 @@ void SaveLoadManager::SaveScene(wstring savePath)
 	{
 		tinyxml2::XMLElement* list_type = list->InsertNewChildElement("ActorInfo");
 		list_type->SetAttribute("Count", gameActor->GetColliders().size());
+		list_type->SetAttribute("FBXFolder", gameActor->GetFolderName().c_str());
 		list_type->SetAttribute("FBX", gameActor->GetName().c_str());
 
 		int count = gameActor->GetColliders().size();
@@ -343,8 +344,9 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	for (int i = 0; i < size; ++i)
 	{
 		int size = actorInfo->IntAttribute("Count");
+		string folderName = actorInfo->Attribute("FBXFolder");
 		string fbxName = actorInfo->Attribute("FBX");
-		InstancingActor* instActor = new InstancingActor(GameActor::ENTITY, "", fbxName);
+		InstancingActor* instActor = new InstancingActor(GameActor::ENTITY, folderName, fbxName);
 		tinyxml2::XMLElement* index = actorInfo->FirstChildElement();
 
 		for (int j = 0; j < size; ++j)
@@ -436,33 +438,4 @@ void SaveLoadManager::GUIRender()
 	Load();
 	ImGui::SameLine();
 	Clear();
-}
-
-/// <summary>
-/// GameActor Class 추가 후 이 함수 내용에 추가한 Class 추가하기
-/// </summary>
-/// <param name="type">enum GameActor::GameActorTag</param>
-/// <param name="fbxName">파일 이름만(확장자 없이)</param>
-/// <param name="id">Editor상의 중복된 Class 번호</param>
-/// <returns>함수에서 생성된 GameActor를 반환</returns>
-GameActor* SaveLoadManager::CreateInstancingActor(GameActor::GameActorTag type, string fbxName)
-{
-	GameActor* actor = nullptr;
-
-	//switch (type)
-	//{
-	//case GameActor::PLAYER:
-	//	actor = new GamePlayer();
-	//	break;
-
-	//case GameActor::TREE:
-	//	actor = new Tree(fbxName);
-	//	break;
-
-	//case GameActor::ROCK:
-	//	actor = new Rock(fbxName);
-	//	break;
-	//}
-
-	return actor;
 }

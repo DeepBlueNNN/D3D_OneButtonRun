@@ -11,6 +11,7 @@ InstancingActor::InstancingActor(GameActorTag actorType, string folder ,string f
 	modelExporter->ExportMesh();
 	delete(modelExporter);
 
+	m_folder = folder;
 	m_name = fbxName;
 	m_model = new ModelInstancing(fbxName);
 }
