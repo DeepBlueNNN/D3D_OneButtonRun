@@ -10,17 +10,14 @@ Scene_GamePlay::Scene_GamePlay()
 	Font::Get()->SetColor("White");
 	Font::Get()->SetStyle("Default");
 
-	// Camera 임시 세팅
-	CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
-	CAMERA->Rot() = Vector3(XMConvertToRadians(24.0f), XMConvertToRadians(3.8f), XMConvertToRadians(0.0f));
-
 	// GamePlay 세팅
 	m_sceneName = "GamePlay";
 
 	m_player = new GamePlayer();
 	m_player->SetPosition(Vector3(0, 30, 0));
 	m_playerOriginPos = m_player->GetColliderPosition();
-	m_player->SetIsGravityActive(true);
+	m_playerOriginVelocity = m_player->Velocity();
+	m_player->SetIsGravityActive(false);
 
 	// 바닥 오브젝트 임시 세팅
 	m_grounds.push_back(new BoxCollider(Vector3(100.0f, 10.0f, 100.0f)));
@@ -44,6 +41,7 @@ Scene_GamePlay::Scene_GamePlay()
 	m_groundCubes.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(30.0f));
 
 	// UI 변수 세팅
+	m_playStartCount = 3;
 	m_refreshCount = 0;
 	m_playTime = 0.0f;
 
@@ -66,57 +64,114 @@ Scene_GamePlay::~Scene_GamePlay()
 	m_grounds.erase(m_grounds.begin(), m_grounds.end());
 
 	SAFE_DELETE(m_player);
-
+	SAFE_DELETE(m_howToPlay);
 	SAFE_DELETE(m_subMenu);
 }
 
 void Scene_GamePlay::Update()
 {
-	m_playTime += DELTA;
-
-	for (Cube* cube : m_groundCubes)
-		cube->UpdateWorld();
-
-	m_player->Update();
-
-	for (BoxCollider* ground : m_grounds)
-	{
-		/*if (ground->IsCollision(m_player->GetCollider()))
-		{
-			m_player->Friction(ground->GetClosestPoint());
-			m_player->SetIsCollision(true);
-		}
-		else
-		{
-			m_player->SetIsCollision(false);
-		}*/
-
-		if (m_player->GetCollider()->IsCollision(ground))
-		{
-			m_player->Friction(ground->GetClosestPoint());
-			m_player->RegisterObject(ground);
-		}
-		else
-		{
-			m_player->RemoveObject(ground);
-		}
-	}
-
-	if (KEY_DOWN(VK_SPACE))
-	{
-		m_player->SetPosition(m_playerOriginPos);
-		m_refreshCount++;
-	}
-
-	// 세이브된 맵 적용
-	//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-	//for (const auto actor : actors)
-	//	actor->Update();
+	// Camera 임시 세팅
+	CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
+	CAMERA->Rot() = Vector3(XMConvertToRadians(24.0f), XMConvertToRadians(3.8f), XMConvertToRadians(0.0f));
 
 	if (m_howToPlay->IsPanelOn())
 		m_howToPlay->Update();
 
 	m_subMenu->Update();
+
+	if (m_isPlayStart)	// Play Start 시에 3초 카운트
+	{
+		m_player->SetIsGravityActive(false);
+
+		// 세이브된 맵 적용
+		//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+		//for (const auto actor : actors)
+		//	actor->Update();
+
+		for (Cube* cube : m_groundCubes)
+			cube->UpdateWorld();
+
+		m_player->Update();
+
+		if (!m_subMenu->IsPanelOn())
+		{
+			m_howToPlay->SetPanelOn(true);
+
+			m_playTime += DELTA;
+			if (m_playTime >= 1.0f)
+			{
+				m_playStartCount -= (UINT)m_playTime;
+				m_playTime = 0.0f;
+			}
+
+			if (m_playStartCount <= 0)
+			{
+				m_isPlayStart = false;
+				m_isPlaying = true;
+
+				m_howToPlay->SetPanelOn(false);
+			}
+		}
+		else
+			m_howToPlay->SetPanelOn(false);
+	}
+	else	// 3초 카운트 후에 Game Play
+	{
+		if (m_subMenu->IsPanelOn())
+		{
+			m_player->SetIsGravityActive(false);
+			m_isPlaying = false;
+		}
+		else
+		{
+			m_player->SetIsGravityActive(true);
+			m_isPlaying = true;
+		}
+
+		if (m_isPlaying)
+		{
+			m_playTime += DELTA;
+
+			// 세이브된 맵 적용
+			//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+			//for (const auto actor : actors)
+			//	actor->Update();
+
+			for (Cube* cube : m_groundCubes)
+				cube->UpdateWorld();
+
+			m_player->Update();
+
+			for (BoxCollider* ground : m_grounds)
+			{
+				/*if (ground->IsCollision(m_player->GetCollider()))
+				{
+					m_player->Friction(ground->GetClosestPoint());
+					m_player->SetIsCollision(true);
+				}
+				else
+				{
+					m_player->SetIsCollision(false);
+				}*/
+
+				if (m_player->GetCollider()->IsCollision(ground))
+				{
+					m_player->Friction(ground->GetClosestPoint());
+					m_player->RegisterObject(ground);
+				}
+				else
+				{
+					m_player->RemoveObject(ground);
+				}
+			}
+
+			if (KEY_DOWN(VK_SPACE))
+			{
+				m_player->SetPosition(m_playerOriginPos);
+				m_refreshCount++;
+			}
+		}
+	}
 }
 
 void Scene_GamePlay::Render()
@@ -135,15 +190,17 @@ void Scene_GamePlay::Render()
 	m_player->Render();
 }
 
+void Scene_GamePlay::ChangeScene()
+{
+	Initialize();
+}
+
 void Scene_GamePlay::PreRender()
 {
 }
 
 void Scene_GamePlay::PostRender()
 {
-	//PrintRefreshCount();
-	//PrintPlayTime();
-
 	Font::Get()->GetDC()->BeginDraw();
 	{
 		PrintRefreshCount();
@@ -165,6 +222,28 @@ void Scene_GamePlay::GUIRender()
 		ground->GUIRender();
 }
 
+void Scene_GamePlay::Initialize()
+{
+	// Camera 임시 세팅
+	CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
+	CAMERA->Rot() = Vector3(XMConvertToRadians(24.0f), XMConvertToRadians(3.8f), XMConvertToRadians(0.0f));
+
+	// Player 위치, velocity 설정
+	m_player->SetPosition(m_playerOriginPos);
+	m_player->Velocity() = m_playerOriginVelocity;
+
+	// Game Play 초기값 설정
+	m_refreshCount = 0;
+	m_playTime = 0.0f;
+	m_playStartCount = 3;
+
+	// Game Play flag 설정
+	m_isPlayStart = true;
+	m_isPlaying = false;
+
+	m_howToPlay->SetPanelOn(true);
+}
+
 void Scene_GamePlay::PrintRefreshCount()
 {
 	/*bool temp = true;
@@ -177,7 +256,7 @@ void Scene_GamePlay::PrintRefreshCount()
 	}
 	ImGui::End();*/
 
-	Font::Get()->RenderText(to_string(m_refreshCount), { (float)MAIN->GetWidth() / 2, 100 }, Float2(200, 100));
+	Font::Get()->RenderText(to_string(m_refreshCount), { (float)MAIN->GetWidth() / 2 + 50, 100 }, Float2(200, 100));
 }
 
 void Scene_GamePlay::PrintPlayTime()
@@ -192,7 +271,10 @@ void Scene_GamePlay::PrintPlayTime()
 	}
 	ImGui::End();*/
 	
-	Font::Get()->RenderText(ConvertToString(m_playTime), {((float)MAIN->GetWidth() / 2) + 90, (float)MAIN->GetHeight() - 100});
+	if (m_isPlayStart)
+		Font::Get()->RenderText(to_string(m_playStartCount).c_str(), {((float)MAIN->GetWidth() / 2), (float)MAIN->GetHeight() - 100});
+	else
+		Font::Get()->RenderText(ConvertToString(m_playTime), {((float)MAIN->GetWidth() / 2) + 90, (float)MAIN->GetHeight() - 100});
 }
 
 string Scene_GamePlay::ConvertToString(float value)

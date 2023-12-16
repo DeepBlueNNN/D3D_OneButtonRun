@@ -9,9 +9,13 @@ public:
 public:
 	void Update()      override;
 	void Render()      override;
+	void ChangeScene() override;
 	void PreRender()   override;
 	void PostRender()  override;
 	void GUIRender()   override;
+
+public:
+	void Initialize();
 
 private:
 	/// <summary>
@@ -39,8 +43,15 @@ private:
 
 private:
 	Vector3 m_playerOriginPos = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 m_playerOriginVelocity = Vector3(0.0f, 0.0f, 0.0f);
+
+	bool m_isPlayStart = true;	// Play Start 시에 3초 카운트 flag
+	UINT m_playStartCount = 3;
+
+	bool m_isPlaying = false;	// 3초 카운트 후에 Game Play flag
 	UINT m_refreshCount = 0;
 	float m_playTime = 0.0f;
+
 	SubMenu* m_subMenu = nullptr;
 	HowToPlay* m_howToPlay = nullptr;
 
