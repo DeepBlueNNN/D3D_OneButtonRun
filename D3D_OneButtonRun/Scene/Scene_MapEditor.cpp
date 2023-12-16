@@ -80,7 +80,7 @@ void Scene_MapEditor::GUIRender()
 		if (m_selectedActor.transform)
 		{
 			if (ImGui::DragFloat3("Actor Position", (float*)&m_actorPos, 0.1f))
-			{
+			{ 
 				m_selectedActor.transform->Pos() += m_actorPos;
 				for (const auto& collider : m_selectedActor.actor->GetColliders()[m_selectedActor.index])
 					collider->Pos() += m_actorPos;
@@ -91,10 +91,10 @@ void Scene_MapEditor::GUIRender()
 			for (UINT i = 0; i < m_selectedActor.actor->GetColliders()[m_selectedActor.index].size(); i++)
 			{
 				m_selectedActor.actor->GetColliders()[m_selectedActor.index][i]->GUIRender();
-				DeleteCollider(m_selectedActor.actor->GetColliders()[m_selectedActor.index], i);
+				DeleteCollider(m_selectedActor.actor, m_selectedActor.actor->GetColliders()[m_selectedActor.index], i);
 			}
 			AddCollider(m_selectedActor.actor, m_selectedActor.index);
-			DeleteActor();
+			DeleteActor(m_selectedActor.actor, m_selectedActor.index);
 		}
 
 		ImGui::TreePop();
@@ -117,11 +117,11 @@ void Scene_MapEditor::GUIRender()
 						for (UINT j = 0; j < actor->GetColliders()[i].size(); j++)
 						{
 							actor->GetColliders()[i][j]->GUIRender();
-							DeleteCollider(actor->GetColliders()[i], j);
+							DeleteCollider(actor, actor->GetColliders()[i], j);
 						}
 
 						AddCollider(actor, i);
-						DeleteActor();
+						DeleteActor(actor, i);
 
 						ImGui::TreePop();
 					}
@@ -246,7 +246,7 @@ void Scene_MapEditor::AddActor()
 	}
 }
 
-void Scene_MapEditor::AddCollider(InstancingActor* actor, int index)
+void Scene_MapEditor::AddCollider(InstancingActor* actor, UINT index)
 {
 	string label = actor->GetName() + " Add Collider";
 	if (ImGui::TreeNode(label.c_str()))
@@ -269,45 +269,36 @@ void Scene_MapEditor::AddCollider(InstancingActor* actor, int index)
 	}
 }
 
-void Scene_MapEditor::DeleteActor()
+void Scene_MapEditor::DeleteActor(InstancingActor* actor, UINT index)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
 	bool ret = ImGui::Button(u8"Actor 삭제", ImVec2(100, 20));
-	ImGui::PopStyleColor(3);
 
 	if (ret)
 	{
-		m_selectedActor.actor->Erase(m_selectedActor.index);
-		if (!m_selectedActor.actor->GetColliders().size())
-		{
-			vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-			for (UINT i = 0; i < actors.size(); i++)
-			{
-				if (actors[i] == m_selectedActor.actor)
-				{
-					actors[i]->Erase(i);
-					break;
-				}
-			}
-		}
-		m_selectedActor = StoreActor();
+		actor->Erase(index);
+
+		if (m_selectedActor.actor == actor)
+			m_selectedActor = StoreActor();
 	}
+
+	ImGui::PopStyleColor(3);
 }
 
-void Scene_MapEditor::DeleteCollider(vector<Collider*>& colliders, int index)
+void Scene_MapEditor::DeleteCollider(InstancingActor* actor, vector<Collider*>& colliders, UINT index)
 {
 	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.6f, 0.6f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f / 7.0f, 0.8f, 0.8f));
-	bool ret = ImGui::Button(u8"Collider 삭제", ImVec2(100, 20));
+
+	string label = u8"Collider_" + to_string(index) + u8" 삭제";
+	bool ret = ImGui::Button(label.c_str(), ImVec2(150, 20));
 
 	if (ret)
 	{
-		SAFE_DELETE(colliders[index]);
-
-		colliders.erase(colliders.begin() + index);
+		actor->EraseCollider(colliders, index);
 	}
 
 	ImGui::PopStyleColor(3);
