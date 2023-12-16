@@ -181,8 +181,11 @@
     <ClInclude Include="Framework\Object\Particle\Spark.h" />
     <ClInclude Include="Framework\Object\Particle\SpriteParticle.h" />
     <ClInclude Include="Framework\Object\UI\Button.h" />
+    <ClInclude Include="Framework\Object\UI\HowToPlay.h" />
     <ClInclude Include="Framework\Object\UI\SubMenu.h" />
     <ClInclude Include="Framework\Object\UI\ProgressBar.h" />
+    <ClInclude Include="Framework\Object\UI\UIPanel.h" />
+    <ClInclude Include="Framework\Object\UI\UITexture.h" />
     <ClInclude Include="Framework\Render\Material.h" />
     <ClInclude Include="Framework\Render\Mesh.h" />
     <ClInclude Include="Framework\Render\Texture.h" />
@@ -264,8 +267,10 @@
     <ClCompile Include="Framework\Object\Particle\Spark.cpp" />
     <ClCompile Include="Framework\Object\Particle\SpriteParticle.cpp" />
     <ClCompile Include="Framework\Object\UI\Button.cpp" />
+    <ClCompile Include="Framework\Object\UI\HowToPlay.cpp" />
     <ClCompile Include="Framework\Object\UI\SubMenu.cpp" />
     <ClCompile Include="Framework\Object\UI\ProgressBar.cpp" />
+    <ClCompile Include="Framework\Object\UI\UITexture.cpp" />
     <ClCompile Include="Framework\Render\Material.cpp" />
     <ClCompile Include="Framework\Render\Texture.cpp" />
     <ClCompile Include="Framework\Shader\ComputeShader.cpp" />
@@ -394,6 +399,20 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shaders\UI\Button.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="Shaders\UI\UITexture.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

@@ -54,8 +54,6 @@ void Scene_MapEditor::Update()
 
 void Scene_MapEditor::Render()
 {
-	SAVELOAD->GetSky()->Render();
-
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Render();

@@ -47,8 +47,10 @@ Scene_GamePlay::Scene_GamePlay()
 	m_refreshCount = 0;
 	m_playTime = 0.0f;
 
-	// SubMenu
+	// UIPanel
 	m_subMenu = new SubMenu();
+	m_howToPlay = new HowToPlay();
+	m_howToPlay->SetPanelOn(true);
 }
 
 Scene_GamePlay::~Scene_GamePlay()
@@ -106,11 +108,24 @@ void Scene_GamePlay::Update()
 		m_refreshCount++;
 	}
 
+	// 세이브된 맵 적용
+	//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+	//for (const auto actor : actors)
+	//	actor->Update();
+
+	if (m_howToPlay->IsPanelOn())
+		m_howToPlay->Update();
+
 	m_subMenu->Update();
 }
 
 void Scene_GamePlay::Render()
 {
+	// 세이브된 맵 적용
+	//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+	//for (const auto actor : actors)
+	//	actor->Render();
+
 	for (Cube* cube : m_groundCubes)
 		cube->Render();
 
@@ -135,6 +150,9 @@ void Scene_GamePlay::PostRender()
 		PrintPlayTime();
 	}
 	Font::Get()->GetDC()->EndDraw();
+
+	if (m_howToPlay->IsPanelOn())
+		m_howToPlay->Render();
 
 	m_subMenu->Render();
 }

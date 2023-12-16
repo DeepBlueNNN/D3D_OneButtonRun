@@ -1,9 +1,9 @@
 #pragma once
-class SubMenu : public UIPanel
+class HowToPlay : public UIPanel
 {
 public:
-	SubMenu();
-	~SubMenu();
+	HowToPlay();
+	~HowToPlay();
 
 public:
 	void Update() override;
@@ -13,6 +13,4 @@ private:
 	// Textures
 	vector<UITexture*> m_textures;
 
-	// Buttons
-	vector<Button*> m_buttons;
 };

@@ -42,5 +42,6 @@ private:
 	UINT m_refreshCount = 0;
 	float m_playTime = 0.0f;
 	SubMenu* m_subMenu = nullptr;
+	HowToPlay* m_howToPlay = nullptr;
 
 };

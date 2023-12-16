@@ -75,7 +75,7 @@ private:
 	string m_savePath = "";
 
 	// LoadPath
-	wstring m_loadPath;
+	wstring m_loadPath = L"";
 
 	// Record
 	vector<string> m_record;
