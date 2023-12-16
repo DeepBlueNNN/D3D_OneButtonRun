@@ -37,18 +37,18 @@ private:
 	/// <param name="actor"></param>
 	/// <param name="index"></param>
 	/// <param name="type"></param>
-	void AddCollider(InstancingActor* actor, int index);
+	void AddCollider(InstancingActor* actor, UINT index);
 	/// <summary>
 	/// Scene_MapEditor runtime에 Actor삭제
 	/// </summary>
 	/// <param name="actor">GameActor*</param>
-	void DeleteActor();
+	void DeleteActor(InstancingActor* actor, UINT index);
 	/// <summary>
 	/// Collider* 삭제
 	/// </summary>
 	/// <param name="colliders"></param>
 	/// <param name="index"></param>
-	void DeleteCollider(vector<Collider*>& colliders, int index);
+	void DeleteCollider(InstancingActor* actor, vector<Collider*>& colliders, UINT index);
 
 private:
 	// Editor Variable

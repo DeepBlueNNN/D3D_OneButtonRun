@@ -18,6 +18,14 @@ InstancingActor::InstancingActor(GameActorTag actorType, string fbxName)
 InstancingActor::~InstancingActor()
 {
 	SAFE_DELETE(m_model);
+	for (auto& colliders : m_colliders)
+	{
+		for (auto& collider : colliders)
+			SAFE_DELETE(collider);
+
+		colliders.erase(colliders.begin(), colliders.end());
+		colliders.clear();
+	}
 	m_colliders.erase(m_colliders.begin(), m_colliders.end());
 	m_colliders.clear();
 }
@@ -84,6 +92,21 @@ UINT InstancingActor::Add()
 	return GetModels()->GetTransforms().size();
 }
 
+void InstancingActor::Erase(UINT index)
+{
+	if (GetModels()->GetTransforms().size() <= index) return;
+
+	// erase actor's colliders
+	for (auto& collider : m_colliders[index])
+		SAFE_DELETE(collider);
+	m_colliders[index].erase(m_colliders[index].begin(), m_colliders[index].end());
+
+	// erase actor
+	auto& transforms = GetModels()->GetTransforms();
+	//SAFE_DELETE(transforms[index]);
+	transforms.erase(remove(transforms.begin(), transforms.end(), transforms[index]), transforms.end());
+}
+
 UINT InstancingActor::AddCollider(UINT index, Collider::Type type)
 {
 	switch (type)
@@ -108,14 +131,31 @@ UINT InstancingActor::AddCollider(UINT index, Collider::Type type)
 	return GetColliders()[index].size();
 }
 
-void InstancingActor::Erase(UINT index)
+void InstancingActor::EraseCollider(vector<Collider*>& colliders, Collider* collider)
 {
-	if (index >= m_colliders.size()) return;
+	SAFE_DELETE(collider);
 
-	GetModels()->GetTransforms().erase(GetModels()->GetTransforms().begin() + index);
-	auto& colliders = GetColliders()[index];
-	for (auto& collider : colliders)
-		SAFE_DELETE(collider);
+	colliders.erase(remove(colliders.begin(), colliders.end(), collider), colliders.end());
+}
 
-	colliders.erase(colliders.begin(), colliders.end());
+void InstancingActor::EraseCollider(vector<Collider*>& colliders, UINT index)
+{
+	SAFE_DELETE(colliders[index]);
+
+	colliders.erase(remove(colliders.begin(), colliders.end(), colliders[index]), colliders.end());
+}
+
+void InstancingActor::EraseCollider(UINT index, Collider* collider)
+{
+	SAFE_DELETE(collider);
+
+	m_colliders[index].erase(remove(m_colliders[index].begin(), m_colliders[index].end(), collider), m_colliders[index].end());
+}
+
+void InstancingActor::EraseCollider(UINT firstIndex, UINT secondIndex)
+{
+	SAFE_DELETE(m_colliders[firstIndex][secondIndex]);
+
+	m_colliders[firstIndex].erase(remove(m_colliders[firstIndex].begin(), m_colliders[firstIndex].end(), 
+		m_colliders[firstIndex][secondIndex]), m_colliders[firstIndex].end());
 }
