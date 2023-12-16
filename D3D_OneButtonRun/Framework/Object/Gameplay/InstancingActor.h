@@ -3,7 +3,7 @@
 class InstancingActor : public GameActor
 {
 public:
-	InstancingActor(GameActorTag actorType, string fbxName);
+	InstancingActor(GameActorTag actorType, string folder, string fbxName);
 	~InstancingActor();
 
 public:

@@ -1,10 +1,10 @@
 #include "framework.h"
 #include "InstancingActor.h"
 
-InstancingActor::InstancingActor(GameActorTag actorType, string fbxName)
+InstancingActor::InstancingActor(GameActorTag actorType, string folder ,string fbxName)
 	: GameActor(actorType)
 {
-	string file = "Assets/FBX/" + fbxName + ".fbx";
+	string file = "Assets/FBX/" + folder + "/" + fbxName + ".fbx";
 
 	ModelExporter* modelExporter = new ModelExporter(fbxName, file);
 	modelExporter->ExportMaterial();
@@ -17,7 +17,6 @@ InstancingActor::InstancingActor(GameActorTag actorType, string fbxName)
 
 InstancingActor::~InstancingActor()
 {
-	SAFE_DELETE(m_model);
 	for (auto& colliders : m_colliders)
 	{
 		for (auto& collider : colliders)
@@ -28,6 +27,7 @@ InstancingActor::~InstancingActor()
 	}
 	m_colliders.erase(m_colliders.begin(), m_colliders.end());
 	m_colliders.clear();
+	SAFE_DELETE(m_model);
 }
 
 void InstancingActor::Update()

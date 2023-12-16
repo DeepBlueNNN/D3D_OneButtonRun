@@ -344,7 +344,7 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	{
 		int size = actorInfo->IntAttribute("Count");
 		string fbxName = actorInfo->Attribute("FBX");
-		InstancingActor* instActor = new InstancingActor(GameActor::ENTITY, fbxName);
+		InstancingActor* instActor = new InstancingActor(GameActor::ENTITY, "", fbxName);
 		tinyxml2::XMLElement* index = actorInfo->FirstChildElement();
 
 		for (int j = 0; j < size; ++j)
