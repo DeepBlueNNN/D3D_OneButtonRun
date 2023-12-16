@@ -55,6 +55,6 @@ private:
 	//GameActor* m_selectedActor = nullptr;
 	StoreActor m_selectedActor;
 	UINT m_colliderType = 0;
-	unordered_map<string, UINT> m_fbxList;
+	unordered_map<string, vector<string>> m_fbxList;
 	Vector3 m_actorPos;
 };

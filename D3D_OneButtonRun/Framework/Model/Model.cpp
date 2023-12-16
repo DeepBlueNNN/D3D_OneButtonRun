@@ -15,8 +15,8 @@ Model::~Model()
 {
 	SAFE_DELETE(m_worldBuffer);
 
-	for (Material* matrial : m_materials)
-		SAFE_DELETE(matrial);
+	//for (Material* matrial : m_materials)
+	//	SAFE_DELETE(matrial);
 	for (ModelMesh* mesh : m_meshes)
 		SAFE_DELETE(mesh);
 

@@ -6,33 +6,29 @@ Scene_MapEditor::Scene_MapEditor()
 	m_sceneName = "MapEditor";
 
 	vector<string> fileList;
-	StringPath::GetFiles(fileList, "Assets/FBX/", "*.fbx", false);
+	StringPath::GetFiles(fileList, "Assets/FBX/", "*", true);
 	for (auto& list : fileList)
 	{
-		// Assets/FBX 폴더에 있는 fbx파일을 확장자 빼고 모두 가져오기
+		string fbxFolder = "Assets/FBX/";
+		list = list.substr(fbxFolder.length());
+
+		// 하위 폴더가 있는경우 분리
+		size_t result = list.find('/');
+		string folder = list.substr(0, result);
+		if (folder.length() > 0)
+			m_fbxList.insert(make_pair(folder, vector<string>()));
+
+		// 폴더 이름에 맞춰서 파일이름 정리
 		list = StringPath::GetFileNameWithoutExtension(list);
-		size_t result = list.find('_');
+		m_fbxList.find(folder)->second.push_back(list);
+	}
 
-		// 파일 이름에 '_'가 포함되어 있다면
-		if (result != string::npos)
-		{
-			string name = list.substr(0, result);
-
-			// 동일한(숫자만 다른) fbx가 이미 등록되어 있는 경우
-			auto find = m_fbxList.find(name);
-			if (find != m_fbxList.end())
-			{
-				find->second++;
-			}
-			else
-			{
-				m_fbxList.insert(make_pair(name, 1));
-			}
-		}
-		else // 파일 이름에 '_'가 없다면
-		{
-			m_fbxList.insert(make_pair(list, 1));
-		}
+	for (const auto& list : m_fbxList)
+	{
+		cout << list.first << " : ";
+		for (const auto& name : list.second)
+			cout << name << ", ";
+		cout << '\n';
 	}
 }
 
@@ -46,8 +42,11 @@ void Scene_MapEditor::Update()
 	ENV->Update();
 
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-	for (const auto actor : actors)
-		actor->Update();
+	if (actors.size() > 0)
+	{
+		for (const auto actor : actors)
+			actor->Update();
+	}
 
 	SelectActor();
 }
@@ -55,8 +54,11 @@ void Scene_MapEditor::Update()
 void Scene_MapEditor::Render()
 {
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-	for (const auto actor : actors)
-		actor->Render();
+	if (actors.size() > 0)
+	{
+		for (const auto actor : actors)
+			actor->Render();
+	}
 }
 
 void Scene_MapEditor::PreRender()
@@ -100,38 +102,48 @@ void Scene_MapEditor::GUIRender()
 		ImGui::TreePop();
 	}
 
-	label = "Actors";
-	if (ImGui::TreeNode(label.c_str()))
+	if (actors.size() > 0)
 	{
-		for (const auto& actor : actors)
+		label = "Actors";
+		if (ImGui::TreeNode(label.c_str()))
 		{
-			string fbxName = actor->GetName();
-			if (ImGui::TreeNode(fbxName.c_str()))
+			for (auto& actor : actors)
 			{
-				for (UINT i = 0; i < actor->GetModels()->GetTransforms().size(); i++)
+				string fbxName = actor->GetName();
+				if (ImGui::TreeNode(fbxName.c_str()))
 				{
-					string actorName = actor->GetModels()->GetTransforms()[i]->GetTag() + "_" + to_string(i + 1);
-					if (ImGui::TreeNode(actorName.c_str()))
+					for (UINT i = 0; i < actor->GetModels()->GetTransforms().size(); i++)
 					{
-						actor->GetModels()->GetTransforms()[i]->GUIRender();
-						for (UINT j = 0; j < actor->GetColliders()[i].size(); j++)
+						string actorName = actor->GetModels()->GetTransforms()[i]->GetTag() + "_" + to_string(i + 1);
+						if (ImGui::TreeNode(actorName.c_str()))
 						{
-							actor->GetColliders()[i][j]->GUIRender();
-							DeleteCollider(actor, actor->GetColliders()[i], j);
+							actor->GetModels()->GetTransforms()[i]->GUIRender();
+							for (UINT j = 0; j < actor->GetColliders()[i].size(); j++)
+							{
+								actor->GetColliders()[i][j]->GUIRender();
+								DeleteCollider(actor, actor->GetColliders()[i], j);
+							}
+
+							AddCollider(actor, i);
+							DeleteActor(actor, i);
+
+							ImGui::TreePop();
 						}
-
-						AddCollider(actor, i);
-						DeleteActor(actor, i);
-
-						ImGui::TreePop();
 					}
+
+					ImGui::TreePop();
 				}
 
-				ImGui::TreePop();
+				if (actor->GetModels()->GetTransforms().size() <= 0)
+				{
+					SAFE_DELETE(actor);
+					actors.erase(remove(actors.begin(), actors.end(), actor), actors.end());
+					continue;
+				}
 			}
-		}
 
-		ImGui::TreePop();
+			ImGui::TreePop();
+		}
 	}
 
 	AddActor();
@@ -202,19 +214,17 @@ void Scene_MapEditor::AddActor()
 		{
 			if (ImGui::TreeNode(list.first.c_str()))
 			{
-				for (UINT i = 1; i < list.second + 1; i++)
+				for (const auto& name : list.second)
 				{
-					string name = list.first + "_" + to_string(i);
 					bool ret = ImGui::Button(name.c_str(), ImVec2(200, 25));
 
 					bool existence = false;
 					if (ret)
 					{
-						string fbxName = list.first + "_" + to_string(i);
 						for (auto& actor : actors)
 						{
 							// 해당 fbx로 생성된 InstancingActor가 있는지
-							if (!strcmp(actor->GetName().c_str(), fbxName.c_str()))
+							if (!strcmp(actor->GetName().c_str(), name.c_str()))
 							{
 								existence = true;
 								actor->Add();
@@ -225,7 +235,7 @@ void Scene_MapEditor::AddActor()
 						// 해당 fbx로 생성된 InstancingActor가 없다면(위의 for문에서 return 되지 못했다면)
 						if (!existence)
 						{
-							actors.push_back(new InstancingActor(GameActor::GameActorTag::ENTITY, fbxName));
+							actors.push_back(new InstancingActor(GameActor::GameActorTag::ENTITY, list.first, name));
 							actors[actors.size() - 1]->Add();
 						}
 
