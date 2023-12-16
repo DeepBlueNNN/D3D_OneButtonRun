@@ -52,7 +52,6 @@ public:
 	/// </summary>
 	/// <returns>m_lightBuffer</returns>
 	LightBuffer*& GetLightBuffer() { return m_lightBuffer; }
-	GameActor* CreateInstancingActor(GameActor::GameActorTag type, string fbxName);
 	vector<string>& GetClassNames() { return m_classNames; }
 	vector<string>& GetFBXNames() { return m_fbxNames; }
 	/// <summary>

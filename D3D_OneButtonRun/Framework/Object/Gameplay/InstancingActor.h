@@ -17,6 +17,7 @@ public:
 	// Getter
 	ModelInstancing* GetModels() { return dynamic_cast<ModelInstancing*>(m_model); }
 	vector<vector<Collider*>>& GetColliders() { return m_colliders; }
+	string GetFolderName() { return m_folder; }
 
 	// Add&Erase Actor, Collider
 	UINT Add();
@@ -29,4 +30,6 @@ public:
 
 private:
 	vector<vector<Collider*>> m_colliders;
+	string m_folder = "";
+
 };
