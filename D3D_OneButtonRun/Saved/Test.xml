@@ -1,4 +1,4 @@
-<Test2 Scene="Test">
+<Test Scene="Test">
     <CubeMap File="Textures/CubeMap/Spring.dds"/>
     <Camera>
         <Position X="0" Y="4.6999998" Z="-20"/>
@@ -15,45 +15,26 @@
         <Rotation X="0" Y="0" Z="0"/>
         <Scale X="0.039999999" Y="0.039999999" Z="0.039999999"/>
     </Player>
-    <GameActors NumberOfInstances="2">
-        <ActorInfo Count="1" FBXFolder="kenney_nature-kit" FBX="bed_floor">
+    <GameActors NumberOfInstances="1">
+        <ActorInfo Count="2" FBXFolder="kenney_nature-kit" FBX="bed">
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="0" Y="0" Z="0"/>
+                    <Position X="-7.0999999" Y="5.0999999" Z="0"/>
                     <Rotation X="0" Y="0" Z="0"/>
                     <Scale X="1" Y="1" Z="1"/>
                 </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="1">
-                        <Position X="0" Y="0" Z="0"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="1" Y="1" Z="1"/>
-                    </Collider_0>
-                </Colliders>
+                <Colliders NumberOfColliders="0"/>
             </Actor_0>
-        </ActorInfo>
-        <ActorInfo Count="1" FBXFolder="kenney_nature-kit" FBX="bridge_center_stoneRound">
-            <Actor_0>
+            <Actor_1>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="0" Y="0" Z="0"/>
+                    <Position X="7.8000002" Y="0" Z="0"/>
                     <Rotation X="0" Y="0" Z="0"/>
                     <Scale X="1" Y="1" Z="1"/>
                 </ModelTransform>
-                <Colliders NumberOfColliders="2">
-                    <Collider_0 Type="0">
-                        <Position X="0" Y="0" Z="0"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="1" Y="1" Z="1"/>
-                    </Collider_0>
-                    <Collider_1 Type="2">
-                        <Position X="0" Y="0" Z="0"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="1" Y="1" Z="1"/>
-                    </Collider_1>
-                </Colliders>
-            </Actor_0>
+                <Colliders NumberOfColliders="0"/>
+            </Actor_1>
         </ActorInfo>
     </GameActors>
-</Test2>
+</Test>
