@@ -161,11 +161,11 @@ void SaveLoadManager::SaveScene(wstring savePath)
 	for (InstancingActor* gameActor : m_intancingActors)
 	{
 		tinyxml2::XMLElement* list_type = list->InsertNewChildElement("ActorInfo");
-		list_type->SetAttribute("Count", gameActor->GetColliders().size());
+		list_type->SetAttribute("Count", gameActor->GetModels()->GetTransforms().size());
 		list_type->SetAttribute("FBXFolder", gameActor->GetFolderName().c_str());
 		list_type->SetAttribute("FBX", gameActor->GetName().c_str());
 
-		int count = gameActor->GetColliders().size();
+		int count = gameActor->GetModels()->GetTransforms().size();
 		SaveActor(gameActor, count, list_type);
 	}
 
