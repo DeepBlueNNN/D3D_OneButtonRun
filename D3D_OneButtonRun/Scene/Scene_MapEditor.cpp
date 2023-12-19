@@ -5,6 +5,8 @@ Scene_MapEditor::Scene_MapEditor()
 {
 	m_sceneName = "MapEditor";
 
+	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
+
 	vector<string> fileList;
 	StringPath::GetFiles(fileList, "Assets/FBX/", "*", true);
 	for (auto& list : fileList)
@@ -30,6 +32,10 @@ Scene_MapEditor::Scene_MapEditor()
 			cout << name << ", ";
 		cout << '\n';
 	}
+
+	WCHAR lpCurrentDirectory[1024];
+	GetCurrentDirectory(1024, lpCurrentDirectory);
+	m_projectPath = lpCurrentDirectory;
 }
 
 Scene_MapEditor::~Scene_MapEditor()
@@ -41,6 +47,8 @@ void Scene_MapEditor::Update()
 	ENV->Set();
 	ENV->Update();
 
+	SAVELOAD->GetPlayer()->Update();
+
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	if (actors.size() > 0)
 	{
@@ -49,10 +57,24 @@ void Scene_MapEditor::Update()
 	}
 
 	SelectActor();
+
+	if (KEY_PRESS(VK_CONTROL) && KEY_DOWN('S'))
+	{
+		FileDialog dialog;
+		wstring saveFile;
+
+		if (dialog.Save(saveFile, FileDialog::SCENE))
+		{
+			saveFile = saveFile.substr(m_projectPath.size() + 1, saveFile.size());
+			SAVELOAD->SaveScene(saveFile);	// Saved\\Test
+		}
+	}
 }
 
 void Scene_MapEditor::Render()
 {
+	SAVELOAD->GetPlayer()->Render();
+
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	if (actors.size() > 0)
 	{
@@ -81,6 +103,7 @@ void Scene_MapEditor::GUIRender()
 	{
 		if (m_selectedActor.transform)
 		{
+			// SelectedActor의 actor, collider 같이 움직이기
 			if (ImGui::DragFloat3("Actor Position", (float*)&m_actorPos, 0.1f))
 			{ 
 				m_selectedActor.transform->Pos() += m_actorPos;
@@ -88,6 +111,44 @@ void Scene_MapEditor::GUIRender()
 					collider->Pos() += m_actorPos;
 				m_actorPos = Vector3();
 			}
+			//// SelectedActor의 actor, collider를 actor기준으로 rot
+			//if (ImGui::DragFloat3("Actor Rotation", (float*)&m_actorRot, 0.05f))
+			//{
+			//	m_selectedActor.transform->Rot() += m_actorRot;
+			//	for(const auto& collider : m_selectedActor.actor->GetColliders()[m_selectedActor.index])
+			//	{
+			//		if (abs(m_actorRot.x) >= 0.05f)
+			//		{
+
+			//		}
+
+			//		Vector3 delta = collider->Pos() - m_selectedActor.transform->Pos();
+			//		delta = Vector3(cosf(XMConvertToRadians(m_actorRot.y)) * -cosf(XMConvertToRadians(m_actorRot.z)) * delta.x, 
+			//			sinf(XMConvertToRadians(m_actorRot.x)) * sinf(XMConvertToRadians(m_actorRot.z)) * delta.y,
+			//			cosf(XMConvertToRadians(m_actorRot.x)) * sinf(XMConvertToRadians(m_actorRot.y)) * delta.z);
+			//		collider->Rot() += m_actorRot;
+			//		//collider->Pos() = m_selectedActor.transform->Pos() + delta;
+			//		collider->Pos() = m_selectedActor.transform->Pos() + delta;
+			//	}
+			//	m_actorRot = Vector3();
+			//}
+
+			//if (ImGui::DragFloat3("Actor Rotation", (float*)&m_actorRot, 0.05f))
+			//{
+			//	for (auto& collider : m_selectedActor.actor->GetColliders()[m_selectedActor.index])
+			//	{
+			//		Vector3 delta = collider->Pos() - m_selectedActor.transform->Pos();
+			//		float r = delta.Length();
+
+			//		m_selectedActor.transform->Rot().x = m_actorRot.x;
+			//		m_selectedActor.transform->Rot().y = m_actorRot.y;
+			//		m_selectedActor.transform->Rot().z = m_actorRot.z;
+
+			//		Vector3 nextPos = m_selectedActor.transform->Pos() + (m_selectedActor.transform->Left() * delta.x) + (m_selectedActor.transform->Up() * delta.y) + (m_selectedActor.transform->Back() * delta.z);
+			//		collider->Pos() = nextPos;
+			//		collider->Rot() = m_selectedActor.transform->Rot();
+			//	}
+			//}
 
 			m_selectedActor.transform->GUIRender();
 			for (UINT i = 0; i < m_selectedActor.actor->GetColliders()[m_selectedActor.index].size(); i++)
@@ -107,6 +168,14 @@ void Scene_MapEditor::GUIRender()
 		label = "Actors";
 		if (ImGui::TreeNode(label.c_str()))
 		{
+			// player start
+			if (ImGui::TreeNode("Player Start"))
+			{
+				SAVELOAD->GetPlayer()->GUIRender();
+
+				ImGui::TreePop();
+			}
+
 			for (auto& actor : actors)
 			{
 				string fbxName = actor->GetName();
@@ -179,7 +248,7 @@ void Scene_MapEditor::SelectActor()
 
 			for (const auto& collider : actor->GetColliders()[i])
 			{
-				if (collider->IsRayCollision(ray, &contact) && KEY_DOWN(VK_LBUTTON))
+				if (collider->IsRayCollision(ray, &contact) && KEY_DOWN(VK_LBUTTON) && !ImGui::GetIO().WantCaptureMouse)
 				{
 					m_selectedActor.actor = actor;
 					m_selectedActor.transform = actor->GetModels()->GetTransforms()[i];
@@ -217,8 +286,9 @@ void Scene_MapEditor::AddActor()
 				for (const auto& name : list.second)
 				{
 					bool ret = ImGui::Button(name.c_str(), ImVec2(200, 25));
-
 					bool existence = false;
+					InstancingActor* addedActor = nullptr;
+
 					if (ret)
 					{
 						for (auto& actor : actors)
@@ -228,6 +298,7 @@ void Scene_MapEditor::AddActor()
 							{
 								existence = true;
 								actor->Add();
+								addedActor = actor;
 								break;
 							}
 						}
@@ -237,12 +308,12 @@ void Scene_MapEditor::AddActor()
 						{
 							actors.push_back(new InstancingActor(GameActor::GameActorTag::ENTITY, list.first, name));
 							actors[actors.size() - 1]->Add();
+							addedActor = actors[actors.size() - 1];
 						}
 
-						m_selectedActor.actor = actors[actors.size() - 1];
-						m_selectedActor.index = actors[actors.size() - 1]->GetModels()->GetTransforms().size() - 1;
-						m_selectedActor.transform = m_selectedActor.actor->GetModels()->
-							GetTransforms()[m_selectedActor.actor->GetModels()->GetTransforms().size() - 1];
+						m_selectedActor.actor = addedActor;
+						m_selectedActor.index = addedActor->GetModels()->GetTransforms().size() - 1;
+						m_selectedActor.transform = addedActor->GetModels()->GetTransforms()[m_selectedActor.index];
 					}
 				}
 
