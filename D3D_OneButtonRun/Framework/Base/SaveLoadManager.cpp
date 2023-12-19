@@ -8,6 +8,7 @@
 SaveLoadManager::SaveLoadManager()
 {
 	m_player = new GamePlayer();
+	m_target = new TargetActor();
 	m_mainCamera = new Camera();
 	m_lightBuffer = new LightBuffer();
 	m_sky = new Sky(L"Textures/CubeMap/Spring.dds");

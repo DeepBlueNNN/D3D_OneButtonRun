@@ -5,7 +5,7 @@ TargetActor::TargetActor()
 	: GameActor(TARGET)
 {
 	string name = "crop_pumpkin";
-	string file = "Assets/FBX/kenney_nature-kit/" + name + ".fbx";
+	string file = "Assets/FBX/Nature/" + name + ".fbx";
 
 	ModelExporter* modelExporter = new ModelExporter(name, file);
 	modelExporter->ExportMaterial();
