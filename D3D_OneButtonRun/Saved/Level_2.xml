@@ -1,5 +1,5 @@
-<Level_1 Scene="Level_1">
-    <CubeMap File="Textures/CubeMap/Spring.dds"/>
+<Level_2 Scene="Level_2">
+    <CubeMap File="Textures/CubeMap/Winter.dds"/>
     <Camera>
         <Position X="-2.3346615" Y="19.304565" Z="-90.979874"/>
         <Rotation X="0.19079918" Y="12.539332" Z="0"/>
@@ -12,7 +12,7 @@
     </LightInfo>
     <Player>
         <Position X="-47" Y="5.5999999" Z="-8.6999998"/>
-        <Rotation X="0" Y="-1.5707964" Z="0"/>
+        <Rotation X="0" Y="0" Z="0"/>
     </Player>
     <Target>
         <Position X="47" Y="-8.8000002" Z="-9.6999998"/>
