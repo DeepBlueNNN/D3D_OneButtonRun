@@ -11,6 +11,8 @@ public:
     bool IsSphereCollision(SphereCollider* collider)   override;
     bool IsCapsuleCollision(CapsuleCollider* collider) override;
 
+    Vector3& GetClosestPoint() override { return m_closestPoint; }
+
 public:
     float   Radius() { return m_radius * max(max(GlobalScale().x, GlobalScale().y), GlobalScale().z); }
 

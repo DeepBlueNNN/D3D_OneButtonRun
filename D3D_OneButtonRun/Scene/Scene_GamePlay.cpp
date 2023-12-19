@@ -13,36 +13,9 @@ Scene_GamePlay::Scene_GamePlay()
 	// GamePlay 세팅
 	m_sceneName = "GamePlay";
 
-	//m_player = new GamePlayer();
-	//m_player->SetPosition(Vector3(0, 30, 0));
-	//m_playerOriginPos = m_player->GetColliderPosition();
-	//m_playerOriginVelocity = m_player->Velocity();
-	//m_player->SetIsGravityActive(false);
-	//
-	//// 바닥 오브젝트 임시 세팅
-	//m_grounds.push_back(new BoxCollider(Vector3(100.0f, 10.0f, 100.0f)));
-	//m_grounds.back()->Pos() = Vector3(0.0f, 0.0f, 0.0f);
-	//m_grounds.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(-45.0f));
-	//m_grounds.back()->SetTag("ground_01");
-	//
-	//m_grounds.push_back(new BoxCollider(Vector3(100.0f, 10.0f, 100.0f)));
-	//m_grounds.back()->Pos() = Vector3(30.0f, 0.0f, 0.0f);
-	//m_grounds.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(30.0f));
-	//m_grounds.back()->SetTag("ground_02");
-	//
-	//m_groundCubes.push_back(new Cube());
-	//m_groundCubes.back()->Scale() = Vector3(50.0f, 5.0f, 50.0f);
-	//m_groundCubes.back()->Pos() = Vector3(0.0f, 0.0f, 0.0f);
-	//m_groundCubes.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(-45.0f));
-	//
-	//m_groundCubes.push_back(new Cube());
-	//m_groundCubes.back()->Scale() = Vector3(50.0f, 5.0f, 50.0f);
-	//m_groundCubes.back()->Pos() = Vector3(30.0f, 0.0f, 0.0f);
-	//m_groundCubes.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(30.0f));
-	//
-	//// Target Actor 임시 세팅
-	//m_targetActor = new TargetActor();
-	//m_targetActor->SetPosition(Vector3(50, 20, 0));
+	SAVELOAD->GetPlayer()->SetPosition(SAVELOAD->GetPlayerOriginPos());
+	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
+	m_playerOriginVelocity = SAVELOAD->GetPlayer()->Velocity();
 
 	// UI 변수 세팅
 	m_playStartCount = 3;
@@ -57,36 +30,28 @@ Scene_GamePlay::Scene_GamePlay()
 
 Scene_GamePlay::~Scene_GamePlay()
 {
-	//SAFE_DELETE(m_targetActor);
-
-	//for (Cube* cube : m_groundCubes)
-	//	SAFE_DELETE(cube);
-	//m_groundCubes.erase(m_groundCubes.begin(), m_groundCubes.end());
-	//
-	//for (BoxCollider* ground : m_grounds)
-	//	SAFE_DELETE(ground);
-	//m_grounds.erase(m_grounds.begin(), m_grounds.end());
-
-	//SAFE_DELETE(m_player);
 	SAFE_DELETE(m_howToPlay);
 	SAFE_DELETE(m_subMenu);
 }
 
 void Scene_GamePlay::Update()
 {
-	// Camera 임시 세팅
-	//CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
-	//CAMERA->Rot() = Vector3(XMConvertToRadians(24.0f), XMConvertToRadians(3.8f), XMConvertToRadians(0.0f));
-
 	if (m_howToPlay->IsPanelOn())
 		m_howToPlay->Update();
 
 	m_subMenu->Update();
 
+	// 세이브된 맵 적용
+	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+	for (const auto actor : actors)
+		actor->Update();
+
 	if (m_isPlayStart)	// Play Start 시에 3초 카운트
 	{
-		//m_player->SetIsGravityActive(false);
 		SAVELOAD->GetPlayer()->SetIsGravityActive(false);
+
+		SAVELOAD->GetTargetActor()->Update();
+		SAVELOAD->GetPlayer()->Update();
 
 		if (!m_subMenu->IsPanelOn())
 		{
@@ -115,7 +80,6 @@ void Scene_GamePlay::Update()
 		if (!m_isStageClear)
 		{
 			m_isPlaying = m_subMenu->IsPanelOn() ? false : true;
-			//m_player->SetIsGravityActive(m_isPlaying);
 			SAVELOAD->GetPlayer()->SetIsGravityActive(m_isPlaying);
 		}
 
@@ -123,36 +87,33 @@ void Scene_GamePlay::Update()
 		{
 			m_playTime += DELTA;
 
+			SAVELOAD->GetTargetActor()->Update();
+			SAVELOAD->GetPlayer()->Update();
+
 			// Ground Check
-			//vector<InstancingActor*> actors = SAVELOAD->GetInstancingActors();
-			//for (InstancingActor* actor : actors)
-			//{
-			//	/*if (ground->IsCollision(m_player->GetCollider()))
-			//	{
-			//		m_player->Friction(ground->GetClosestPoint());
-			//		m_player->SetIsCollision(true);
-			//	}
-			//	else
-			//	{
-			//		m_player->SetIsCollision(false);
-			//	}*/
-			//
-			//	if (SAVELOAD->GetPlayer()->GetCollider()->IsCollision(actor))
-			//	{
-			//		SAVELOAD->GetPlayer()->Friction(ground->GetClosestPoint());
-			//		SAVELOAD->GetPlayer()->RegisterObject(ground);
-			//	}
-			//	else
-			//	{
-			//		SAVELOAD->GetPlayer()->RemoveObject(ground);
-			//	}
-			//}
+			for (const auto actor : actors)
+			{
+				for (const auto colliders : actor->GetColliders())
+				{
+					for (const auto collider : colliders)
+					{
+						if (SAVELOAD->GetPlayer()->GetCollider()->IsCollision(collider))
+						{
+							SAVELOAD->GetPlayer()->Friction(collider->GetClosestPoint());
+							SAVELOAD->GetPlayer()->RegisterObject(collider);
+						}
+						else
+						{
+							SAVELOAD->GetPlayer()->RemoveObject(collider);
+						}
+					}
+				}
+			}
 
 			// Player Position Refresh
 			if (KEY_DOWN(VK_SPACE))
 			{
 				SAVELOAD->GetPlayer()->SetPosition(SAVELOAD->GetPlayerOriginPos());
-				SAVELOAD->GetPlayer()->SetRotation(SAVELOAD->GetPlayerOriginRot());
 				m_refreshCount++;
 			}
 
@@ -179,17 +140,6 @@ void Scene_GamePlay::Update()
 			// Go to Stage Select Scene...
 		}
 	}
-
-	// 세이브된 맵 적용
-	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-	for (const auto actor : actors)
-		actor->Update();
-
-	//for (Cube* cube : m_groundCubes)
-	//	cube->UpdateWorld();
-
-	SAVELOAD->GetTargetActor()->Update();
-	SAVELOAD->GetPlayer()->Update();
 }
 
 void Scene_GamePlay::Render()
@@ -198,12 +148,6 @@ void Scene_GamePlay::Render()
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	for (const auto actor : actors)
 		actor->Render();
-
-	//for (Cube* cube : m_groundCubes)
-	//	cube->Render();
-	//
-	//for (BoxCollider* ground : m_grounds)
-	//	ground->Render();
 
 	SAVELOAD->GetTargetActor()->Render();
 	SAVELOAD->GetPlayer()->Render();
@@ -240,21 +184,17 @@ void Scene_GamePlay::GUIRender()
 {
 	SAVELOAD->GetPlayer()->GUIRender();
 	SAVELOAD->GetTargetActor()->GUIRender();
-
-	//for (BoxCollider* ground : m_grounds)
-	//	ground->GUIRender();
 }
 
 void Scene_GamePlay::Initialize()
 {
-	// Camera 임시 세팅
-	CAMERA->Pos() = Vector3(13.0f, 71.0f, -170.0f);
-	CAMERA->Rot() = Vector3(XMConvertToRadians(24.0f), XMConvertToRadians(3.8f), XMConvertToRadians(0.0f));
-
+	SAVELOAD->GetPlayer()->InitTransform();
 	// Player 위치, velocity 설정
 	SAVELOAD->GetPlayer()->SetPosition(SAVELOAD->GetPlayerOriginPos());
 	SAVELOAD->GetPlayer()->SetRotation(SAVELOAD->GetPlayerOriginRot());
 	SAVELOAD->GetPlayer()->Velocity() = m_playerOriginVelocity;
+
+	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
 
 	// Game Play 초기값 설정
 	m_refreshCount = 0;

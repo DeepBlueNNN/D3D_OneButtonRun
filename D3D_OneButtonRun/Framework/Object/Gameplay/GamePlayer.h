@@ -76,6 +76,7 @@ public:
 	{
 		SetPosition(Vector3(0, 0, 0));
 		SetRotation(Vector3(0, 0, 0));
+		m_rotValue = Vector3(0, 0, 0);
 	}
 
 public:
@@ -103,7 +104,7 @@ private:
 	bool m_isGravityActive = false;
 
 private:
-	Vector3 m_velocity = Vector3(0.0f, 10.0f, 0.0f);
+	Vector3 m_velocity = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 m_rotValue = Vector3(0.0f, 0.0f, 0.0f);
 
 private:

@@ -43,12 +43,9 @@ private:
 	void RecordSave();
 
 private:
-	GamePlayer* m_player = nullptr;
-	vector<GameActor*> m_actors;
-	TargetActor* m_targetActor = nullptr;
-
-	vector<BoxCollider*> m_grounds;
-	vector<Cube*> m_groundCubes;
+	/*GamePlayer* m_player = nullptr;
+	vector<InstancingActor*> m_actors;
+	TargetActor* m_targetActor = nullptr;*/
 
 private:
 	Vector3 m_playerOriginPos = Vector3(0.0f, 0.0f, 0.0f);

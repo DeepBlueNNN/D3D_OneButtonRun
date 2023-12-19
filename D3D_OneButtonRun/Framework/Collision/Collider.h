@@ -38,6 +38,8 @@ public:
 	virtual bool IsSphereCollision(SphereCollider* collider) = 0;
 	virtual bool IsCapsuleCollision(CapsuleCollider* collider) = 0;
 
+	virtual Vector3& GetClosestPoint() = 0;
+
 public: // Getter
 	Type GetType() { return m_type; }
 
@@ -54,6 +56,7 @@ protected:
 protected:
 	Type			m_type;
 	Mesh<Vertex>*	m_mesh = nullptr;
+	Vector3 m_closestPoint = Vector3::Zero();
 
 private:
 	static bool m_isRender;
