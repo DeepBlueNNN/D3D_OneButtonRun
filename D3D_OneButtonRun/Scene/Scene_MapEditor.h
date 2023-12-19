@@ -57,4 +57,7 @@ private:
 	UINT m_colliderType = 0;
 	unordered_map<string, vector<string>> m_fbxList;
 	Vector3 m_actorPos;
+	Vector3 m_actorRot;
+
+	wstring m_projectPath;
 };

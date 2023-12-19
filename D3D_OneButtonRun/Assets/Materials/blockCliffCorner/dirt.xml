@@ -1,0 +1,10 @@
+<Material Name="dirt">
+    <Shader Vertex="" Pixel=""/>
+    <Texture Diffuse="Textures/Color/White.png" Specular="Textures/Color/White.png" Normal="Textures/Color/White.png"/>
+    <Property Shininess="24" HasNormalMap="0">
+        <Diffuse R="0.87843138" G="0.57647061" B="0.372549" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="1"/>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Property>
+</Material>
