@@ -169,9 +169,10 @@ void Scene_MapEditor::GUIRender()
 		if (ImGui::TreeNode(label.c_str()))
 		{
 			// player start
-			if (ImGui::TreeNode("Player Start"))
+			if (ImGui::TreeNode("Game Rule"))
 			{
 				SAVELOAD->GetPlayer()->GUIRender();
+				SAVELOAD->GetTargetActor()->GUIRender();
 
 				ImGui::TreePop();
 			}

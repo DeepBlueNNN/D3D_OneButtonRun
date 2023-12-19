@@ -32,6 +32,7 @@ public:
 
 public:
 	GamePlayer*& GetPlayer() { return m_player; }
+	TargetActor*& GetTargetActor() { return m_target; }
 	/// <summary>
 	/// 각 Scene에서 사용할 인스턴싱된 GameActor들 레퍼런스 Get 
 	/// </summary>
@@ -64,6 +65,7 @@ public:
 private:
 	// GameActors
 	GamePlayer* m_player;
+	TargetActor* m_target;
 	vector<InstancingActor*> m_intancingActors;
 	vector<string> m_classNames;
 	vector<string> m_fbxNames;
