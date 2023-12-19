@@ -57,7 +57,8 @@ void GamePlayer::Update()
 		SetRotation(GetColliderRotation() + m_rotValue * 0.1f);
 	}
 	else
-		SetRotation(Vector3(0.0f, 0.0f, 0.0f));
+		SetRotation(GetColliderRotation());
+		//SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 	m_collider->UpdateWorld();
 

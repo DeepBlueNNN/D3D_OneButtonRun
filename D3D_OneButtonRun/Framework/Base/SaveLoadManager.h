@@ -30,8 +30,10 @@ public:
 public:
 	void GUIRender();
 
-public:
+public: //Getter
 	GamePlayer*& GetPlayer() { return m_player; }
+	Vector3 GetPlayerOriginPos() { return m_playerOriginPos; }
+	Vector3 GetPlayerOriginRot() { return m_playerOriginRot; }
 	TargetActor*& GetTargetActor() { return m_target; }
 	/// <summary>
 	/// 각 Scene에서 사용할 인스턴싱된 GameActor들 레퍼런스 Get 
@@ -53,8 +55,6 @@ public:
 	/// </summary>
 	/// <returns>m_lightBuffer</returns>
 	LightBuffer*& GetLightBuffer() { return m_lightBuffer; }
-	vector<string>& GetClassNames() { return m_classNames; }
-	vector<string>& GetFBXNames() { return m_fbxNames; }
 	/// <summary>
 	/// 저장된 플레이 기록 받아오기
 	/// </summary>
@@ -64,11 +64,12 @@ public:
 
 private:
 	// GameActors
-	GamePlayer* m_player;
-	TargetActor* m_target;
+	GamePlayer* m_player = nullptr;
+	Vector3 m_playerOriginPos = Vector3(0.0f,0.0f,0.0f);
+	Vector3 m_playerOriginRot = Vector3(0.0f, 0.0f, 0.0f);
+	TargetActor* m_target = nullptr;
 	vector<InstancingActor*> m_intancingActors;
-	vector<string> m_classNames;
-	vector<string> m_fbxNames;
+
 	Sky* m_sky = nullptr;
 	
 	// SavePath

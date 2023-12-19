@@ -48,6 +48,7 @@ void Scene_MapEditor::Update()
 	ENV->Update();
 
 	SAVELOAD->GetPlayer()->Update();
+	SAVELOAD->GetTargetActor()->Update();
 
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	if (actors.size() > 0)
@@ -74,6 +75,7 @@ void Scene_MapEditor::Update()
 void Scene_MapEditor::Render()
 {
 	SAVELOAD->GetPlayer()->Render();
+	SAVELOAD->GetTargetActor()->Render();
 
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 	if (actors.size() > 0)
@@ -95,6 +97,9 @@ void Scene_MapEditor::GUIRender()
 {
 	ENV->GUIRender();
 	SAVELOAD->GetSky()->GUIRender();
+	SAVELOAD->GetPlayer()->GUIRender();
+	SAVELOAD->GetTargetActor()->GUIRender();
+
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 
 	// SelectedActor's GUIRender

@@ -1,10 +1,6 @@
 #include "SaveLoadManager.h"
 #include "framework.h"
 
-// 1) 플레이기록 별도 저장
-// 2) SAVELOAD->SetLoadScene (테스트필요)
-// 3) SAVELOAD->LoadScene (테스트필요)
-
 SaveLoadManager::SaveLoadManager()
 {
 	m_player = new GamePlayer();
@@ -26,6 +22,9 @@ SaveLoadManager::~SaveLoadManager()
 
 	SAFE_DELETE(m_lightBuffer);
 	SAFE_DELETE(m_mainCamera);
+	SAFE_DELETE(m_player);
+	SAFE_DELETE(m_target);
+
 }
 
 /// <summary>
@@ -135,24 +134,34 @@ void SaveLoadManager::SaveScene(wstring savePath)
 	// Pos
 	pos = player->InsertNewChildElement("Position");
 	player->InsertFirstChild(pos);
-	pos->SetAttribute("X", m_player->GetModelPosition().x);
-	pos->SetAttribute("Y", m_player->GetModelPosition().y);
-	pos->SetAttribute("Z", m_player->GetModelPosition().z);
+	pos->SetAttribute("X", m_player->GetColliderPosition().x);
+	pos->SetAttribute("Y", m_player->GetColliderPosition().y);
+	pos->SetAttribute("Z", m_player->GetColliderPosition().z);
 	player->InsertEndChild(pos);
 	// Rot
 	rot = player->InsertNewChildElement("Rotation");
 	player->InsertFirstChild(rot);
-	rot->SetAttribute("X", m_player->GetModelRotation().x);
-	rot->SetAttribute("Y", m_player->GetModelRotation().y);
-	rot->SetAttribute("Z", m_player->GetModelRotation().z);
+	rot->SetAttribute("X", m_player->GetColliderRotation().x);
+	rot->SetAttribute("Y", m_player->GetColliderRotation().y);
+	rot->SetAttribute("Z", m_player->GetColliderRotation().z);
 	player->InsertEndChild(rot);
-	// Scale
-	tinyxml2::XMLElement* scale = player->InsertNewChildElement("Scale");
-	player->InsertFirstChild(scale);
-	scale->SetAttribute("X", m_player->GetModelScale().x);
-	scale->SetAttribute("Y", m_player->GetModelScale().y);
-	scale->SetAttribute("Z", m_player->GetModelScale().z);
-	player->InsertEndChild(scale);
+
+	// Target 저장
+	tinyxml2::XMLElement* target = scene->InsertNewChildElement("Target");
+	// Pos
+	pos = target->InsertNewChildElement("Position");
+	target->InsertFirstChild(pos);
+	pos->SetAttribute("X", m_target->GetColliderPosition().x);
+	pos->SetAttribute("Y", m_target->GetColliderPosition().y);
+	pos->SetAttribute("Z", m_target->GetColliderPosition().z);
+	target->InsertEndChild(pos);
+	// Rot
+	rot = target->InsertNewChildElement("Rotation");
+	target->InsertFirstChild(rot);
+	rot->SetAttribute("X", m_target->GetColliderRotation().x);
+	rot->SetAttribute("Y", m_target->GetColliderRotation().y);
+	rot->SetAttribute("Z", m_target->GetColliderRotation().z);
+	target->InsertEndChild(rot);
 
 	// GameActor Type별 리스트 
 	tinyxml2::XMLElement* list = scene->InsertNewChildElement("GameActors");
@@ -331,13 +340,20 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	tinyxml2::XMLElement* player = lightInfo->NextSiblingElement();
 	pos = player->FirstChildElement();
 	m_player->SetPosition(Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z")));
+	m_playerOriginPos = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
 	rot = pos->NextSiblingElement();
 	m_player->SetRotation(Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z")));
-	tinyxml2::XMLElement* scale = rot->NextSiblingElement();
-	m_player->SetModelScale(Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z")));
+	m_playerOriginRot = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
+	
+	// target 정보
+	tinyxml2::XMLElement* target = player->NextSiblingElement();
+	pos = target->FirstChildElement();
+	m_target->SetPosition(Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z")));
+	rot = pos->NextSiblingElement();
+	m_target->SetRotation(Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z")));
 
 	// GameActor 갯수 
-	tinyxml2::XMLElement* gameActors = player->NextSiblingElement();
+	tinyxml2::XMLElement* gameActors = target->NextSiblingElement();
 	int size = stoi(gameActors->Attribute("NumberOfInstances"));
 	tinyxml2::XMLElement* actorInfo = gameActors->FirstChildElement();
 
@@ -366,7 +382,7 @@ void SaveLoadManager::LoadScene(wstring savePath)
 			rot = pos->NextSiblingElement();
 			instActor->GetModels()->GetTransforms()[j]->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
 			// Scale
-			scale = rot->NextSiblingElement();
+			tinyxml2::XMLElement* scale = rot->NextSiblingElement();
 			instActor->GetModels()->GetTransforms()[j]->Scale() = Vector3(scale->FloatAttribute("X"), scale->FloatAttribute("Y"), scale->FloatAttribute("Z"));
 			// 콜리더 트렌스폼 정보
 			tinyxml2::XMLElement* colliders = transform->NextSiblingElement();
