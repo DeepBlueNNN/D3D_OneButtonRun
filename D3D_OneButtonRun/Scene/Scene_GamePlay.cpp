@@ -40,6 +40,10 @@ Scene_GamePlay::Scene_GamePlay()
 	m_groundCubes.back()->Pos() = Vector3(30.0f, 0.0f, 0.0f);
 	m_groundCubes.back()->Rot() = Vector3(0.0f, 0.0f, XMConvertToRadians(30.0f));
 
+	// Target Actor 임시 세팅
+	m_targetActor = new TargetActor();
+	m_targetActor->SetPosition(Vector3(50, 20, 0));
+
 	// UI 변수 세팅
 	m_playStartCount = 3;
 	m_refreshCount = 0;
@@ -53,7 +57,7 @@ Scene_GamePlay::Scene_GamePlay()
 
 Scene_GamePlay::~Scene_GamePlay()
 {
-	Font::Get()->Delete();
+	SAFE_DELETE(m_targetActor);
 
 	for (Cube* cube : m_groundCubes)
 		SAFE_DELETE(cube);
@@ -83,16 +87,6 @@ void Scene_GamePlay::Update()
 	{
 		m_player->SetIsGravityActive(false);
 
-		// 세이브된 맵 적용
-		//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-		//for (const auto actor : actors)
-		//	actor->Update();
-
-		for (Cube* cube : m_groundCubes)
-			cube->UpdateWorld();
-
-		m_player->Update();
-
 		if (!m_subMenu->IsPanelOn())
 		{
 			m_howToPlay->SetPanelOn(true);
@@ -117,31 +111,17 @@ void Scene_GamePlay::Update()
 	}
 	else	// 3초 카운트 후에 Game Play
 	{
-		if (m_subMenu->IsPanelOn())
+		if (!m_isStageClear)
 		{
-			m_player->SetIsGravityActive(false);
-			m_isPlaying = false;
-		}
-		else
-		{
-			m_player->SetIsGravityActive(true);
-			m_isPlaying = true;
+			m_isPlaying = m_subMenu->IsPanelOn() ? false : true;
+			m_player->SetIsGravityActive(m_isPlaying);
 		}
 
 		if (m_isPlaying)
 		{
 			m_playTime += DELTA;
 
-			// 세이브된 맵 적용
-			//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
-			//for (const auto actor : actors)
-			//	actor->Update();
-
-			for (Cube* cube : m_groundCubes)
-				cube->UpdateWorld();
-
-			m_player->Update();
-
+			// Ground Check
 			for (BoxCollider* ground : m_grounds)
 			{
 				/*if (ground->IsCollision(m_player->GetCollider()))
@@ -165,13 +145,47 @@ void Scene_GamePlay::Update()
 				}
 			}
 
+			// Player Position Refresh
 			if (KEY_DOWN(VK_SPACE))
 			{
 				m_player->SetPosition(m_playerOriginPos);
 				m_refreshCount++;
 			}
+
+			// Target Actor & Player Collision Check
+			if (m_targetActor->GetCollider()->IsCollision(m_player->GetCollider()))
+			{
+				printf("Target & Player Collision True \n");
+
+				RecordSave();
+
+				m_player->SetIsGravityActive(false);
+				m_isPlaying = false;
+				m_isStageClear = true;
+			}
 		}
 	}
+
+	if (m_isStageClear)
+	{
+		// 게임 클리어 화면(Panel) 출력...
+
+		if (KEY_DOWN('Y'))
+		{
+			// Go to Stage Select Scene...
+		}
+	}
+
+	// 세이브된 맵 적용
+			//vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
+			//for (const auto actor : actors)
+			//	actor->Update();
+
+	for (Cube* cube : m_groundCubes)
+		cube->UpdateWorld();
+
+	m_targetActor->Update();
+	m_player->Update();
 }
 
 void Scene_GamePlay::Render()
@@ -187,6 +201,7 @@ void Scene_GamePlay::Render()
 	for (BoxCollider* ground : m_grounds)
 		ground->Render();
 
+	m_targetActor->Render();
 	m_player->Render();
 }
 
@@ -201,12 +216,15 @@ void Scene_GamePlay::PreRender()
 
 void Scene_GamePlay::PostRender()
 {
-	Font::Get()->GetDC()->BeginDraw();
+	if (!m_isStageClear)
 	{
-		PrintRefreshCount();
-		PrintPlayTime();
+		Font::Get()->GetDC()->BeginDraw();
+		{
+			PrintRefreshCount();
+			PrintPlayTime();
+		}
+		Font::Get()->GetDC()->EndDraw();
 	}
-	Font::Get()->GetDC()->EndDraw();
 
 	if (m_howToPlay->IsPanelOn())
 		m_howToPlay->Render();
@@ -217,6 +235,7 @@ void Scene_GamePlay::PostRender()
 void Scene_GamePlay::GUIRender()
 {
 	m_player->GUIRender();
+	m_targetActor->GUIRender();
 
 	for (BoxCollider* ground : m_grounds)
 		ground->GUIRender();
@@ -246,31 +265,11 @@ void Scene_GamePlay::Initialize()
 
 void Scene_GamePlay::PrintRefreshCount()
 {
-	/*bool temp = true;
-	ImGui::SetNextWindowPos(ImVec2((float)MAIN->GetWidth() / 2, (float)MAIN->GetHeight() - 100), 0, ImVec2(0.5f, 0.5f));
-	if (ImGui::Begin("RefreshCount", &temp, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
-	{
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), to_string(m_refreshCount).c_str());
-		ImGui::SetWindowFontScale(3.5f);
-		ImGui::SetWindowSize("RefreshCount", ImVec2(0, 0));
-	}
-	ImGui::End();*/
-
 	Font::Get()->RenderText(to_string(m_refreshCount), { (float)MAIN->GetWidth() / 2 + 50, 100 }, Float2(200, 100));
 }
 
 void Scene_GamePlay::PrintPlayTime()
 {
-	/*bool temp = true;
-	ImGui::SetNextWindowPos(ImVec2((float)MAIN->GetWidth() / 2, 100), 0, ImVec2(0.5f, 0.5f));
-	if (ImGui::Begin("PlayTime", &temp, ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize))
-	{
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), ConvertToString(m_playTime).c_str());
-		ImGui::SetWindowFontScale(3.5f);
-		ImGui::SetWindowSize("PlayTime", ImVec2(0, 0));
-	}
-	ImGui::End();*/
-	
 	if (m_isPlayStart)
 		Font::Get()->RenderText(to_string(m_playStartCount).c_str(), {((float)MAIN->GetWidth() / 2), (float)MAIN->GetHeight() - 100});
 	else
@@ -285,4 +284,28 @@ string Scene_GamePlay::ConvertToString(float value)
 	_CSTD sprintf_s(&Str[0], Len + 1, "%.2f", playTime);
 
 	return Str;
+}
+
+void Scene_GamePlay::RecordSave()
+{
+	int temp = (int)(m_playTime * 100);
+	int milliSecond = temp % 100;
+	int second = temp / 100;
+	int minute = second / 60;
+	second = second % 60;
+	int hour = minute / 60;
+	minute = minute % 60;
+	int day = hour / 24;
+	hour = hour % 24;
+
+	string timeRecordTemp = (day > 10 ? to_string(day) : ("0" + to_string(day))) + " : ";
+	timeRecordTemp += (hour > 10 ? to_string(hour) : ("0" + to_string(hour))) + " : ";
+	timeRecordTemp += (minute > 10 ? to_string(minute) : ("0" + to_string(minute))) + " : ";
+	timeRecordTemp += (second > 10 ? to_string(second) : ("0" + to_string(second))) + " : ";
+	timeRecordTemp += (milliSecond > 10 ? to_string(milliSecond) : ("0" + to_string(milliSecond)));
+
+	string refreshRecordTemp = to_string(m_refreshCount);
+
+	cout << timeRecordTemp << '\n';
+	cout << m_playTime << '\n';
 }

@@ -15,6 +15,9 @@ public:
 	void GUIRender()   override;
 
 public:
+	/// <summary>
+	/// 게임 플레이 데이터 초기화 함수
+	/// </summary>
 	void Initialize();
 
 private:
@@ -34,9 +37,15 @@ private:
 	/// <returns></returns>
 	string ConvertToString(float value);
 
+	/// <summary>
+	/// 게임 클리어 시에 기록을 저장하는 함수
+	/// </summary>
+	void RecordSave();
+
 private:
 	GamePlayer* m_player = nullptr;
 	vector<GameActor*> m_actors;
+	TargetActor* m_targetActor = nullptr;
 
 	vector<BoxCollider*> m_grounds;
 	vector<Cube*> m_groundCubes;
@@ -52,6 +61,9 @@ private:
 	UINT m_refreshCount = 0;
 	float m_playTime = 0.0f;
 
+	bool m_isStageClear = false;
+
+private:
 	SubMenu* m_subMenu = nullptr;
 	HowToPlay* m_howToPlay = nullptr;
 

@@ -214,6 +214,7 @@ using namespace GameMath;
 #include "Framework/Object/Gameplay/GameActor.h"
 #include "Framework/Object/Gameplay/InstancingActor.h"
 #include "Framework/Object/Gameplay/GamePlayer.h"
+#include "Framework/Object/Gameplay/TargetActor.h"
 #include "Framework/Base/SaveLoadManager.h"
 
 extern  Vector3 mousePos;

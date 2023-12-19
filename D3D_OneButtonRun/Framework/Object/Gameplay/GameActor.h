@@ -6,6 +6,7 @@ public:
 	{
 		PLAYER = 0,
 		ENTITY,
+		TARGET,
 		MAX
 	};
 

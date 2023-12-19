@@ -264,6 +264,7 @@
     <ClInclude Include="Framework\Object\UI\UITexture.h" />
     <ClInclude Include="Framework\Object\UI\HowToPlay.h" />
     <ClInclude Include="Framework\Object\UI\UIPanel.h" />
+    <ClInclude Include="Framework\Object\Gameplay\TargetActor.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -433,6 +434,7 @@
     <ClCompile Include="Framework\Object\UI\SubMenu.cpp" />
     <ClCompile Include="Framework\Object\UI\UITexture.cpp" />
     <ClCompile Include="Framework\Object\UI\HowToPlay.cpp" />
+    <ClCompile Include="Framework\Object\Gameplay\TargetActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">

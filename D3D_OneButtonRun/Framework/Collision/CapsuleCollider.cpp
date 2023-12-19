@@ -192,7 +192,7 @@ bool CapsuleCollider::IsSphereCollision(SphereCollider* collider)
 	Vector3 pointOnline = ClosestPoint(pa, pb, P);
 
 	float  distance = Distance(P, pointOnline);
-
+	m_closestPoint = pointOnline;
 	return distance <= (Radius() + collider->Radius());
 }
 

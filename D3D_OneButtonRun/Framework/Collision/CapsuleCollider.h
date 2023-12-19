@@ -18,6 +18,8 @@ public:
     bool IsSphereCollision(SphereCollider* collider)   override;
     bool IsCapsuleCollision(CapsuleCollider* collider) override;
 
+    Vector3& GetClosestPoint() { return m_closestPoint; }
+
 private:
     void MakeMesh() override;
 
@@ -36,4 +38,5 @@ private:
     float   m_height = 2.0f;
     UINT    m_stackCount = 8;
     UINT    m_sliceCount = 16;
+    Vector3 m_closestPoint = Vector3::Zero();
 };
