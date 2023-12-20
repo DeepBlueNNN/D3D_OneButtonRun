@@ -9,6 +9,8 @@ SaveLoadManager::SaveLoadManager()
 	m_lightBuffer = new LightBuffer();
 	m_sky = new Sky(L"Textures/CubeMap/Spring.dds");
 
+	LoadRecord();
+
 	WCHAR lpCurrentDirectory[1024];
 	GetCurrentDirectory(1024, lpCurrentDirectory);
 	m_projectPath = lpCurrentDirectory;
@@ -24,7 +26,6 @@ SaveLoadManager::~SaveLoadManager()
 	SAFE_DELETE(m_mainCamera);
 	SAFE_DELETE(m_player);
 	SAFE_DELETE(m_target);
-
 }
 
 /// <summary>
@@ -47,6 +48,36 @@ void SaveLoadManager::Save()
 	{
 		saveFile = saveFile.substr(m_projectPath.size() + 1, saveFile.size());
 		SaveScene(saveFile);	// Saved\\Test
+	}
+}
+
+void SaveLoadManager::SaveCamera()
+{
+	bool ret1;
+
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.7f, 0.7f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2.0f / 7.0f, 0.8f, 0.8f));
+	ret1 = ImGui::Button(u8"플레이화면 저장", ImVec2(100, 20));
+	ImGui::PopStyleColor(3);
+
+	if (ret1)
+	{
+		SetPlayCameraTransform(m_mainCamera->Pos(), m_mainCamera->Rot());
+	}
+
+	bool ret2;
+
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.7f, 0.7f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f / 7.0f, 0.8f, 0.8f));
+	ImGui::SameLine();
+	ret2 = ImGui::Button(u8"클리어화면 저장", ImVec2(100, 20));
+	ImGui::PopStyleColor(3);
+
+	if (ret2)
+	{
+		SetClearCameraTransform(m_mainCamera->Pos(), m_mainCamera->Rot());
 	}
 }
 
@@ -82,18 +113,37 @@ void SaveLoadManager::SaveScene(wstring savePath)
 	// Pos
 	tinyxml2::XMLElement* pos = camera->InsertNewChildElement("Position");
 	camera->InsertFirstChild(pos);
-	pos->SetAttribute("X", m_mainCamera->Pos().x);
-	pos->SetAttribute("Y", m_mainCamera->Pos().y);
-	pos->SetAttribute("Z", m_mainCamera->Pos().z);
+	pos->SetAttribute("X", m_PlayCameraPos.x);
+	pos->SetAttribute("Y", m_PlayCameraPos.y);
+	pos->SetAttribute("Z", m_PlayCameraPos.z);
 	camera->InsertEndChild(pos);
 	// Rot
 	tinyxml2::XMLElement* rot = camera->InsertNewChildElement("Rotation");
 	camera->InsertFirstChild(rot);
-	rot->SetAttribute("X", m_mainCamera->Rot().x);
-	rot->SetAttribute("Y", m_mainCamera->Rot().y);
-	rot->SetAttribute("Z", m_mainCamera->Rot().z);
+	rot->SetAttribute("X", m_PlayCameraRot.x);
+	rot->SetAttribute("Y", m_PlayCameraRot.y);
+	rot->SetAttribute("Z", m_PlayCameraRot.z);
 	camera->InsertEndChild(rot);
 	scene->InsertEndChild(camera);
+
+	// Clear화면 Camera Transform
+	tinyxml2::XMLElement* clearCamera = scene->InsertNewChildElement("GameClearCameraView");
+	scene->InsertFirstChild(clearCamera);
+	// Pos
+	pos = clearCamera->InsertNewChildElement("Position");
+	clearCamera->InsertFirstChild(pos);
+	pos->SetAttribute("X", m_clearCameraPos.x);
+	pos->SetAttribute("Y", m_clearCameraPos.y);
+	pos->SetAttribute("Z", m_clearCameraPos.z);
+	clearCamera->InsertEndChild(pos);
+	// Rot
+	rot = clearCamera->InsertNewChildElement("Rotation");
+	clearCamera->InsertFirstChild(rot);
+	rot->SetAttribute("X", m_clearCameraRot.x);
+	rot->SetAttribute("Y", m_clearCameraRot.y);
+	rot->SetAttribute("Z", m_clearCameraRot.z);
+	clearCamera->InsertEndChild(rot);
+	scene->InsertEndChild(clearCamera);
 
 	// 라이트 정보
 	tinyxml2::XMLElement* lightInfo = scene->InsertNewChildElement("LightInfo");
@@ -264,6 +314,53 @@ void SaveLoadManager::SaveActor(InstancingActor* gameActor, int count, tinyxml2:
 	}
 }
 
+void SaveLoadManager::SaveRecord(UINT stage, UINT count, float time)
+{
+	// 기존 기록과 비교
+	if (m_records.size() > stage)
+	{
+		// 버튼수 우선
+		//if (m_records[stage].count > count)
+		//{
+		//	m_records[stage].count = count;
+		//	m_records[stage].time = time;
+		//}
+
+		// 시간 우선
+		if (m_records[stage].time > time)
+		{
+			m_records[stage].time = time;
+			m_records[stage].count = count;
+		}
+	}
+	else
+	{
+		Record newRecord;
+		newRecord.count = count;
+		newRecord.time = time;
+
+		m_records.push_back(newRecord);
+	}
+
+	// binary 저장
+	string path = "Saved/Record/PlayRecord.bin";
+
+	StringPath::CreateFolders(path);
+	BinaryWriter* writer = new BinaryWriter(path);
+
+	// 크기저장
+	writer->UInt(m_records.size());
+
+	// 기록들 저장
+	for (Record record : m_records)
+	{
+		writer->UInt(record.count);
+		writer->Float(record.time);
+	}
+
+	SAFE_DELETE(writer);
+}
+
 /// <summary>
 /// Load관련 ImGUI 구성 설정
 /// </summary>
@@ -312,6 +409,7 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	// CubeMap 정보
 	tinyxml2::XMLElement* cubeMap = scene->FirstChildElement();
 	m_sky->SetTexture(StringPath::ToWString(cubeMap->Attribute("File")));
+
 	// Camera 정보 
 	tinyxml2::XMLElement* camera = cubeMap->NextSiblingElement();
 	// Pos
@@ -321,8 +419,17 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	tinyxml2::XMLElement* rot = pos->NextSiblingElement();
 	m_mainCamera->Rot() = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
 
+	// Camera Clear View 정보 
+	tinyxml2::XMLElement* clearCamera = camera->NextSiblingElement();
+	// Pos
+	pos = clearCamera->FirstChildElement();
+	m_clearCameraPos = Vector3(pos->FloatAttribute("X"), pos->FloatAttribute("Y"), pos->FloatAttribute("Z"));
+	// Rot
+	rot = pos->NextSiblingElement();
+	m_clearCameraRot = Vector3(rot->FloatAttribute("X"), rot->FloatAttribute("Y"), rot->FloatAttribute("Z"));
+
 	// 라이트 정보
-	tinyxml2::XMLElement* lightInfo = camera->NextSiblingElement();
+	tinyxml2::XMLElement* lightInfo = clearCamera->NextSiblingElement();
 	// 라이트 Color
 	tinyxml2::XMLElement* light = lightInfo->FirstChildElement();
 	m_lightBuffer->Get().lights[0].color = Float4(light->FloatAttribute("R"), light->FloatAttribute("G"), light->FloatAttribute("B"), light->FloatAttribute("A"));
@@ -418,6 +525,28 @@ void SaveLoadManager::LoadScene(wstring savePath)
 	}
 
 	SAFE_DELETE(document);
+}
+
+void SaveLoadManager::LoadRecord()
+{
+	BinaryReader reader("Saved/Record/PlayRecord.bin");
+	if (reader.IsFailed())
+		return;
+
+	// Records 크기
+	UINT size = reader.UInt();
+	m_records.reserve(size);
+
+	for (UINT i = 0; i < size; i++)
+	{
+		Record record;
+		record.count = reader.UInt();
+		record.time = reader.Float();
+
+		m_records.push_back(record);
+	}
+
+	printf("");
 }
 
 /// <summary>

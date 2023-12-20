@@ -173,6 +173,7 @@ void Scene_MapEditor::GUIRender()
 			{
 				SAVELOAD->GetPlayer()->GUIRender();
 				SAVELOAD->GetTargetActor()->GUIRender();
+				SAVELOAD->SaveCamera();
 
 				ImGui::TreePop();
 			}

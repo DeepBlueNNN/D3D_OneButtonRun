@@ -63,5 +63,5 @@ private:
 private:
 	SubMenu* m_subMenu = nullptr;
 	HowToPlay* m_howToPlay = nullptr;
-
+	ClearUI* m_clearUI = nullptr;
 };

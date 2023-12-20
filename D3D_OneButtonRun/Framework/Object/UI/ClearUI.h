@@ -1,9 +1,9 @@
 #pragma once
-class HowToPlay : public UIPanel
+class ClearUI : public UIPanel
 {
 public:
-	HowToPlay();
-	~HowToPlay();
+	ClearUI();
+	~ClearUI();
 
 public:
 	void Update() override;
