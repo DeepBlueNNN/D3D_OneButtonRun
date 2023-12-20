@@ -8,6 +8,7 @@ public:
 
     void AddColor(string key, float r, float g, float b);
     void AddStyle(string key, wstring font, float size = 20.0f,
+        DWRITE_TEXT_ALIGNMENT alignment = DWRITE_TEXT_ALIGNMENT_LEADING,
         DWRITE_FONT_WEIGHT weight = DWRITE_FONT_WEIGHT_NORMAL,
         DWRITE_FONT_STYLE style = DWRITE_FONT_STYLE_NORMAL,
         DWRITE_FONT_STRETCH stretch = DWRITE_FONT_STRETCH_NORMAL);

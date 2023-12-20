@@ -182,6 +182,7 @@
     <ClInclude Include="Framework\Object\Particle\Spark.h" />
     <ClInclude Include="Framework\Object\Particle\SpriteParticle.h" />
     <ClInclude Include="Framework\Object\UI\Button.h" />
+    <ClInclude Include="Framework\Object\UI\ClearUI.h" />
     <ClInclude Include="Framework\Object\UI\HowToPlay.h" />
     <ClInclude Include="Framework\Object\UI\SubMenu.h" />
     <ClInclude Include="Framework\Object\UI\ProgressBar.h" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Scene\Scene_GamePlay.h" />
     <ClInclude Include="Scene\Scene_MainMenu.h" />
     <ClInclude Include="Scene\Scene_MapEditor.h" />
+    <ClInclude Include="Scene\Scene_PlayRecord.h" />
     <ClInclude Include="Scene\Scene_SelectStage.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -269,6 +271,7 @@
     <ClCompile Include="Framework\Object\Particle\Spark.cpp" />
     <ClCompile Include="Framework\Object\Particle\SpriteParticle.cpp" />
     <ClCompile Include="Framework\Object\UI\Button.cpp" />
+    <ClCompile Include="Framework\Object\UI\ClearUI.cpp" />
     <ClCompile Include="Framework\Object\UI\HowToPlay.cpp" />
     <ClCompile Include="Framework\Object\UI\SubMenu.cpp" />
     <ClCompile Include="Framework\Object\UI\ProgressBar.cpp" />
@@ -307,6 +310,7 @@
     <ClCompile Include="Scene\Scene_GamePlay.cpp" />
     <ClCompile Include="Scene\Scene_MainMenu.cpp" />
     <ClCompile Include="Scene\Scene_MapEditor.cpp" />
+    <ClCompile Include="Scene\Scene_PlayRecord.cpp" />
     <ClCompile Include="Scene\Scene_SelectStage.cpp" />
   </ItemGroup>
   <ItemGroup>

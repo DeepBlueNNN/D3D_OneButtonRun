@@ -86,5 +86,7 @@ int APIENTRY wWinMain(_In_     HINSTANCE hInstance,      // OS에서 생성된 I
 
 	}
 
+	MAIN->ReportLiveObjects();
+
 	return (int)msg.wParam;
 }

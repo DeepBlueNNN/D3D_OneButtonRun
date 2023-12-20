@@ -202,6 +202,7 @@ using namespace GameMath;
 #include "Framework/Object/UI/UIPanel.h"
 #include "Framework/Object/UI/SubMenu.h"
 #include "Framework/Object/UI/HowToPlay.h"
+#include "Framework/Object/UI/ClearUI.h"
 
 // Particles
 #include "Framework/Object/Particle/Particle.h"

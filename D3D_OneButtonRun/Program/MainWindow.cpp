@@ -1,6 +1,7 @@
-#include  "framework.h"
-#include  "MainWindow.h"
-#include  "Resource.h"
+#include "framework.h"
+#include "MainWindow.h"
+#include "Resource.h"
+#include <dxgidebug.h>
 #include <fstream>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -359,5 +360,19 @@ void MainWindow::SetViewPort()
 	viewport.TopLeftY = 0.0f;
 
 	GetDC()->RSSetViewports(1, &viewport);
+}
+
+void MainWindow::ReportLiveObjects()
+{
+	using fPtrDXGIGetDebugInterface = HRESULT(__stdcall*)(const IID&, void**);
+
+	HMODULE hMod = GetModuleHandle(L"Dxgidebug.dll");
+	fPtrDXGIGetDebugInterface DXGIGetDebugInterface = (fPtrDXGIGetDebugInterface)GetProcAddress(hMod, "DXGIGetDebugInterface");
+
+	IDXGIDebug* debug = nullptr;
+	DXGIGetDebugInterface(__uuidof(IDXGIDebug), (void**)&debug);
+
+	debug->ReportLiveObjects(DXGI_DEBUG_D3D11, DXGI_DEBUG_RLO_ALL);
+	debug->Release();
 }
 

@@ -47,6 +47,9 @@ private:
 	void ResizeScreen(float width, float height);
 	void SetViewPort();
 
+public:
+	void ReportLiveObjects();
+
 private:
 	ID3D11Device*             m_device = nullptr;
 	ID3D11DeviceContext*      m_deviceContext = nullptr;

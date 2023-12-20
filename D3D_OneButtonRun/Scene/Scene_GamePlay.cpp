@@ -7,9 +7,6 @@ Scene_GamePlay::Scene_GamePlay()
 	Font::Get()->AddColor("White", 1, 1, 1);
 	Font::Get()->AddStyle("Default", L"배달의민족 주아", 80.0f);
 
-	Font::Get()->SetColor("White");
-	Font::Get()->SetStyle("Default");
-
 	// GamePlay 세팅
 	m_sceneName = "GamePlay";
 
@@ -26,12 +23,15 @@ Scene_GamePlay::Scene_GamePlay()
 	m_subMenu = new SubMenu();
 	m_howToPlay = new HowToPlay();
 	m_howToPlay->SetPanelOn(true);
+	m_clearUI = new ClearUI();
+	m_clearUI->SetPanelOn(false);
 }
 
 Scene_GamePlay::~Scene_GamePlay()
 {
 	SAFE_DELETE(m_howToPlay);
 	SAFE_DELETE(m_subMenu);
+	SAFE_DELETE(m_clearUI);
 }
 
 void Scene_GamePlay::Update()
@@ -122,22 +122,39 @@ void Scene_GamePlay::Update()
 			{
 				printf("Target & Player Collision True \n");
 
-				RecordSave();
+				//RecordSave();
+				SAVELOAD->SaveRecord(SAVELOAD->GetCurrentStage(), m_refreshCount, m_playTime);
 
 				SAVELOAD->GetPlayer()->SetIsGravityActive(false);
 				m_isPlaying = false;
 				m_isStageClear = true;
+				m_clearUI->SetPanelOn(true);
 			}
 		}
 	}
 
+	// Test용
+	if (KEY_DOWN('C'))
+	{
+		m_isStageClear = true;
+		m_clearUI->SetPanelOn(true);
+		SAVELOAD->SaveRecord(SAVELOAD->GetCurrentStage(), m_refreshCount, m_playTime);
+	}
+
 	if (m_isStageClear)
 	{
-		// 게임 클리어 화면(Panel) 출력...
+		// Camera Transform Set
+		SAVELOAD->SetCameraClearView();
+
+		Vector3(37.674, -3.857, -23.195);
+		Vector3(0.301, 13.127, 0);
+
+		// 클리어 텍스처
+		m_clearUI->Update();
 
 		if (KEY_DOWN('Y'))
 		{
-			// Go to Stage Select Scene...
+			SCENEMANAGER->ChangeScene("MainMenu");
 		}
 	}
 }
@@ -155,6 +172,9 @@ void Scene_GamePlay::Render()
 
 void Scene_GamePlay::ChangeScene()
 {
+	Font::Get()->SetColor("White");
+	Font::Get()->SetStyle("Default");
+
 	Initialize();
 }
 
@@ -164,15 +184,17 @@ void Scene_GamePlay::PreRender()
 
 void Scene_GamePlay::PostRender()
 {
-	if (!m_isStageClear)
+	if (m_isStageClear)
 	{
-		Font::Get()->GetDC()->BeginDraw();
-		{
-			PrintRefreshCount();
-			PrintPlayTime();
-		}
-		Font::Get()->GetDC()->EndDraw();
+		m_clearUI->Render();
 	}
+
+	Font::Get()->GetDC()->BeginDraw();
+	{
+		PrintRefreshCount();
+		PrintPlayTime();
+	}
+	Font::Get()->GetDC()->EndDraw();
 
 	if (m_howToPlay->IsPanelOn())
 		m_howToPlay->Render();
