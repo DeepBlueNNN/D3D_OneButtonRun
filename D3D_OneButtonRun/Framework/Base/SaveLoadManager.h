@@ -1,6 +1,12 @@
 #pragma once
 class GameActor;
 
+struct Record
+{
+	UINT count = 0;
+	float time = 0.0f;
+};
+
 class SaveLoadManager : public Singleton<SaveLoadManager>
 {
 public:
@@ -12,17 +18,15 @@ public:
 
 public:
 	void Save();
+	void SaveCamera();
 	void SaveScene(wstring savePath);
 	void SaveActor(InstancingActor* gameActor, int count, tinyxml2::XMLElement* type);
+	void SaveRecord(UINT stage, UINT count, float time);
 
 public:
 	void Load();
 	void LoadScene(wstring savePath);
-	/// <summary>
-	/// 로드할 파일 경로 Set
-	/// </summary>
-	/// <param name="savePath">저장된 경로</param>
-	void SetLoadFile(wstring savePath) { m_loadPath = savePath; }
+	void LoadRecord();
 
 public:
 	void Clear();
@@ -51,6 +55,18 @@ public: //Getter
 	/// <returns>m_mainCamera</returns>
 	Camera*& GetMainCamera() { return m_mainCamera; }
 	/// <summary>
+	/// 게임 클리어 시 보여질 화면의 카메라 포지션 가져오기
+	/// -각 맵마다 저장된 카메라 포지션 load된 상태
+	/// </summary>
+	/// <returns>m_clearCameraPos</returns>
+	Vector3 GetClearCameraPos() { return m_clearCameraPos; }
+	/// <summary>
+	/// 게임 클리어 시 보여질 화면의 카메라 로테이션 가져오기
+	/// -각 맵마다 저장된 카메라 로테이션 load된 상태
+	/// </summary>
+	/// <returns>m_clearCameraRot</returns>
+	Vector3 GetClearCameraRot() { return m_clearCameraRot; }
+	/// <summary>
 	/// Environment에서 사용될 LightBuffer 받아오기
 	/// </summary>
 	/// <returns>m_lightBuffer</returns>
@@ -59,8 +75,20 @@ public: //Getter
 	/// 저장된 플레이 기록 받아오기
 	/// </summary>
 	/// <returns>m_record</returns>
-	vector<string> GetRecord() { return m_record; }
+	vector<Record> GetRecords() { return m_records; }
 	wstring GetLoadPath() { return m_loadPath; }
+	UINT GetCurrentStage() { return m_currentStage; }
+
+public: //Setter
+	/// <summary>
+	/// 로드할 파일 경로 Set
+	/// </summary>
+	/// <param name="savePath">저장된 경로</param>
+	void SetLoadFile(UINT index, wstring savePath) { m_currentStage = index; m_loadPath = savePath; }
+	void SetPlayCameraTransform(Vector3 pos, Vector3 rot) { m_PlayCameraPos = m_mainCamera->Pos();  m_PlayCameraRot = m_mainCamera->Rot(); }
+	void SetCameraPlayView() { m_mainCamera->Pos() = m_PlayCameraPos; m_mainCamera->Rot() = m_PlayCameraRot; }
+	void SetClearCameraTransform(Vector3 pos, Vector3 rot) { m_clearCameraPos = pos; m_clearCameraRot = rot; }
+	void SetCameraClearView() { m_mainCamera->Pos() = m_clearCameraPos; m_mainCamera->Rot() = m_clearCameraRot; }
 
 private:
 	// GameActors
@@ -77,12 +105,17 @@ private:
 	string m_savePath = "";
 
 	// LoadPath
+	UINT m_currentStage = 0;
 	wstring m_loadPath = L"";
 
 	// Record
-	vector<string> m_record;
+	vector<Record> m_records;
 
 	// Environment
 	Camera* m_mainCamera = nullptr;
+	Vector3 m_PlayCameraPos = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 m_PlayCameraRot = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 m_clearCameraPos = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 m_clearCameraRot = Vector3(0.0f, 0.0f, 0.0f);
 	LightBuffer* m_lightBuffer = nullptr;
 };

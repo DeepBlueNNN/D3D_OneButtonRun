@@ -4,6 +4,7 @@
 #include "Scene/S02_Grid.h"
 #include "Scene/Scene_MainMenu.h"
 #include "Scene/Scene_SelectStage.h"
+#include "Scene/Scene_PlayRecord.h"
 #include "Scene/Scene_MapEditor.h"
 #include "Scene/Scene_GamePlay.h"
 
@@ -26,6 +27,10 @@ SceneManager::SceneManager()
 //	m_scenes.push_back(new S00_TestScene());
 
 	Scene* scene = new Scene_GamePlay();
+	scene->SetActive(false);
+	m_scenes.push_back(scene);
+
+	scene = new Scene_PlayRecord();
 	scene->SetActive(false);
 	m_scenes.push_back(scene);
 

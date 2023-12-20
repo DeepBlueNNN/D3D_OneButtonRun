@@ -13,8 +13,8 @@ Button::Button(wstring textureFile, Vector2 size)
 Button::~Button()
 {
 	SAFE_DELETE(m_valueBuffer);
-	SAFE_DELETE(m_hoverTexture);
-	SAFE_DELETE(m_outlineTexture);
+	//SAFE_DELETE(m_hoverTexture);
+	//SAFE_DELETE(m_outlineTexture);
 }
 
 void Button::Render()

@@ -1,9 +1,13 @@
-<Level_2 Scene="Level_2">
-    <CubeMap File="Textures/CubeMap/Winter.dds"/>
+<Level_ Scene="Level_">
+    <CubeMap File="Textures/CubeMap/Spring.dds"/>
     <Camera>
         <Position X="-2.3346615" Y="19.304565" Z="-90.979874"/>
         <Rotation X="0.19079918" Y="12.539332" Z="0"/>
     </Camera>
+    <GameClearCameraView>
+        <Position X="37.674" Y="-3.857" Z="-23.195"/>
+        <Rotation X="0.301" Y="13.127" Z="0"/>
+    </GameClearCameraView>
     <LightInfo>
         <LightColor R="1" G="1" B="1" A="1"/>
         <LightDirection X="-0.58200002" Y="-0.79100001" Z="0.824"/>
@@ -11,8 +15,8 @@
         <AmbientCeil R="0.1" G="0.1" B="0.1"/>
     </LightInfo>
     <Player>
-        <Position X="-47" Y="5.5999999" Z="-8.6999998"/>
-        <Rotation X="0" Y="0" Z="0"/>
+        <Position X="0" Y="10" Z="-8.6999998"/>
+        <Rotation X="0" Y="-1.5707964" Z="0"/>
     </Player>
     <Target>
         <Position X="47" Y="-8.8000002" Z="-9.6999998"/>
@@ -471,4 +475,4 @@
             </Actor_0>
         </ActorInfo>
     </GameActors>
-</Level_1>
+</Level_>

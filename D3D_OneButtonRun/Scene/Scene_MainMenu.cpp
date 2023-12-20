@@ -11,23 +11,29 @@ Scene_MainMenu::Scene_MainMenu()
 	texture->SetAlpha(1.0f);
 	m_textures.push_back(texture);
 
-	Button* button_Start = new Button(L"Textures/UI/Button_GameStart_N.png");
-	button_Start->SetTag("Start");
-	button_Start->SetHoverEffct(L"Textures/UI/Button_GameStart_Y.png", 1.0f);
-	button_Start->SetAction(Button::CHANGESCENE, "SelectStage");
-	m_buttons.push_back(button_Start);
+	Button* button = new Button(L"Textures/UI/Button_GameStart_N.png");
+	button->SetTag("Start");
+	button->SetHoverEffct(L"Textures/UI/Button_GameStart_Y.png", 1.0f);
+	button->SetAction(Button::CHANGESCENE, "SelectStage");
+	m_buttons.push_back(button);
 
-	Button* button_MapEditor = new Button(L"Textures/UI/Button_MapEditor_N.png");
-	button_MapEditor->SetTag("MapEditor");
-	button_MapEditor->SetHoverEffct(L"Textures/UI/Button_MapEditor_Y.png", 1.0f);
-	button_MapEditor->SetAction(Button::CHANGESCENE, "MapEditor");
-	m_buttons.push_back(button_MapEditor);
+	button = new Button(L"Textures/UI/Button_Record_N.png");
+	button->SetTag("PlayRecord");
+	button->SetHoverEffct(L"Textures/UI/Button_Record_Y.png", 1.0f);
+	button->SetAction(Button::CHANGESCENE, "PlayRecord");
+	m_buttons.push_back(button);
 
-	Button* button_Quit = new Button(L"Textures/UI/Button_Quit_N.png");
-	button_Quit->SetTag("Quit");
-	button_Quit->SetHoverEffct(L"Textures/UI/Button_Quit_Y.png", 1.0f);
-	button_Quit->SetAction(Button::QUIT);
-	m_buttons.push_back(button_Quit);
+	button = new Button(L"Textures/UI/Button_MapEditor_N.png");
+	button->SetTag("MapEditor");
+	button->SetHoverEffct(L"Textures/UI/Button_MapEditor_Y.png", 1.0f);
+	button->SetAction(Button::CHANGESCENE, "MapEditor");
+	m_buttons.push_back(button);
+
+	button = new Button(L"Textures/UI/Button_Quit_N.png");
+	button->SetTag("Quit");
+	button->SetHoverEffct(L"Textures/UI/Button_Quit_Y.png", 1.0f);
+	button->SetAction(Button::QUIT);
+	m_buttons.push_back(button);
 }
 
 Scene_MainMenu::~Scene_MainMenu()
