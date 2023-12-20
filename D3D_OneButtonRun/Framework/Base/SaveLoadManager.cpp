@@ -319,18 +319,18 @@ void SaveLoadManager::SaveRecord(UINT stage, UINT count, float time)
 	// 기존 기록과 비교
 	if (m_records.size() > stage)
 	{
+		// 버튼수 우선
+		//if (m_records[stage].count > count)
+		//{
+		//	m_records[stage].count = count;
+		//	m_records[stage].time = time;
+		//}
+
 		// 시간 우선
 		if (m_records[stage].time > time)
 		{
 			m_records[stage].time = time;
 			m_records[stage].count = count;
-		}
-		
-		// 버튼수 우선
-		if (m_records[stage].count > count)
-		{
-			m_records[stage].count = count;
-			m_records[stage].time = time;
 		}
 	}
 	else

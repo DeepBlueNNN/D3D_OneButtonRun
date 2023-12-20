@@ -224,6 +224,7 @@ void Scene_GamePlay::Initialize()
 	m_playStartCount = 3;
 
 	// Game Play flag ¼³Á¤
+	m_isStageClear = false;
 	m_isPlayStart = true;
 	m_isPlaying = false;
 
