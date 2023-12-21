@@ -5,8 +5,6 @@ Scene_MapEditor::Scene_MapEditor()
 {
 	m_sceneName = "MapEditor";
 
-	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
-
 	vector<string> fileList;
 	StringPath::GetFiles(fileList, "Assets/FBX/", "*", true);
 	for (auto& list : fileList)
@@ -44,9 +42,6 @@ Scene_MapEditor::~Scene_MapEditor()
 
 void Scene_MapEditor::Update()
 {
-	ENV->Set();
-	ENV->Update();
-
 	SAVELOAD->GetPlayer()->Update();
 	SAVELOAD->GetTargetActor()->Update();
 
@@ -97,8 +92,6 @@ void Scene_MapEditor::GUIRender()
 {
 	ENV->GUIRender();
 	SAVELOAD->GetSky()->GUIRender();
-	SAVELOAD->GetPlayer()->GUIRender();
-	SAVELOAD->GetTargetActor()->GUIRender();
 
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 
@@ -236,6 +229,16 @@ void Scene_MapEditor::GUIRender()
 	{
 		SCENEMANAGER->ChangeScene("MainMenu");
 	}
+}
+
+void Scene_MapEditor::ChangeScene()
+{
+	SAVELOAD->GetPlayer()->InitTransform();
+	// Player 위치, velocity 설정
+	SAVELOAD->GetPlayer()->SetPosition(SAVELOAD->GetPlayerOriginPos());
+	SAVELOAD->GetPlayer()->SetRotation(SAVELOAD->GetPlayerOriginRot());
+
+	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
 }
 
 void Scene_MapEditor::SelectActor()

@@ -1,28 +1,28 @@
-<Level_0 Scene="Level_0">
+<Level_2 Scene="Level_2">
     <CubeMap File="Textures/CubeMap/Spring.dds"/>
     <Camera>
         <Position X="-8.8098326" Y="19.739124" Z="-92.7826"/>
         <Rotation X="0.1487518" Y="12.594064" Z="0"/>
     </Camera>
     <GameClearCameraView>
-        <Position X="28.085264" Y="5.9450908" Z="-23.56201"/>
-        <Rotation X="0.50513148" Y="13.496476" Z="0"/>
+        <Position X="61.254635" Y="5.0425968" Z="-20.740519"/>
+        <Rotation X="0.56062138" Y="11.624906" Z="0"/>
     </GameClearCameraView>
     <LightInfo>
         <LightColor R="1" G="1" B="1" A="1"/>
-        <LightDirection X="0.61199999" Y="-1" Z="0.676"/>
+        <LightDirection X="-0.58200002" Y="-0.79100001" Z="0.824"/>
         <AmbientLight R="0.1" G="0.1" B="0.1"/>
         <AmbientCeil R="0.1" G="0.1" B="0.1"/>
     </LightInfo>
     <Player>
-        <Position X="-49.299999" Y="4" Z="-7.1999998"/>
+        <Position X="-49.299999" Y="4" Z="-9.8999996"/>
         <Rotation X="0" Y="-1.5707964" Z="0"/>
     </Player>
     <Target>
         <Position X="47" Y="-8.8000002" Z="-9.6999998"/>
         <Rotation X="0" Y="0" Z="0"/>
     </Target>
-    <GameActors NumberOfInstances="18">
+    <GameActors NumberOfInstances="14">
         <ActorInfo Count="1" FBXFolder="Platformer" FBX="arrow">
             <Actor_0>
                 <ModelActive isActive="true"/>
@@ -50,7 +50,7 @@
                 </Colliders>
             </Actor_0>
         </ActorInfo>
-        <ActorInfo Count="13" FBXFolder="Platformer" FBX="blockLarge">
+        <ActorInfo Count="5" FBXFolder="Platformer" FBX="blockLarge">
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
@@ -62,7 +62,7 @@
                     <Collider_0 Type="0">
                         <Position X="-44.099892" Y="-4.8999958" Z="-7.2999954"/>
                         <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="19.9" Y="10.5" Z="59.900002"/>
+                        <Scale X="19.9" Y="10.5" Z="20"/>
                     </Collider_0>
                 </Colliders>
             </Actor_0>
@@ -75,9 +75,9 @@
                 </ModelTransform>
                 <Colliders NumberOfColliders="1">
                     <Collider_0 Type="0">
-                        <Position X="-14.600019" Y="-10.54" Z="-17.299999"/>
+                        <Position X="-14.600019" Y="-10.54" Z="-7.2999954"/>
                         <Rotation X="0" Y="0" Z="-0.08726643"/>
-                        <Scale X="20" Y="10" Z="40"/>
+                        <Scale X="20" Y="10" Z="20"/>
                     </Collider_0>
                 </Colliders>
             </Actor_1>
@@ -92,7 +92,7 @@
                     <Collider_0 Type="0">
                         <Position X="5.2999973" Y="-12.28" Z="-7.2999954"/>
                         <Rotation X="0" Y="0" Z="-0.08726643"/>
-                        <Scale X="20" Y="10" Z="60"/>
+                        <Scale X="20" Y="10" Z="20"/>
                     </Collider_0>
                 </Colliders>
             </Actor_2>
@@ -107,7 +107,7 @@
                     <Collider_0 Type="0">
                         <Position X="25.200001" Y="-14.02" Z="-7.3000002"/>
                         <Rotation X="0" Y="0" Z="-0.08726643"/>
-                        <Scale X="20" Y="10" Z="60"/>
+                        <Scale X="20" Y="10" Z="20"/>
                     </Collider_0>
                 </Colliders>
             </Actor_3>
@@ -126,131 +126,23 @@
                     </Collider_0>
                 </Colliders>
             </Actor_4>
-            <Actor_5>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-44.099903" Y="-9.6999874" Z="-27.300064"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_5>
-            <Actor_6>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-44.099876" Y="-9.7000017" Z="12.700014"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_6>
-            <Actor_7>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-15.100021" Y="-15.521" Z="-27.299999"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_7>
-            <Actor_8>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-14.2" Y="-14.70002" Z="12.700012"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="-14.2" Y="-9.6999998" Z="12.700012"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="20" Y="10" Z="20"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_8>
-            <Actor_9>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="4.7999973" Y="-17.261999" Z="-27.299999"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_9>
-            <Actor_10>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="4.8800001" Y="-17.278999" Z="12.7"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_10>
-            <Actor_11>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="24.800058" Y="-19.02" Z="12.700012"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_11>
-            <Actor_12>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="24.440001" Y="-18.98" Z="-27.300068"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_12>
         </ActorInfo>
-        <ActorInfo Count="3" FBXFolder="Platformer" FBX="fence">
+        <ActorInfo Count="1" FBXFolder="Platformer" FBX="fence">
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="-38.999973" Y="0.19999999" Z="19.000036"/>
+                    <Position X="-38.999973" Y="0.19999999" Z="6.0999966"/>
                     <Rotation X="0" Y="0" Z="0"/>
                     <Scale X="1" Y="1" Z="1"/>
                 </ModelTransform>
                 <Colliders NumberOfColliders="1">
                     <Collider_0 Type="0">
-                        <Position X="-38.999973" Y="2.2999997" Z="14.90002"/>
+                        <Position X="-38.999973" Y="2.2999997" Z="1.9999987"/>
                         <Rotation X="0" Y="0" Z="0"/>
                         <Scale X="9.6999998" Y="4.0999999" Z="1.2"/>
                     </Collider_0>
                 </Colliders>
             </Actor_0>
-            <Actor_1>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="36.700001" Y="-9.9000015" Z="-18.700001"/>
-                    <Rotation X="0" Y="-0.78539819" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="39.599998" Y="-7.9000001" Z="-21.700001"/>
-                        <Rotation X="0" Y="0.78539819" Z="0"/>
-                        <Scale X="1.1" Y="3.9000001" Z="10"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_1>
-            <Actor_2>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="37.5" Y="-10.000002" Z="3.9000001"/>
-                    <Rotation X="0" Y="-2.3561945" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="40.400002" Y="-7.9000001" Z="6.8000002"/>
-                        <Rotation X="0" Y="0.78539819" Z="0"/>
-                        <Scale X="10" Y="3.9000001" Z="1.4"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_2>
         </ActorInfo>
         <ActorInfo Count="1" FBXFolder="Platformer" FBX="blockLevel">
             <Actor_0>
@@ -313,9 +205,9 @@
                 </ModelTransform>
                 <Colliders NumberOfColliders="1">
                     <Collider_0 Type="0">
-                        <Position X="-29.100071" Y="-5.1700001" Z="-7.3000002"/>
+                        <Position X="-29.100071" Y="-5.1999998" Z="-12.300011"/>
                         <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="10" Y="1" Z="60"/>
+                        <Scale X="10" Y="1" Z="10"/>
                     </Collider_0>
                 </Colliders>
             </Actor_2>
@@ -361,18 +253,18 @@
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="39.300003" Y="-9.9000044" Z="0.39998883"/>
+                    <Position X="39.5" Y="-9.9000044" Z="-3.7000098"/>
                     <Rotation X="0" Y="0" Z="0"/>
                     <Scale X="1" Y="1" Z="1"/>
                 </ModelTransform>
                 <Colliders NumberOfColliders="2">
                     <Collider_0 Type="2">
-                        <Position X="39.300007" Y="-7.8999953" Z="0.39998883"/>
+                        <Position X="39.500004" Y="-7.8999953" Z="-3.7000098"/>
                         <Rotation X="0" Y="0" Z="0"/>
                         <Scale X="2.0999999" Y="1.1" Z="2.0999999"/>
                     </Collider_0>
                     <Collider_1 Type="1">
-                        <Position X="39.300007" Y="-7.6999955" Z="0.39998883"/>
+                        <Position X="39.500004" Y="-7.6999955" Z="-3.7000098"/>
                         <Rotation X="0" Y="0" Z="0"/>
                         <Scale X="2.3" Y="1" Z="2.3"/>
                     </Collider_1>
@@ -383,33 +275,33 @@
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="-13.700016" Y="-5.6000013" Z="-28.400059"/>
+                    <Position X="0" Y="-7" Z="-2.2"/>
                     <Rotation X="0" Y="0" Z="-0.08726643"/>
                     <Scale X="1" Y="1" Z="1"/>
                 </ModelTransform>
                 <Colliders NumberOfColliders="5">
                     <Collider_0 Type="0">
-                        <Position X="-13.300014" Y="-1.2000003" Z="-28.400032"/>
+                        <Position X="0.40000001" Y="-2.5999999" Z="-2.2"/>
                         <Rotation X="0" Y="0" Z="-0.08726643"/>
                         <Scale X="1.5" Y="9" Z="1.5"/>
                     </Collider_0>
                     <Collider_1 Type="2">
-                        <Position X="-14.900021" Y="3.1999989" Z="-28.400059"/>
+                        <Position X="-1.2" Y="1.8" Z="-2.2"/>
                         <Rotation X="0" Y="0" Z="0.92502439"/>
                         <Scale X="0.80000001" Y="1.6" Z="0.5"/>
                     </Collider_1>
                     <Collider_2 Type="2">
-                        <Position X="-11.100006" Y="3.9999986" Z="-28.400059"/>
+                        <Position X="2.5999999" Y="2.5999999" Z="-2.2"/>
                         <Rotation X="0" Y="0" Z="-1.0646509"/>
                         <Scale X="0.60000002" Y="1.5" Z="0.5"/>
                     </Collider_2>
                     <Collider_3 Type="2">
-                        <Position X="-13.000013" Y="2.6999993" Z="-25.800056"/>
+                        <Position X="0.69999999" Y="1.3" Z="0.40000001"/>
                         <Rotation X="0.7853806" Y="0" Z="-0.08726643"/>
                         <Scale X="0.60000002" Y="2.0999999" Z="0.89999998"/>
                     </Collider_3>
                     <Collider_4 Type="2">
-                        <Position X="-12.900013" Y="3.599999" Z="-30.200066"/>
+                        <Position X="0.80000001" Y="2.2" Z="-4"/>
                         <Rotation X="-1.0820863" Y="0" Z="-0.08726643"/>
                         <Scale X="0.5" Y="1.3" Z="0.80000001"/>
                     </Collider_4>
@@ -483,6 +375,38 @@
                 <Colliders NumberOfColliders="0"/>
             </Actor_3>
         </ActorInfo>
+        <ActorInfo Count="2" FBXFolder="Platformer" FBX="stones">
+            <Actor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="6.0999966" Y="-7.2999954" Z="-11.900009"/>
+                    <Rotation X="0.043633215" Y="0.78539819" Z="-0.069813147"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <Colliders NumberOfColliders="1">
+                    <Collider_0 Type="2">
+                        <Position X="6.0999966" Y="-7.1000009" Z="-12.2"/>
+                        <Rotation X="0" Y="0" Z="-0.08726643"/>
+                        <Scale X="3.5999999" Y="0.2" Z="4.0999999"/>
+                    </Collider_0>
+                </Colliders>
+            </Actor_0>
+            <Actor_1>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="-15.100022" Y="-5.4999971" Z="-8.7999964"/>
+                    <Rotation X="0.043633215" Y="0.78539819" Z="-0.069813147"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <Colliders NumberOfColliders="1">
+                    <Collider_0 Type="2">
+                        <Position X="-15.100022" Y="-5.2999992" Z="-8.7999964"/>
+                        <Rotation X="0" Y="0" Z="-0.08726643"/>
+                        <Scale X="3.5999999" Y="0.2" Z="4.0999999"/>
+                    </Collider_0>
+                </Colliders>
+            </Actor_1>
+        </ActorInfo>
         <ActorInfo Count="1" FBXFolder="Platformer" FBX="fenceCorner">
             <Actor_0>
                 <ModelActive isActive="true"/>
@@ -505,167 +429,39 @@
                 </Colliders>
             </Actor_0>
         </ActorInfo>
+        <ActorInfo Count="1" FBXFolder="Platformer" FBX="bridgeRamp">
+            <Actor_0>
+                <ModelActive isActive="true"/>
+                <ModelTransform>
+                    <Position X="29.300079" Y="-10.500004" Z="-6.0999966"/>
+                    <Rotation X="0.40142557" Y="4.712389" Z="0"/>
+                    <Scale X="1" Y="1" Z="1"/>
+                </ModelTransform>
+                <Colliders NumberOfColliders="1">
+                    <Collider_0 Type="0">
+                        <Position X="27.800005" Y="-8.8000002" Z="-6.0999966"/>
+                        <Rotation X="0" Y="0" Z="-0.08726643"/>
+                        <Scale X="9.1999998" Y="1.2" Z="9.8999996"/>
+                    </Collider_0>
+                </Colliders>
+            </Actor_0>
+        </ActorInfo>
         <ActorInfo Count="1" FBXFolder="Platformer" FBX="blockDirtRamp">
             <Actor_0>
                 <ModelActive isActive="true"/>
                 <ModelTransform>
-                    <Position X="-46.900002" Y="0.1" Z="-7.2999954"/>
+                    <Position X="-46.900002" Y="0.1" Z="-8.3999958"/>
                     <Rotation X="0" Y="4.712389" Z="0"/>
                     <Scale X="1" Y="0.1" Z="1"/>
                 </ModelTransform>
                 <Colliders NumberOfColliders="1">
                     <Collider_0 Type="0">
-                        <Position X="-47.900002" Y="0" Z="-7.2999954"/>
+                        <Position X="-47.900002" Y="0" Z="-8.3999958"/>
                         <Rotation X="0" Y="0" Z="-0.10471976"/>
                         <Scale X="7.9000001" Y="1.4" Z="9.8999996"/>
                     </Collider_0>
                 </Colliders>
             </Actor_0>
         </ActorInfo>
-        <ActorInfo Count="2" FBXFolder="Platformer" FBX="blockLong">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-29.200068" Y="-14.70002" Z="-27.300062"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_0>
-            <Actor_1>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-29.100075" Y="-14.70002" Z="12.700012"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="0"/>
-            </Actor_1>
-        </ActorInfo>
-        <ActorInfo Count="2" FBXFolder="Platformer" FBX="blockCornerLarge">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="40.200001" Y="-19.9" Z="-21.900038"/>
-                    <Rotation X="0" Y="4.712389" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="37.400002" Y="-14.9" Z="-19.299999"/>
-                        <Rotation X="0" Y="0.78539819" Z="0"/>
-                        <Scale X="7.6999998" Y="10" Z="13.9"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_0>
-            <Actor_1>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="40.199951" Y="-19.90004" Z="7.699995"/>
-                    <Rotation X="0" Y="3.1415927" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="37.799999" Y="-14.9" Z="5.0999999"/>
-                        <Rotation X="0" Y="0.78539819" Z="0"/>
-                        <Scale X="13.7" Y="10" Z="7.1999998"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_1>
-        </ActorInfo>
-        <ActorInfo Count="1" FBXFolder="Platformer" FBX="bridgeHalf">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="1.2" Y="-8.3999996" Z="12.1"/>
-                    <Rotation X="0" Y="-1.5707964" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="-1.4" Y="-4.8000002" Z="12.1"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="4.4000001" Y="0.60000002" Z="9.8000002"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_0>
-        </ActorInfo>
-        <ActorInfo Count="1" FBXFolder="Platformer" FBX="crateItem">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-28.40007" Y="-4.6999979" Z="-34.500046"/>
-                    <Rotation X="0" Y="0" Z="0"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="-28.40007" Y="-2.2" Z="-34.500046"/>
-                        <Rotation X="0" Y="0" Z="0"/>
-                        <Scale X="4.9000001" Y="5" Z="4.9000001"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_0>
-        </ActorInfo>
-        <ActorInfo Count="1" FBXFolder="Platformer" FBX="blockSlope">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="-1.7000004" Y="-5.9000001" Z="-10.300003"/>
-                    <Rotation X="1.4835291" Y="-1.5707964" Z="0"/>
-                    <Scale X="1" Y="1" Z="0.15000001"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="1">
-                    <Collider_0 Type="0">
-                        <Position X="-6.1999998" Y="-6.0999999" Z="-10.3"/>
-                        <Rotation X="0" Y="0" Z="0.052359879"/>
-                        <Scale X="11" Y="1" Z="10"/>
-                    </Collider_0>
-                </Colliders>
-            </Actor_0>
-        </ActorInfo>
-        <ActorInfo Count="1" FBXFolder="Legacy" FBX="Ground_1">
-            <Actor_0>
-                <ModelActive isActive="true"/>
-                <ModelTransform>
-                    <Position X="15.600019" Y="-8.199995" Z="-27.300066"/>
-                    <Rotation X="0" Y="0" Z="-0.08726643"/>
-                    <Scale X="1" Y="1" Z="1"/>
-                </ModelTransform>
-                <Colliders NumberOfColliders="6">
-                    <Collider_0 Type="0">
-                        <Position X="12.8" Y="-7.6999998" Z="-28.700001"/>
-                        <Rotation X="0" Y="0.99483377" Z="-0.069813147"/>
-                        <Scale X="7.5" Y="2.9000001" Z="4.6999998"/>
-                    </Collider_0>
-                    <Collider_1 Type="0">
-                        <Position X="12.7" Y="-7.5999999" Z="-28.1"/>
-                        <Rotation X="0" Y="0.38397238" Z="0"/>
-                        <Scale X="3.4000001" Y="2.7" Z="7.8000002"/>
-                    </Collider_1>
-                    <Collider_2 Type="0">
-                        <Position X="19.5" Y="-8.1999998" Z="-27.299999"/>
-                        <Rotation X="0" Y="-0.54105198" Z="-0.069813147"/>
-                        <Scale X="3.5999999" Y="2.5999999" Z="8.1999998"/>
-                    </Collider_2>
-                    <Collider_3 Type="0">
-                        <Position X="19.1" Y="-8.8000002" Z="-27.9"/>
-                        <Rotation X="0" Y="0.52359879" Z="-0.069813147"/>
-                        <Scale X="4.0999999" Y="3.7" Z="8"/>
-                    </Collider_3>
-                    <Collider_4 Type="0">
-                        <Position X="19.799999" Y="-8.3000002" Z="-27.700001"/>
-                        <Rotation X="0" Y="0" Z="-0.08726643"/>
-                        <Scale X="6.5" Y="2.7" Z="4.8000002"/>
-                    </Collider_4>
-                    <Collider_5 Type="0">
-                        <Position X="12.5" Y="-7.8000002" Z="-28.4"/>
-                        <Rotation X="0" Y="-0.12217303" Z="-0.08726643"/>
-                        <Scale X="7.1999998" Y="3" Z="4.0999999"/>
-                    </Collider_5>
-                </Colliders>
-            </Actor_0>
-        </ActorInfo>
     </GameActors>
-</Level_0>
+</Level_2>

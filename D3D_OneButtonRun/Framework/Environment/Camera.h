@@ -50,8 +50,8 @@ private:
     Matrix      m_view;
     Matrix      m_projection;
 
-    float m_moveSpeed = 10.0f;
-    float m_rotSpeed = 5.0f;
+    float m_moveSpeed = 5.0f;
+    float m_rotSpeed = 1.0f;
 
     Transform*  m_target = nullptr;    
 };

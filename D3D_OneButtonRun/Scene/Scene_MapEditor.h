@@ -20,6 +20,7 @@ public:
 	void PreRender()   override;
 	void PostRender()  override;
 	void GUIRender()   override;
+	void ChangeScene() override;
 
 private:
 	/// <summary>
