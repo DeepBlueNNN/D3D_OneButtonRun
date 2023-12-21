@@ -265,6 +265,8 @@
     <ClInclude Include="Framework\Object\UI\HowToPlay.h" />
     <ClInclude Include="Framework\Object\UI\UIPanel.h" />
     <ClInclude Include="Framework\Object\Gameplay\TargetActor.h" />
+    <ClInclude Include="Framework\Object\UI\ClearUI.h" />
+    <ClInclude Include="Scene\Scene_PlayRecord.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Base\SceneManager.cpp">
@@ -435,6 +437,8 @@
     <ClCompile Include="Framework\Object\UI\UITexture.cpp" />
     <ClCompile Include="Framework\Object\UI\HowToPlay.cpp" />
     <ClCompile Include="Framework\Object\Gameplay\TargetActor.cpp" />
+    <ClCompile Include="Framework\Object\UI\ClearUI.cpp" />
+    <ClCompile Include="Scene\Scene_PlayRecord.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="D3D_OneButtonRun.rc">

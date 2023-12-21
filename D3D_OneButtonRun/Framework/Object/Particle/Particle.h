@@ -17,6 +17,8 @@ public:
 	virtual void Play(Vector3 position);
 	void Stop();
 
+	void SetParticleCount(UINT count) { m_particleCount = count; }
+
 protected:
 	bool	m_isActive = false;
 	UINT	m_particleCount = 0;
