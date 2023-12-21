@@ -10,6 +10,16 @@ ModelAnimator::ModelAnimator(string name)
 
 ModelAnimator::~ModelAnimator()
 {
+	for (ModelClip* clip : m_clips)
+		SAFE_DELETE(clip);
+
+	SAFE_DELETE(m_frameBuffer);
+	
+	SAFE_DELETE_ARRAY(m_clipTransforms);
+	SAFE_DELETE_ARRAY(m_nodeTransforms);
+
+	m_texture->Release();
+	m_srv->Release();
 }
 
 void ModelAnimator::Update()
@@ -76,6 +86,51 @@ void ModelAnimator::PlayClip(int clip, float scale, float takeTime)
 	m_frameBuffer->Get().next.clip = clip;
 	m_frameBuffer->Get().next.scale = scale;
 	m_frameBuffer->Get().takeTime = takeTime;
+
+	m_clips[clip]->Init();
+}
+
+void ModelAnimator::PlayClip(int curClip, int nextClip, float scale, float takeTime)
+{
+	m_isPlay = true;
+
+	m_frameBuffer->Get().cur.clip = curClip;
+	m_frameBuffer->Get().cur.scale = scale;
+	m_frameBuffer->Get().takeTime = takeTime;
+
+	m_frameBuffer->Get().next.clip = nextClip;
+	m_frameBuffer->Get().next.scale = scale;
+	m_frameBuffer->Get().takeTime = takeTime;
+}
+
+Matrix ModelAnimator::GetTransformByNode(int nodeIndex)
+{
+	if (m_texture == nullptr) return XMMatrixIdentity();
+
+	Matrix curAnim;
+
+	{//CurAnim
+		Frame& curFrame = m_frameBuffer->Get().cur;
+
+		Matrix cur = m_nodeTransforms[curFrame.clip].transform[curFrame.curFrame][nodeIndex];
+		Matrix next = m_nodeTransforms[curFrame.clip].transform[curFrame.curFrame + 1][nodeIndex];
+
+		curAnim = Lerp(cur, next, curFrame.time) * m_world;
+	}
+
+	{//NextAnim
+		Frame& nextFrame = m_frameBuffer->Get().next;
+
+		if (nextFrame.clip == -1)
+			return curAnim;
+
+		Matrix cur = m_nodeTransforms[nextFrame.clip].transform[nextFrame.curFrame][nodeIndex];
+		Matrix next = m_nodeTransforms[nextFrame.clip].transform[nextFrame.curFrame + 1][nodeIndex];
+
+		Matrix nextAnim = Lerp(cur, next, nextFrame.time) * m_world;
+
+		return Lerp(curAnim, nextAnim, m_frameBuffer->Get().tweenTime);
+	}
 }
 
 void ModelAnimator::CreateTexture()
@@ -202,21 +257,27 @@ void ModelAnimator::UpdateFrame()
 	FrameBuffer::Data& frameData = m_frameBuffer->Get();
 	{
 		ModelClip* clip = m_clips[frameData.cur.clip];
+
 		clip->m_playTime += frameData.cur.scale * DELTA;
+		frameData.cur.time += clip->m_tickPerSecond * frameData.cur.scale * DELTA;
+
 		if (frameData.cur.time >= 1.0f)
 		{
 			frameData.cur.curFrame = (frameData.cur.curFrame + 1) % (clip->m_frameCount - 1);
 			frameData.cur.time -= 1.0f;
 		}
+
+		clip->Excute();
 	}
 	{
 		if (frameData.next.clip < 0)
 			return;
 
 		ModelClip* clip = m_clips[frameData.next.clip];
+
 		frameData.tweenTime += DELTA / frameData.takeTime;
 
-		if (frameData.takeTime >= 1.0f)
+		if (frameData.tweenTime >= 1.0f)
 		{
 			frameData.cur = frameData.next;
 			frameData.tweenTime = 0.0f;

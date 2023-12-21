@@ -14,8 +14,11 @@ namespace GameMath
     float Clamp(const float& min, const float& max, float value);
 
     float Lerp(const float& start, const float& end, float t);
-    Vector2 Lerp(const Vector2& start, const Vector2& end, float t);    
-    Vector2 SLerp(const Vector2& start, const Vector2& end, float t);    
+    Vector2 Lerp(const Vector2& start, const Vector2& end, float t);
+    Matrix Lerp(const Matrix& start, const Matrix& end, float t);
+
+    Vector2 SLerp(const Vector2& start, const Vector2& end, float t);
+    Vector3 SLerp(const Vector3& start, const Vector3& end, float t);
     
     float Cross(const Vector2& vec1, const Vector2& vec2);
     Vector3 Cross(Vector3& vec1, Vector3& vec2);

@@ -30,8 +30,9 @@ GamePlayer::GamePlayer()
 		dynamic_cast<ModelAnimator*>(m_model)->ReadClip("SparrowAnim", i);
 
 	SetModelScale(Vector3(0.04f, 0.04f, 0.04f));
-	//m_model->SetPivot(Vector3(0.0f, -1.3f, 0.0f));
 	m_offset = 1.3f;
+
+	dynamic_cast<ModelAnimator*>(m_model)->GetClip(7)->SetEvent(bind(&GamePlayer::SetFrictionAnimToIdle, this), 1.0f);
 }
 
 GamePlayer::~GamePlayer()
@@ -44,12 +45,6 @@ void GamePlayer::Update()
 {
 	if (!m_isActive) return;
 
-	if (KEY_DOWN('Q'))
-	{
-		dynamic_cast<ModelAnimator*>(m_model)->PlayClip(
-			Random(0, dynamic_cast<ModelAnimator*>(m_model)->GetClipArraySize()));
-	}
-
 	if (m_isGravityActive)
 	{
 		m_velocity += GRAVITY * DELTA;
@@ -58,16 +53,19 @@ void GamePlayer::Update()
 	}
 	else
 		SetRotation(GetColliderRotation());
-		//SetRotation(Vector3(0.0f, 0.0f, 0.0f));
 
 	m_collider->UpdateWorld();
 
 	dynamic_cast<ModelAnimator*>(m_model)->Update();
 
 	if (m_collidedObjects.size() > 0)
+	{
 		m_isCollision = true;
+	}
 	else
+	{
 		m_isCollision = false;
+	}
 
 }
 
@@ -90,6 +88,11 @@ void GamePlayer::GUIRender()
 	}
 }
 
+void GamePlayer::SetFrictionAnimToIdle()
+{
+	dynamic_cast<ModelAnimator*>(m_model)->PlayClip(17);
+}
+
 void GamePlayer::Friction(Vector3 closestPoint)
 {
 	m_collider->UpdateWorld();
@@ -104,6 +107,7 @@ void GamePlayer::Friction(Vector3 closestPoint)
 	if (!m_isCollision)
 	{
 		m_velocity += (repulsionDir * c * 2.0f * repulsionValue);
+		dynamic_cast<ModelAnimator*>(m_model)->PlayClip(7);
 	}
 	else
 	{

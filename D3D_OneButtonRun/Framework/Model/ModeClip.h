@@ -16,10 +16,16 @@ public:
 	~ModelClip();
 
 public:
+	void Init();
+	void Excute();
+
 	KeyFrame* GetKeyFrame(string boneName);
+
+	void SetEvent(Event event, float timeRatio);
 
 private:
 	string	m_name = "";
+	string m_lockBone = "";
 
 	UINT	m_frameCount = 0;
 	float	m_tickPerSecond = 0.0f;
@@ -27,4 +33,7 @@ private:
 
 	float	m_playTime = 0.0f;
 	unordered_map<string, KeyFrame*> m_keyFrames;
+
+	map<float, Event> m_events;
+	map<float, Event>::iterator m_eventIter;
 };

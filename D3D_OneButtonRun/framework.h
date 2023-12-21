@@ -89,6 +89,10 @@ typedef XMMATRIX	Matrix;
 typedef XMFLOAT4X4	MatrixF;
 typedef XMFLOAT4X4	Float4x4;
 
+typedef function<void()> Event;
+typedef function<void(void*)> ParamEvent;
+typedef function<void(int)> IntParamEvent;
+
 // BONE
 #define MAX_LIGHT    10
 #define MAX_FRAME    512
