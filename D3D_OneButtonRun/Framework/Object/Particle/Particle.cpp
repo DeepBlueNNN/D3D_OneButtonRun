@@ -45,7 +45,7 @@ void Particle::Render()
 		DC->GSSetShader(nullptr, nullptr, 0);
 	}
 	m_blendState[0]->SetState();
-	m_depthState[1]->SetState();
+	m_depthState[0]->SetState();
 }
 
 void Particle::Play(Vector3 position)

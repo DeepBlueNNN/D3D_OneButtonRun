@@ -26,7 +26,9 @@ void Environment::Update()
         m_isWireMode = !m_isWireMode;
 
     if (KEY_DOWN(VK_F2))
-        Collider::RenderOnOff();
+    {
+        SetRenderMode(!m_isRenderMode);
+    }
 
     CAMERA->Update();
 }
@@ -126,6 +128,13 @@ void Environment::SetOrthographic()
 {
     m_projectionBuffer->Set(m_orthographic);
     m_projectionBuffer->SetVS(2);
+}
+
+void Environment::SetRenderMode(bool isRender)
+{
+    m_isRenderMode = isRender;
+    Collider::RenderOnOff();
+    SCENEMANAGER->SetSceneActive("Grid", isRender);
 }
 
 void Environment::UpdateProjection()

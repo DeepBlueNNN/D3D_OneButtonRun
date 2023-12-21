@@ -67,7 +67,6 @@ void TargetActor::GUIRender()
 		m_spark->GUIRender();
 
 		ImGui::TreePop();
-
 	}
 }
 

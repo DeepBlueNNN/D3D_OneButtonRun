@@ -178,6 +178,8 @@ void Scene_GamePlay::ChangeScene()
 	Font::Get()->SetColor("White");
 	Font::Get()->SetStyle("Default");
 
+	ENV->SetRenderMode(false);
+
 	Initialize();
 }
 
@@ -255,28 +257,4 @@ string Scene_GamePlay::ConvertToString(float value)
 	_CSTD sprintf_s(&Str[0], Len + 1, "%.2f", playTime);
 
 	return Str;
-}
-
-void Scene_GamePlay::RecordSave()
-{
-	int temp = (int)(m_playTime * 100);
-	int milliSecond = temp % 100;
-	int second = temp / 100;
-	int minute = second / 60;
-	second = second % 60;
-	int hour = minute / 60;
-	minute = minute % 60;
-	int day = hour / 24;
-	hour = hour % 24;
-
-	string timeRecordTemp = (day > 10 ? to_string(day) : ("0" + to_string(day))) + " : ";
-	timeRecordTemp += (hour > 10 ? to_string(hour) : ("0" + to_string(hour))) + " : ";
-	timeRecordTemp += (minute > 10 ? to_string(minute) : ("0" + to_string(minute))) + " : ";
-	timeRecordTemp += (second > 10 ? to_string(second) : ("0" + to_string(second))) + " : ";
-	timeRecordTemp += (milliSecond > 10 ? to_string(milliSecond) : ("0" + to_string(milliSecond)));
-
-	string refreshRecordTemp = to_string(m_refreshCount);
-
-	cout << timeRecordTemp << '\n';
-	cout << m_playTime << '\n';
 }

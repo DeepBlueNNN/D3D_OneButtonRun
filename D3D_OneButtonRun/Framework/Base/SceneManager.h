@@ -23,6 +23,9 @@ public:	//Getter
 	Scene* GetScene(string name);
 	Scene* GetCurrentScene()		{ return m_currentScene; }
 
+public: //Setter
+	void SetSceneActive(string sceneName, bool isActive);
+
 public:
 	void ChangeScene(string name, bool withGrid = false);
 	void AddScene(Scene* scene)	{ m_scenes.push_back(scene); }
