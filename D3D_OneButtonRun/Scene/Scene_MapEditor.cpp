@@ -92,8 +92,6 @@ void Scene_MapEditor::GUIRender()
 {
 	ENV->GUIRender();
 	SAVELOAD->GetSky()->GUIRender();
-	SAVELOAD->GetPlayer()->GUIRender();
-	SAVELOAD->GetTargetActor()->GUIRender();
 
 	vector<InstancingActor*>& actors = SAVELOAD->GetInstancingActors();
 
