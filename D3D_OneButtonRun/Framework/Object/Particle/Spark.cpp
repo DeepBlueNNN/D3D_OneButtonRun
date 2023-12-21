@@ -1,7 +1,7 @@
 #include "framework.h"
 #include "Spark.h"
 
-Spark::Spark(wstring imageFile, bool isAdditive)
+Spark::Spark(wstring imageFile, bool isAdditive, bool isLoop)
 {
 	m_material->SetShader(L"Geometry/Spark.hlsl");
 	m_material->SetDiffuseMap(imageFile);
@@ -13,6 +13,8 @@ Spark::Spark(wstring imageFile, bool isAdditive)
 
 	if (isAdditive)
 		m_blendState[1]->Additive();
+	
+	m_isLoop = isLoop;
 
 	Create();
 }
@@ -24,14 +26,25 @@ Spark::~Spark()
 	SAFE_DELETE(m_buffer);
 }
 
-void Spark::Update()
+void Spark::Update(Vector3 position)
 {
 	if (!m_isActive) return;
 
 	m_buffer->Get()[0] += DELTA;
 
-	if (m_buffer->Get()[0] > m_buffer->Get()[1])
-		Stop();
+	if (m_isLoop)
+	{
+		if (m_buffer->Get()[0] > m_buffer->Get()[1])
+		{
+			m_buffer->Get()[0] = 0.0f;
+			Play(position);
+		}
+	}
+	else
+	{
+		if (m_buffer->Get()[0] > m_buffer->Get()[1])
+			Stop();
+	}
 }
 
 void Spark::Render()
@@ -67,12 +80,36 @@ void Spark::Play(Vector3 position)
 	m_vertexBuffer->Update(m_vertices.data(), m_particleCount);
 }
 
+void Spark::SetSizeRange(float min, float max)
+{
+	m_minSize = min;
+	m_maxSize = max;
+
+	UpdateParticle();
+}
+
+void Spark::SetRadiusRange(float min, float max)
+{
+	m_minRadius = min;
+	m_maxRadius = max;
+
+	UpdateParticle();
+}
+
+void Spark::SetColor(Float4 start, Float4 end)
+{
+	m_startColorBuffer->Get() = start;
+	m_endColorBuffer->Get() = end;
+
+	UpdateParticle();
+}
+
 void Spark::Create()
 {
 	m_vertices.resize(MAX_COUNT);
 	m_vertexBuffer = new VertexBuffer(m_vertices.data(), sizeof(VertexParticle), MAX_COUNT);
 
-	m_particleCount = 500;
+	m_particleCount = 50;
 	m_buffer->Get()[1] = 1.0f;
 }
 

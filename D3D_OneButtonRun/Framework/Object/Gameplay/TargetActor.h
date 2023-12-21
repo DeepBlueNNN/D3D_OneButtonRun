@@ -25,4 +25,8 @@ public:
 		m_model->Rot() = rot;
 	}
 
+	void ParticleOn(bool isOn);
+
+private:
+	Spark* m_spark = nullptr;
 };
