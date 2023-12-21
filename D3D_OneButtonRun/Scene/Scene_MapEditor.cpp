@@ -42,6 +42,9 @@ Scene_MapEditor::~Scene_MapEditor()
 
 void Scene_MapEditor::Update()
 {
+	CAMERA->Update();
+	ENV->Update();
+
 	SAVELOAD->GetPlayer()->Update();
 	SAVELOAD->GetTargetActor()->Update();
 

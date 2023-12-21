@@ -92,7 +92,7 @@ void Scene_SelectStage::UpdateMaps()
 
 		Button* stageButton = new Button(thumbnailName, Vector2(300.0f, 400.0f));
 		stageButton->SetOutline(0.01f);
-		stageButton->SetHoverEffct(L"Textures/Color/Green.png", 0.5f);
+		stageButton->SetHoverEffct(L"Textures/Color/Green.png", 0.1f);
 		stageButton->SetAction(Button::CHANGESCENE, "GamePlay");
 		stageButton->SetPressable(false);
 

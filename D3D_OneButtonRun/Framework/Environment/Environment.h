@@ -28,6 +28,7 @@ public: // Setter
     void SetViewport(UINT width = MAIN->GetWidth(), UINT height = MAIN->GetHeight());
     void SetPerspective();
     void SetOrthographic();
+    void SetRenderMode(bool isRender);
 
 public:
     void UpdateProjection();
@@ -50,4 +51,5 @@ private:
     Matrix  m_perspective;
     Matrix  m_orthographic;
     bool    m_isWireMode = false;
+    bool    m_isRenderMode = true;
 };

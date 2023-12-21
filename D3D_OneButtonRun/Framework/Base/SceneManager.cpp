@@ -64,8 +64,8 @@ void SceneManager::Update()
 	m_currentScene = nullptr;
 
 	ENV->Set();
-	CAMERA->Update();
-	ENV->Update();
+	// CAMERA->Update();
+	// ENV->Update();
 
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
@@ -116,6 +116,15 @@ void SceneManager::GuiRender()
 	{
 		if (m_scenes[i]->IsActive())
 			m_scenes[i]->GUIRender();
+	}
+}
+
+void SceneManager::SetSceneActive(string sceneName, bool isActive)
+{
+	for (UINT i = 0; i < m_scenes.size(); i++)
+	{
+		if (m_scenes[i]->GetName() == sceneName)
+			m_scenes[i]->SetActive(isActive);
 	}
 }
 

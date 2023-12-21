@@ -112,6 +112,9 @@ void Scene_PlayRecord::UpdateRecords()
 {
 	vector<Record> records = SAVELOAD->GetRecords();
 
+	m_recordCounts.clear();
+	m_recordTimes.clear();
+
 	for (auto record : records)
 	{
 		ConvertRecordToString(record.count, record.time);
@@ -124,7 +127,7 @@ void Scene_PlayRecord::PrintRecords(int index)
 
 	Font::Get()->SetColor("Black");
 
-	if (m_recordCounts.size() < index)
+	if (m_recordCounts.size() - 1 < index)
 	{
 		Font::Get()->SetStyle("Record_Medium");
 		Font::Get()->RenderText(StringPath::GetFileNameWithoutExtension(m_stageNames[index]).c_str(), { ((float)MAIN->GetWidth() * ((index + 2) / 6.0f)), ((float)MAIN->GetHeight() * (4.0f / 5.0f)) }, Float2(200.0f, 80.0f));
