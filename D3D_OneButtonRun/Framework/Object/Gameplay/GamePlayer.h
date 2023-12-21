@@ -79,6 +79,8 @@ public:
 		m_rotValue = Vector3(0, 0, 0);
 	}
 
+	void SetFrictionAnimToIdle();
+
 public:
 	/// <summary>
 	/// player가 object와 충돌 시에 호출. 

@@ -48,6 +48,7 @@ void Scene_GamePlay::Update()
 
 	if (m_isPlayStart)	// Play Start 시에 3초 카운트
 	{
+		SAVELOAD->GetPlayer()->GetModelAnim()->PlayClip(17);
 		SAVELOAD->GetPlayer()->SetIsGravityActive(false);
 
 		SAVELOAD->GetTargetActor()->Update();
@@ -87,8 +88,7 @@ void Scene_GamePlay::Update()
 		{
 			m_playTime += DELTA;
 
-			SAVELOAD->GetTargetActor()->Update();
-			SAVELOAD->GetPlayer()->Update();
+			//SAVELOAD->GetPlayer()->Update();
 
 			// Ground Check
 			for (const auto actor : actors)
@@ -122,10 +122,8 @@ void Scene_GamePlay::Update()
 			{
 				printf("Target & Player Collision True \n");
 
-				//RecordSave();
 				SAVELOAD->SaveRecord(SAVELOAD->GetCurrentStage(), m_refreshCount, m_playTime);
 
-				SAVELOAD->GetPlayer()->SetIsGravityActive(false);
 				m_isPlaying = false;
 				m_isStageClear = true;
 				m_clearUI->SetPanelOn(true);
@@ -143,6 +141,8 @@ void Scene_GamePlay::Update()
 
 	if (m_isStageClear)
 	{
+		SAVELOAD->GetPlayer()->SetIsGravityActive(false);
+		SAVELOAD->GetPlayer()->GetModelAnim()->PlayClip(15);
 		// Camera Transform Set
 		SAVELOAD->SetCameraClearView();
 
@@ -157,6 +157,9 @@ void Scene_GamePlay::Update()
 			SCENEMANAGER->ChangeScene("MainMenu");
 		}
 	}
+
+	SAVELOAD->GetTargetActor()->Update();
+	SAVELOAD->GetPlayer()->Update();
 }
 
 void Scene_GamePlay::Render()

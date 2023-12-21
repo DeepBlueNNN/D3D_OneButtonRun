@@ -25,6 +25,7 @@ protected:
     public:
         FrameBuffer() : ConstBuffer(&m_data, sizeof(Data))
         {
+            m_data.next.clip = -1;
         }
 
         Data& Get() { return m_data; }
@@ -44,8 +45,13 @@ public:
 
     void ReadClip(string clipName, UINT clipNum = 0);
     void PlayClip(int clip, float scale = 1.0f, float takeTime = 0.2f);
+    void PlayClip(int curClip, int nextClip, float scale = 1.0f, float takeTime = 0.2f);
+
+    Matrix GetTransformByNode(int nodeIndex);
 
 public:
+    ModelClip* GetClip(UINT index) { return m_clips[index]; }
+    
     UINT GetClipArraySize() { return m_clips.size(); }
 
 protected:
