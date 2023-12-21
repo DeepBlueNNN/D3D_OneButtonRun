@@ -49,6 +49,7 @@ public:	// Setter
 	bool PushCollision(Collider* collider);
 
 	static void RenderOnOff() { m_isRender = !m_isRender; } // Toggle
+	static void SetRenderMode(bool isRender) { m_isRender = isRender; }
 
 protected:
 	virtual void MakeMesh() = 0;
