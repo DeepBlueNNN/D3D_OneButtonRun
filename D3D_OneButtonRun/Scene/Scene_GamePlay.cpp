@@ -131,7 +131,7 @@ void Scene_GamePlay::Update()
 		}
 	}
 
-	// Chit 적용
+	// Cheet 적용
 	if (KEY_PRESS(VK_CONTROL) && KEY_PRESS('K') && KEY_DOWN('C'))
 	{
 		m_isStageClear = true;

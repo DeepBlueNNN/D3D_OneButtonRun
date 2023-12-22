@@ -35,7 +35,12 @@ void Scene_SelectStage::Update()
 					SAVELOAD->SetLoadFile(i, StringPath::ToWString(m_stageNames[i]));
 					m_buttons[i]->OnClicked();
 				}
+				else if(i == m_buttons.size() - 1)
+				{
+					m_buttons[i]->OnClicked();
+				}
 			}
+
 			continue;
 		}
 
@@ -88,7 +93,12 @@ void Scene_SelectStage::UpdateMaps()
 	{
 		// 클리어 기록이 있으면 다음 썸네일이미지 공개
 		if (i == 0 || i <= SAVELOAD->GetRecords().size())
-			thumbnailName = m_thumbnails[i];
+		{
+			if(i == m_thumbnails.size())
+				thumbnailName = L"Textures/Thumbnails/Question.png";
+			else
+				thumbnailName = m_thumbnails[i];
+		}
 		else
 			thumbnailName = L"Textures/Thumbnails/Question.png";
 

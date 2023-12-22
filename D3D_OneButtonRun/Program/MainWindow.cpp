@@ -342,11 +342,18 @@ void MainWindow::ResizeScreen(float width, float height)
 	CreateBackBuffer(width, height);
 	
 	// Font 세팅
-	Font::Get()->AddColor("White", 1, 1, 1);
-	Font::Get()->AddStyle("Default", L"배달의민족 주아", 80.0f);
+	if (SCENEMANAGER->GetCurrentScene()->GetName() == "PlayRecord")
+	{
+		SCENEMANAGER->GetCurrentScene()->ChangeScene();
+	}
+	else
+	{
+		Font::Get()->AddColor("White", 1, 1, 1);
+		Font::Get()->AddStyle("Default", L"배달의민족 주아", 80.0f);
 
-	Font::Get()->SetColor("White");
-	Font::Get()->SetStyle("Default");
+		Font::Get()->SetColor("White");
+		Font::Get()->SetStyle("Default");
+	}
 
 	ENV->UpdateProjection();
 }

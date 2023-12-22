@@ -4,19 +4,19 @@
 Font::Font()
 {
 	DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,
-		__uuidof(IDWriteFactory), (IUnknown**)&writeFactory);
+		__uuidof(IDWriteFactory), (IUnknown**)&m_writeFactory);
 
-	D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &factory);
+	D2D1CreateFactory(D2D1_FACTORY_TYPE_MULTI_THREADED, &m_factory);
 
-	DEVICE->QueryInterface(&dxgiDevice);
+	DEVICE->QueryInterface(&m_dxgiDevice);
 
-	factory->CreateDevice(dxgiDevice, &device);
+	m_factory->CreateDevice(m_dxgiDevice, &m_device);
 
-	HRESULT hr = device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
-		&context);
+	HRESULT hr = m_device->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
+		&m_context);
 	assert(SUCCEEDED(hr));
 
-	MAIN->GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface), (void**)&dxgiSurface);
+	MAIN->GetSwapChain()->GetBuffer(0, __uuidof(IDXGISurface), (void**)&m_dxgiSurface);
 
 	D2D1_BITMAP_PROPERTIES1 bp;
 	bp.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -26,74 +26,90 @@ Font::Font()
 	bp.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
 	bp.colorContext = nullptr;
 
-	context->CreateBitmapFromDxgiSurface(dxgiSurface, &bp, &targetBitmap);
+	m_context->CreateBitmapFromDxgiSurface(m_dxgiSurface, &bp, &m_targetBitmap);
 
-	context->SetTarget(targetBitmap);
+	m_context->SetTarget(m_targetBitmap);
 }
 
 Font::~Font()
 {
-	for (pair<string, ID2D1SolidColorBrush*> brush : brushes)
+	for (pair<string, ID2D1SolidColorBrush*> brush : m_brushes)
 		brush.second->Release();
 
-	for (pair<string, IDWriteTextFormat*> format : formats)
+	for (pair<string, IDWriteTextFormat*> format : m_formats)
 		format.second->Release();
 
-	factory->Release();
-	writeFactory->Release();
-	dxgiSurface->Release();
-	targetBitmap->Release();
-	dxgiDevice->Release();
-	context->Release();
-	device->Release();
+	m_factory->Release();
+	m_writeFactory->Release();
+	m_dxgiSurface->Release();
+	m_targetBitmap->Release();
+	m_dxgiDevice->Release();
+	m_context->Release();
+	m_device->Release();
 }
 
 void Font::AddColor(string key, float r, float g, float b)
 {
-	if (brushes.count(key) > 0) return;
+	if (m_brushes.count(key) > 0) return;
 
 	ID2D1SolidColorBrush* brush = nullptr;
 
 	D2D1::ColorF colorF(r, g, b);
-	context->CreateSolidColorBrush(colorF, &brush);
+	m_context->CreateSolidColorBrush(colorF, &brush);
 
-	brushes[key] = brush;
+	m_brushes[key] = brush;
 }
 
 void Font::AddStyle(string key, wstring font, float size, DWRITE_TEXT_ALIGNMENT alignment, DWRITE_FONT_WEIGHT weight, DWRITE_FONT_STYLE style, DWRITE_FONT_STRETCH stretch)
 {
-	if (formats.count(key) > 0) return;
+	if (m_formats.count(key) > 0) return;
 
 	IDWriteTextFormat* format;
 
-	writeFactory->CreateTextFormat(font.c_str(), nullptr,
+	m_writeFactory->CreateTextFormat(font.c_str(), nullptr,
 		weight, style, stretch, size, L"ko", &format);
 
 	format->SetTextAlignment(alignment);
 
-	formats[key] = format;
+	m_formats[key] = format;
+}
+
+bool Font::CheckStyleValidity(string key)
+{
+	if (m_formats.find(key) == m_formats.end())
+		return false;
+
+	return true;
+}
+
+bool Font::CheckColorValidity(string key)
+{
+	if (m_brushes.find(key) == m_brushes.end())
+		return false;
+
+	return true;
 }
 
 void Font::SetColor(string key)
 {
-	if (brushes.count(key) == 0) return;
+	if (m_brushes.count(key) == 0) return;
 
-	curBrush = brushes[key];
+	m_curBrush = m_brushes[key];
 }
 
 void Font::SetStyle(string key)
 {
-	if (formats.count(key) == 0) return;
+	if (m_formats.count(key) == 0) return;
 
-	curFormat = formats[key];
+	m_curFormat = m_formats[key];
 }
 
 void Font::RenderText(wstring text, Float2 pos, Float2 size)
 {
 	if (size.x == 0.0f && size.y == 0.0f)
 	{
-		size.x = text.size() * curFormat->GetFontSize();
-		size.y = curFormat->GetFontSize();
+		size.x = text.size() * m_curFormat->GetFontSize();
+		size.y = m_curFormat->GetFontSize();
 	}
 
 	Float2 halfSize = { size.x * 0.5f, size.y * 0.5f };
@@ -106,16 +122,16 @@ void Font::RenderText(wstring text, Float2 pos, Float2 size)
 	rectF.top = pos.y - halfSize.y;
 	rectF.bottom = pos.y + halfSize.y;
 
-	context->DrawTextW(text.c_str(), text.size(),
-		curFormat, &rectF, curBrush);
+	m_context->DrawTextW(text.c_str(), text.size(),
+		m_curFormat, &rectF, m_curBrush);
 }
 
 void Font::RenderText(string text, Float2 pos, Float2 size)
 {
 	if (size.x == 0.0f && size.y == 0.0f)
 	{
-		size.x = text.size() * curFormat->GetFontSize();
-		size.y = curFormat->GetFontSize();
+		size.x = text.size() * m_curFormat->GetFontSize();
+		size.y = m_curFormat->GetFontSize();
 	}
 
 	Float2 halfSize = { size.x * 0.5f, size.y * 0.5f };
@@ -130,8 +146,8 @@ void Font::RenderText(string text, Float2 pos, Float2 size)
 
 	wstring temp = ChangeWString(text);
 
-	context->DrawTextW(temp.c_str(), temp.size(),
-		curFormat, &rectF, curBrush);
+	m_context->DrawTextW(temp.c_str(), temp.size(),
+		m_curFormat, &rectF, m_curBrush);
 }
 
 wstring Font::ChangeWString(string value)
