@@ -133,7 +133,7 @@ void Environment::SetOrthographic()
 void Environment::SetRenderMode(bool isRender)
 {
     m_isRenderMode = isRender;
-    Collider::RenderOnOff();
+    Collider::SetRenderMode(isRender);
     SCENEMANAGER->SetSceneActive("Grid", isRender);
 }
 
