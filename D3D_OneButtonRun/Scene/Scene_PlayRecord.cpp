@@ -83,6 +83,12 @@ void Scene_PlayRecord::Render()
 
 void Scene_PlayRecord::ChangeScene()
 {
+	// Font 세팅
+	Font::Get()->AddColor("Black", 0, 0, 0);
+	Font::Get()->AddStyle("Record_Small", L"배달의민족 주아", 40.0f, DWRITE_TEXT_ALIGNMENT_CENTER);
+	Font::Get()->AddStyle("Record_Medium", L"배달의민족 주아", 50.0f, DWRITE_TEXT_ALIGNMENT_CENTER);
+	Font::Get()->AddStyle("Record_Large", L"배달의민족 주아", 80.0f, DWRITE_TEXT_ALIGNMENT_CENTER);
+
 	UpdateRecords();
 	SCENEMANAGER->SetGUIActive(false);
 }
