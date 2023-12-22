@@ -30,10 +30,11 @@ void Scene_SelectStage::Update()
 			m_buttons[i]->OnHover(true);
 			if (KEY_DOWN(VK_LBUTTON))
 			{
-				if (i < m_buttons.size() - 1)
+				if (i < m_stageNames.size())
+				{
 					SAVELOAD->SetLoadFile(i, StringPath::ToWString(m_stageNames[i]));
-
-				m_buttons[i]->OnClicked();
+					m_buttons[i]->OnClicked();
+				}
 			}
 			continue;
 		}
@@ -83,7 +84,7 @@ void Scene_SelectStage::UpdateMaps()
 	wstring thumbnailName = L"";
 
 	// 세이브맵 수 만큼 버튼 생성
-	for (int i = 0; i <= m_stageNames.size(); ++i)
+	for (int i = 0; i < m_stageNames.size(); ++i)
 	{
 		// 클리어 기록이 있으면 다음 썸네일이미지 공개
 		if (i == 0 || i <= SAVELOAD->GetRecords().size())
