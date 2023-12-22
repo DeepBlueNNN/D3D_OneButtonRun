@@ -84,6 +84,7 @@ void Scene_PlayRecord::Render()
 void Scene_PlayRecord::ChangeScene()
 {
 	UpdateRecords();
+	SCENEMANAGER->SetGUIActive(false);
 }
 
 void Scene_PlayRecord::PostRender()

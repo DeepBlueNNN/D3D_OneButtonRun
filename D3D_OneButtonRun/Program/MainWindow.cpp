@@ -53,14 +53,15 @@ void MainWindow::Render()
 	}
 
 	// Imgui 랜더링
+	if (SCENEMANAGER->GetGUIActive())
 	{
-		static bool isActive = true;
+		bool isActive = true;
 		ImGui::Begin(u8"한글", &isActive);
 		SCENEMANAGER->GuiRender();
 		ImGui::End();
-		ImGui::Render();
-		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	Present();
 }
@@ -76,12 +77,12 @@ LRESULT MainWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 		break;
 
 	case WM_KEYDOWN:
-		switch (wParam)
-		{
-		case VK_ESCAPE:
-			PostQuitMessage(0);
-			break;
-		}
+		//switch (wParam)
+		//{
+		//case VK_ESCAPE:
+		//	PostQuitMessage(0);
+		//	break;
+		//}
 		break;
 
 	case WM_SIZE:

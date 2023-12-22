@@ -45,6 +45,7 @@ void Scene_SelectStage::Update()
 void Scene_SelectStage::ChangeScene()
 {
 	UpdateMaps();
+	SCENEMANAGER->SetGUIActive(false);
 }
 
 void Scene_SelectStage::PostRender()

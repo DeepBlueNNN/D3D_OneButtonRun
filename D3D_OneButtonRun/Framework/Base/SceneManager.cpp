@@ -67,6 +67,11 @@ void SceneManager::Update()
 	// CAMERA->Update();
 	// ENV->Update();
 
+	if (KEY_PRESS(VK_CONTROL) && KEY_DOWN(VK_F8))	// GUI 모드 On/Off
+	{
+		SetGUIActive(!GetGUIActive());
+	}
+
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
 		if (m_scenes[i]->IsActive())   // Scene 활성화되어있다면
@@ -90,22 +95,17 @@ void SceneManager::Render()
 
 void SceneManager::PostRender()
 {
-	//Font::Get()->GetDC()->BeginDraw();
-	//int  temp = (int)(ImGui::GetIO().Framerate);
-
-	//string fps = "FPS : " + to_string(temp);
-	//Font::Get()->RenderText(fps, { 100.0f, (float)(MAIN->GetHeight() - 10) });
-
 	for (UINT i = 0; i < m_scenes.size(); i++)
 	{
 		if (m_scenes[i]->IsActive())
 			m_scenes[i]->PostRender();
 	}
-	//Font::Get()->GetDC()->EndDraw();
 }
 
 void SceneManager::GuiRender()
 {
+	if (!m_isGUIActive) return;
+
 	string fps = "FPS : " + to_string((int)ImGui::GetIO().Framerate);
 	ImGui::Text(fps.c_str());
 	ImGui::Separator();

@@ -242,6 +242,7 @@ void Scene_MapEditor::ChangeScene()
 	SAVELOAD->GetPlayer()->SetRotation(SAVELOAD->GetPlayerOriginRot());
 
 	SAVELOAD->GetPlayer()->SetIsGravityActive(false);
+	SCENEMANAGER->SetGUIActive(true);
 }
 
 void Scene_MapEditor::SelectActor()

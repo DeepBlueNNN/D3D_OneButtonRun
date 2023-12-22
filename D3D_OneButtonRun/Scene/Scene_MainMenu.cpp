@@ -77,6 +77,11 @@ void Scene_MainMenu::Render()
 {
 }
 
+void Scene_MainMenu::ChangeScene()
+{
+	SCENEMANAGER->SetGUIActive(false);
+}
+
 void Scene_MainMenu::PreRender()
 {
 }

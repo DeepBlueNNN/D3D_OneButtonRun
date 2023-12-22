@@ -9,6 +9,7 @@ public:
 public:
 	void Update()      override;
 	void Render()      override;
+	void ChangeScene() override;
 	void PreRender()   override;
 	void PostRender()  override;
 	void GUIRender()   override;

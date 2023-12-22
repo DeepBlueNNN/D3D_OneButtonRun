@@ -131,8 +131,8 @@ void Scene_GamePlay::Update()
 		}
 	}
 
-	// Test¿ë
-	if (KEY_DOWN('C'))
+	// Chit Àû¿ë
+	if (KEY_PRESS(VK_CONTROL) && KEY_PRESS('K') && KEY_DOWN('C'))
 	{
 		m_isStageClear = true;
 		m_clearUI->SetPanelOn(true);
@@ -179,6 +179,7 @@ void Scene_GamePlay::ChangeScene()
 	Font::Get()->SetStyle("Default");
 
 	ENV->SetRenderMode(false);
+	SCENEMANAGER->SetGUIActive(false);
 
 	Initialize();
 }

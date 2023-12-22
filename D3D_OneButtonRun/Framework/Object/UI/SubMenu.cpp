@@ -48,8 +48,9 @@ SubMenu::~SubMenu()
 
 void SubMenu::Update()
 {
-	// 패키징 시 ESC키로 변환
-	if (KEYBOARD->Down(VK_TAB))
+	// 패키징 시 ESC키로 변환 <- 변환완료
+//	if (KEYBOARD->Down(VK_TAB))
+	if (KEYBOARD->Down(VK_ESCAPE))
 	{
 		if (m_isPanelOn)
 			m_isPanelOn = false;

@@ -22,9 +22,12 @@ public:
 public:	//Getter
 	Scene* GetScene(string name);
 	Scene* GetCurrentScene()		{ return m_currentScene; }
+	
+	bool GetGUIActive() { return m_isGUIActive; }
 
 public: //Setter
 	void SetSceneActive(string sceneName, bool isActive);
+	void SetGUIActive(bool isGUIActive) { m_isGUIActive = isGUIActive; }
 
 public:
 	void ChangeScene(string name, bool withGrid = false);
@@ -42,6 +45,7 @@ private:
 	class SubMenu*			m_subMenu = nullptr;
 	UINT					m_escCount = 0;
 	bool					m_isSubMenuOn = false;
+	bool					m_isGUIActive = false;
 };
 
 //////////////////////////////////////////////////////////////
